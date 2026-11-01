@@ -3,135 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aşkımın Çalışma Ekranı 💖</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Aşkımın Çalışma Ekranı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        :root {
-            --primary-color: #ff6584;
-            --secondary-color: #ff758c;
-            --accent-color: #ff7eb3;
-            --bg-gradient: linear-gradient(135deg, #fbc2eb 0%, #a1c4fd 100%);
-            --card-bg: #ffffff;
-            --text-color: #4a4a4a;
-            --success-color: #4cd137;
-            --error-color: #e84118;
-        }
-
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-
-        body {
-            background: var(--bg-gradient);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: var(--text-color);
-        }
-
-        .container {
-            width: 100%;
-            max-width: 650px;
-            background: var(--card-bg);
-            border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            position: relative;
-        }
-
+        body { background: linear-gradient(135deg, #fbc2eb 0%, #a1c4fd 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; color: #4a4a4a; }
+        .container { width: 100%; max-width: 650px; background: #ffffff; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); padding: 30px; }
         .screen { display: none; }
-
         #auth-screen { display: block; text-align: center; padding: 20px; }
-        #auth-screen h2 { color: var(--primary-color); margin-bottom: 15px; font-size: 26px; }
+        #auth-screen h2 { color: #ff6584; margin-bottom: 15px; font-size: 26px; }
         #auth-screen input { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; text-align: center; margin-bottom: 15px; outline: none; }
+        .btn { background: linear-gradient(135deg, #ff6584, #ff758c); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; box-shadow: 0 5px 15px rgba(255,101,132,0.3); }
+        .category-list { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
+        .category-card { padding: 18px 20px; border: 2px solid #f1f2f6; border-radius: 16px; cursor: pointer; background: #fafafa; display: flex; justify-content: space-between; align-items: center; }
+        .category-card h3 { font-size: 16px; color: #2f3640; }
+    </style>
+</head>
+<body>
 
-        #admin-screen { text-align: center; }
-        #admin-screen h2 { color: #2f3640; margin-bottom: 10px; font-size: 22px; }
-        #admin-screen textarea { width: 100%; height: 75px; padding: 10px; border: 2px solid #ddd; border-radius: 12px; font-size: 14px; resize: none; outline: none; margin-bottom: 10px; }
+<div class="container">
+    <!-- GİRİŞ EKRANI -->
+    <div id="auth-screen" class="screen">
+        <h2>💖 Çalışma Ekranı</h2>
+        <p style="margin-bottom: 15px; color: #666;">Şifreyi gir:</p>
+        <input type="password" id="password-input" placeholder="Şifre">
+        <button class="btn" onclick="checkPassword()">Giriş Yap</button>
+    </div>
 
-        .admin-report-box {
-            background: #fafafa;
-            border: 2px solid #f1f2f6;
-            border-radius: 16px;
-            padding: 12px;
-            margin-top: 15px;
-            max-height: 220px;
-            overflow-y: auto;
-            text-align: left;
+    <!-- KATEGORİ EKRANI -->
+    <div id="category-screen" class="screen">
+        <h2 style="color: #ff6584; margin-bottom: 10px;">📚 Konu Seçimi</h2>
+        <p id="user-welcome-sub" style="color: #666; font-size: 14px; margin-bottom: 10px;"></p>
+        <div class="category-list" id="category-list"></div>
+    </div>
+</div>
+
+<script>
+    const PASS_ASKIM = "aşkım";       
+    const PASS_KANKA = "aşkım1";       
+
+    const TOPICS = [
+        {
+            name: "Osmanlı Yükselme Dönemi",
+            questions: [
+                {q:"Fatih Sultan Mehmet'in mahlası nedir?",options:["Muhibbi","Avni","Fuzuli","Baki"],answer:1,note:"Fatih 'Avni' mahlasını kullandı."}
+            ]
         }
-        .admin-report-box h3 { font-size: 14px; color: var(--primary-color); margin-bottom: 8px; text-align: center; }
-        .report-section-title { font-size: 13px; font-weight: 700; color: #2f3640; margin: 8px 0 4px 0; }
-        .report-item {
-            font-size: 12px;
-            padding: 6px 10px;
-            background: white;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            border: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+    ];
+
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(el => el.style.display = 'none');
+        const target = document.getElementById(screenId);
+        if (target) target.style.display = 'block';
+    }
+
+    function checkPassword() {
+        const inputEl = document.getElementById("password-input");
+        if (!inputEl) return;
+        const val = inputEl.value.trim();
+
+        if (val === PASS_ASKIM || val === PASS_KANKA) {
+            showCategories();
+        } else {
+            alert("Hatalı şifre, bir daha dene!");
+            inputEl.value = "";
         }
+    }
 
-        #category-screen, #part-screen { text-align: center; }
-        #category-screen h2, #part-screen h2 { color: var(--primary-color); font-size: 24px; margin-bottom: 10px; }
+    function showCategories() {
+        const listDiv = document.getElementById("category-list");
+        if (!listDiv) return;
+        listDiv.innerHTML = "";
+        TOPICS.forEach((topic, index) => {
+            const card = document.createElement("div");
+            card.className = "category-card";
+            card.innerHTML = `<h3>📚 ${topic.name}</h3><span>${topic.questions.length} Soru</span>`;
+            listDiv.appendChild(card);
+        });
+        showScreen('category-screen');
+    }
+</script>
 
-        .category-list, .part-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
-            max-height: 350px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-
-        .category-card, .part-card {
-            padding: 18px 20px;
-            border: 2px solid #f1f2f6;
-            border-radius: 16px;
-            cursor: pointer;
-            background: #fafafa;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s;
-        }
-
-        .category-card:hover, .part-card:hover {
-            border-color: var(--accent-color);
-            background: #fff0f5;
-        }
-
-        .category-card h3, .part-card h3 { font-size: 16px; color: #2f3640; }
-        .part-score { font-size: 12px; font-weight: 600; background: #e8f8f5; color: #27ae60; padding: 5px 8px; border-radius: 8px; }
-
-        .timer-badge {
-            background: #fff0f5;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(255, 101, 132, 0.1);
-        }
-
-        .notification-box {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fff0f5;
-            border: 1px dashed var(--primary-color);
-            border-radius: 14px;
-            text-align: center;
-        }
-
-        header { text-align: center; margin-bottom: 25px; }
-        header h1 { color: var(--primary-color); font-size: 20px; font-weight: 600; margin-bottom: 5px; }
-
-        .progress-bar { width: 1
+</body>
+</html>
