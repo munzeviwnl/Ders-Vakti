@@ -87,7 +87,7 @@
             flex-direction: column;
             gap: 15px;
             margin-top: 20px;
-            max-height: 290px;
+            max-height: 260px;
             overflow-y: auto;
             padding-right: 5px;
         }
@@ -150,20 +150,50 @@
             cursor: pointer;
         }
 
-        /* 📊 GÜNLÜK İSTATİSTİK KUTUSU */
+        /* 📊 GÜNLÜK HEDEF VE İSTATİSTİK KUTUSU */
         .daily-stats-card {
             background: #fdf2f4;
             border: 1.5px solid #ffb6c1;
             border-radius: 16px;
-            padding: 10px 15px;
+            padding: 12px 15px;
             margin-bottom: 12px;
+            text-align: left;
+        }
+        .daily-stats-top {
             display: flex;
             justify-content: space-around;
             align-items: center;
             text-align: center;
+            margin-bottom: 10px;
         }
         .stat-item h4 { font-size: 11px; color: #888; margin-bottom: 2px; }
         .stat-item p { font-size: 14px; font-weight: 700; color: #2f3640; }
+
+        .daily-goal-section {
+            border-top: 1px dashed #ffb6c1;
+            padding-top: 8px;
+        }
+        .daily-goal-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2f3640;
+            margin-bottom: 5px;
+        }
+        .goal-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f1f2f6;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #f39c12, #e74c3c);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
 
         .notification-box {
             margin-top: 12px;
@@ -303,19 +333,30 @@
             <div class="coin-badge" id="coin-badge" onclick="showCoinInfo()">🪙 0 Coin</div>
         </div>
 
-        <!-- 📊 GÜNLÜK İSTATİSTİK KUTUSU -->
+        <!-- 📊 GÜNLÜK HEDEF VE İSTATİSTİK KUTUSU -->
         <div class="daily-stats-card">
-            <div class="stat-item">
-                <h4>Bugün Çözülen</h4>
-                <p id="daily-total-q">0 Soru</p>
+            <div class="daily-stats-top">
+                <div class="stat-item">
+                    <h4>Bugün Çözülen</h4>
+                    <p id="daily-total-q">0 Soru</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Doğru / Yanlış</h4>
+                    <p id="daily-dw">0D / 0Y</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Başarı</h4>
+                    <p id="daily-success">%0</p>
+                </div>
             </div>
-            <div class="stat-item">
-                <h4>Doğru / Yanlış</h4>
-                <p id="daily-dw">0D / 0Y</p>
-            </div>
-            <div class="stat-item">
-                <h4>Başarı</h4>
-                <p id="daily-success">%0</p>
+            <div class="daily-goal-section">
+                <div class="daily-goal-info">
+                    <span>🎯 Günlük Soru Hedefi</span>
+                    <span id="goal-text">0 / 50 Soru</span>
+                </div>
+                <div class="goal-progress-bar">
+                    <div class="goal-progress-fill" id="goal-progress-fill"></div>
+                </div>
             </div>
         </div>
 
@@ -403,6 +444,7 @@
     let currentUser = "askim"; 
     let currentUserName = "Sevgilim";
     let isMistakeMode = false;
+    const DAILY_GOAL_QUESTIONS = 50; // Günlük soru hedefi
 
     // 🛡️ OTOMATİK YEDEKLEME VE GÜVENLİ VERİ YÖNETİMİ
     function getSafeStorage(key, defaultValue) {
@@ -681,6 +723,14 @@
         document.getElementById("daily-total-q").textContent = `${totalQ} Soru`;
         document.getElementById("daily-dw").textContent = `${correct}D / ${wrong}Y`;
         document.getElementById("daily-success").textContent = `%${successRate}`;
+
+        // Günlük Hedef Çubuğu Güncellemesi
+        const goalFill = document.getElementById("goal-progress-fill");
+        const goalText = document.getElementById("goal-text");
+        const progressPercent = Math.min(Math.round((totalQ / DAILY_GOAL_QUESTIONS) * 100), 100);
+        
+        if (goalFill) goalFill.style.width = `${progressPercent}%`;
+        if (goalText) goalText.textContent = `${totalQ} / ${DAILY_GOAL_QUESTIONS} Soru`;
     }
 
     function getStreakData() {
@@ -730,10 +780,17 @@
 
     function recordTestCompletion(testCorrect, testWrong) {
         let stats = getDailyStatsData();
+        const oldTotal = stats.totalQuestions;
         stats.totalQuestions += (testCorrect + testWrong);
         stats.correct += testCorrect;
         stats.wrong += testWrong;
         setSafeStorage(`${currentUser}_daily_stats`, stats);
+
+        // Hedefe ilk kez bugün ulaşıldıysa kutlama patlat!
+        if (oldTotal < DAILY_GOAL_QUESTIONS && stats.totalQuestions >= DAILY_GOAL_QUESTIONS) {
+            confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 } });
+            alert("Tebrikler kanka! Bugünün günlük 50 soru hedefini başarıyla tamamladın! 🎯🏆");
+        }
 
         addXP(50); // Test tamamlama bonusu +50 XP
 
