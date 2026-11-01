@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aşkımın Çalışma Ekranı 💖</title>
     
-    <link rel="apple-touch-icon" sizes="180x180" href="myphoto.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="myphoto.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="myphoto.png">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
@@ -40,4 +36,16 @@
             max-width: 650px;
             background: var(--card-bg);
             border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(0
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+        }
+
+        .screen { display: none; }
+
+        #auth-screen { display: block; text-align: center; padding: 20px; }
+        #auth-screen h2 { color: var(--primary-color); margin-bottom: 15px; font-size: 26px; }
+        #auth-screen input { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; text-align: center; margin-bottom: 15px; outline: none; }
+
+        #admin-screen { text-align: center; }
+        #admin-screen h2 { color: #2f3640; margin-bottom: 10px
