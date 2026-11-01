@@ -161,7 +161,7 @@
             text-align: left;
         }
         .music-panel input {
-            width: 65%;
+            width: 62%;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 8px;
@@ -169,7 +169,7 @@
             outline: none;
         }
         .music-panel button {
-            width: 32%;
+            width: 35%;
             padding: 8px;
             background: #27ae60;
             color: white;
@@ -334,14 +334,14 @@
             <div class="music-btn-badge" onclick="toggleMusicPanel()">🎵 Müzik</div>
         </div>
 
-        <!-- 🎵 MÜZİK ARAMA PANELİ (YOUTUBE'DA AÇAR) -->
+        <!-- 🎵 MÜZİK ARAMA PANELİ (YOUTUBE) -->
         <div class="music-panel" id="music-panel">
             <p style="font-size: 11px; font-weight: 600; margin-bottom: 6px; color: #333;">🎵 YouTube'da Müzik/Lofi Aç:</p>
             <div style="display: flex; gap: 5px;">
                 <input type="text" id="music-search-input" placeholder="Örn: Lofi hip hop">
                 <button onclick="openYouTubeMusic()">YouTube'da Aç 🎶</button>
             </div>
-            <p style="font-size: 10px; color: #888; margin-top: 5px;">*Tıkladığında YouTube yeni sekmede açılır, müziği arkaya verip test çözmeye devam edebilirsin!</p>
+            <p style="font-size: 10px; color: #888; margin-top: 5px;">*Yeni sekmede açılır, müziği arkaya verip test çözmeye devam edebilirsin!</p>
         </div>
 
         <!-- 📊 GÜNLÜK İSTATİSTİK KUTUSU -->
@@ -655,10 +655,12 @@
         document.querySelectorAll('.coin-badge').forEach(b => b.textContent = coinText);
 
         const rescueBtn = document.getElementById("rescue-btn");
-        if (data.broken && data.coins >= 5) {
-            rescueBtn.style.display = "block";
-        } else {
-            rescueBtn.style.display = "none";
+        if (rescueBtn) {
+            if (data.broken && data.coins >= 5) {
+                rescueBtn.style.display = "block";
+            } else {
+                rescueBtn.style.display = "none";
+            }
         }
         updateDailyStatsDisplay();
     }
@@ -718,12 +720,16 @@
 
     function showScreen(screenId) {
         document.querySelectorAll('.screen').forEach(el => el.style.display = 'none');
-        document.getElementById(screenId).style.display = 'block';
+        const targetScreen = document.getElementById(screenId);
+        if (targetScreen) {
+            targetScreen.style.display = 'block';
+        }
         updateStreakDisplay();
     }
 
     function checkPassword() {
         const inputEl = document.getElementById("password-input");
+        if (!inputEl) return;
         const val = inputEl.value.trim();
 
         if (val === PASS_ADMIN) {
@@ -732,12 +738,14 @@
         } else if (val === PASS_ASKIM) {
             currentUser = "askim";
             currentUserName = "Sevgilim 💖";
-            document.getElementById("user-welcome-sub").textContent = "Çalışmak istediğin dersi seç sevgilim:";
+            const welcomeSub = document.getElementById("user-welcome-sub");
+            if (welcomeSub) welcomeSub.textContent = "Çalışmak istediğin dersi seç sevgilim:";
             showCategories();
         } else if (val === PASS_KANKA) {
             currentUser = "askim1";
             currentUserName = "Kanka 👑";
-            document.getElementById("user-welcome-sub").textContent = "Hoş geldin kanka, çözmek istediğin dersi seç:";
+            const welcomeSub = document.getElementById("user-welcome-sub");
+            if (welcomeSub) welcomeSub.textContent = "Hoş geldin kanka, çözmek istediğin dersi seç:";
             showCategories();
         } else {
             alert("Şifre yanlış kanka! ❌");
@@ -745,8 +753,21 @@
         }
     }
 
+    // Enter tuşuna basınca giriş yapabilme
+    document.addEventListener("DOMContentLoaded", () => {
+        const passwordInput = document.getElementById("password-input");
+        if (passwordInput) {
+            passwordInput.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    checkPassword();
+                }
+            });
+        }
+    });
+
     function loadAdminReport() {
         const reportListDiv = document.getElementById("admin-report-list");
+        if (!reportListDiv) return;
         reportListDiv.innerHTML = "";
 
         const users = [
@@ -826,6 +847,7 @@
     function showCategories() {
         isMistakeMode = false;
         const listDiv = document.getElementById("category-list");
+        if (!listDiv) return;
         listDiv.innerHTML = "";
         CATEGORIES.forEach((cat, index) => {
             let totalQ = 0;
@@ -846,6 +868,7 @@
         document.getElementById("selected-category-title").textContent = cat.categoryName;
         
         const topicListDiv = document.getElementById("topic-list");
+        if (!topicListDiv) return;
         topicListDiv.innerHTML = "";
 
         cat.topics.forEach((topic, index) => {
@@ -864,6 +887,7 @@
         document.getElementById("selected-topic-title").textContent = topic.name;
         
         const partListDiv = document.getElementById("part-list");
+        if (!partListDiv) return;
         partListDiv.innerHTML = "";
 
         const totalQuestions = topic.questions.length;
@@ -1070,21 +1094,36 @@
             if (wheelBox) wheelBox.style.display = "block";
             confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
         } else {
-            if (wheelBox)Kanka YouTube'un güvenlik politikaları (özellikle *autoplay* ve harici sitelerde oynatma kısıtlamaları) bazen arama yapınca doğrudan gömülü oynatıcıda (iframe içinde) "Video oynatılamıyor" hatası verebiliyor. 
-
-Bunu çözmek ve en net şekilde müzik çalmasını sağlamak için ufak bir dokunuş yapalım. YouTube'un kendi arama motoru yerine doğrudan **oynatma (embed)** linkini tetikleyen bir yapı kurmak bu hatayı tamamen çözer. 
-
-Kodun içindeki `playCustomMusic` fonksiyonunu aşağıdaki ile değiştirirsen bu sorun ortadan kalkacaktır kanka:
-
-```javascript
-function playCustomMusic() {
-    const query = document.getElementById("music-search-input").value.trim();
-    if (!query) {
-        alert("Lütfen aratmak istediğin şarkıyı veya müziği yaz kanka! 🎶");
-        return;
+            if (wheelBox) wheelBox.style.display = "none";
+        }
     }
-    const container = document.getElementById("player-container");
-    container.style.display = "block";
-    // YouTube'da doğrudan oynatma listesi ve otomatik oynatmayı destekleyen kararlı embed yapısı
-    container.innerHTML = `<iframe width="100%" height="80" src="[https://www.youtube.com/embed?q=$](https://www.youtube.com/embed?q=$){encodeURIComponent(query)}&autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-}
+
+    function spinWheel() {
+        const visualWheel = document.getElementById("visual-wheel");
+        const wheelSpinBtn = document.getElementById("wheel-spin-btn");
+        const wheelResult = document.getElementById("wheel-result");
+
+        if (visualWheel) visualWheel.classList.add("spinning");
+        if (wheelSpinBtn) wheelSpinBtn.style.display = "none";
+        if (wheelResult) wheelResult.textContent = "🎲 Çark dönüyor...";
+
+        setTimeout(() => {
+            const randomGift = GIFTS[Math.floor(Math.random() * GIFTS.length)];
+            if (wheelResult) {
+                wheelResult.innerHTML = `🎉 Çarktan Çıkan Hediye:<br><span style="font-size:16px; color:#ff6584;">${randomGift}</span>`;
+            }
+            confetti({ particleCount: 180, spread: 120, origin: { y: 0.4 } });
+        }, 1500);
+    }
+
+    function restartCurrentPart() {
+        if (isMistakeMode) {
+            showCategories();
+        } else {
+            startPart(currentPartIndex);
+        }
+    }
+</script>
+
+</body>
+</html>
