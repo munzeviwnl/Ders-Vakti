@@ -206,7 +206,6 @@
         <p id="user-welcome-sub" style="color: #666; font-size: 14px; margin-bottom: 10px;"></p>
         <div class="category-list" id="category-list"></div>
         
-        <!-- YANLIŞLARIM / TEKRAR KUTUSU BUTONU -->
         <button class="btn mistake-btn" onclick="startMistakeQuiz()">🚨 Tekrar Etmem Gerekenler (Yanlışlarım)</button>
 
         <div class="notification-box">
@@ -256,7 +255,7 @@
 
     let currentUser = "askim"; 
     let currentUserName = "Sevgilim";
-    let isMistakeMode = false; // Yanlışlar modunda mı?
+    let isMistakeMode = false;
 
     const TOPICS = [
         {
@@ -264,7 +263,7 @@
             questions: [
                 {q:"Fatih Sultan Mehmet şiirlerinde hangi mahlası kullanmıştır?",options:["Muhibbi","Avni","Fuzuli","Baki"],answer:1,note:"Fatih «Avni» mahlasını kullandı. Muhibbi, Kanuni'nin mahlasıdır."},
                 {q:"İstanbul'un fethi hazırlıklarında yapılan Rumeli Hisarı'nın diğer adı nedir?",options:["Güzelce Hisar","Yedikule","Boğazkesen","Anadolu Hisarı"],answer:2},
-                {q:"Aşağıdakilerden hangisi Bizans'ın fethe karşı aldığı önlemlerden biri DEĞİLDİR?",options:["Grejuva ateşinin çoğaltılması","Haliç'e zincir çekilmesi","Şahi toplarının döktürülmesi","Avrupa'dan yardım istenmesi"],answer:2,note:"Şahi topları Osmanlı'nın hazırlıklarındandı."},
+                {q:"Aşağıdakilerden hangisi Bizans'ın fethe karşı aldığı önlemlerden biri DEĞİLDİR?",options:["Grejuva ateşinin çoğaltılması","Haliç'e zincir çekilmesi","Şahi toplarının döktürülmesi","Avrupa'dan yardım istenmesi"],answer:2,note:"Şahi topları Osmanlı'nın hazırllarındandı."},
                 {q:"«İstanbul'da Kardinal külahı görmektense Osmanlı sarığı görmeyi tercih ederim» sözü Bizans'ın hangi önlemine tepkidir?",options:["Surların güçlendirilmesi","Halkın silahlandırılması","Katolik ve Ortodoks kiliselerinin birleştirilmesi","Haliç'e zincir çekilmesi"],answer:2,note:"Sözün sahibi Grivas (Grandük) Notaras'tır."},
                 {q:"Fetihten sonra Rum patriği olarak kim atandı?",options:["Ovakim","Notaras","Amirutzes","Gennadios"],answer:3,note:"Ermeni patriği ise Ovakim oldu."},
                 {q:"Fatih'in aldığı «Kayser-i Rum» unvanı ne anlama gelir?",options:["Roma Kayseri","İki karanın hükümdarı","Fetihlerin sultanı","Denizlerin hâkimi"],answer:0},
@@ -387,7 +386,9 @@
     }
 
     function checkPassword() {
-        const val = document.getElementById("password-input").value.trim();
+        const inputEl = document.getElementById("password-input");
+        const val = inputEl.value.trim();
+
         if (val === PASS_ADMIN) {
             showScreen('admin-screen');
             loadAdminReport(); 
@@ -402,7 +403,8 @@
             document.getElementById("user-welcome-sub").textContent = "Hoş geldin kanka, çözmek istediğin dönemi seç:";
             showCategories();
         } else {
-            alert("Şifre yanlış kanka! (aşkım, aşkım1 veya yönetici123 deneyebilirsin) ❤️");
+            alert("Şifre yanlış kanka! ❌");
+            inputEl.value = "";
         }
     }
 
@@ -549,7 +551,6 @@
         loadQuestion();
     }
 
-    // 🚨 YANLIŞLARIM (TEKRAR ETMEM GEREKENLER) MODUNU BAŞLAT
     function startMistakeQuiz() {
         const mistakeKey = `${currentUser}_mistakes`;
         const savedMistakes = localStorage.getItem(mistakeKey);
@@ -639,7 +640,6 @@
                 score++;
                 confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
 
-                // Eğer yanlışlar modundaysa ve doğru bildiyse, bu soruyu yanlışlar listesinden çıkarıyoruz!
                 if (isMistakeMode) {
                     existingMistakes = existingMistakes.filter(m => m.q !== q.q);
                     localStorage.setItem(mistakeKey, JSON.stringify(existingMistakes));
@@ -651,7 +651,6 @@
                 feedbackBox.className = "feedback-box incorrect-fb";
                 feedbackBox.innerHTML = `<strong>Minik bir hata!</strong> Öğrendin, harikasın. ✨${explanationText}`;
 
-                // Normal test çözerken yanlış yapıldıysa yanlışlar kutusuna ekle (mükerrer eklememek için kontrol ediyoruz)
                 if (!isMistakeMode) {
                     const alreadyExists = existingMistakes.some(m => m.q === q.q);
                     if (!alreadyExists) {
