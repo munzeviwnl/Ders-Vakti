@@ -150,7 +150,7 @@
             cursor: pointer;
         }
 
-        /* 🎵 MÜZİK KUTUSU PANELİ */
+        /* 🎵 MÜZİK KUTUSU PANELİ (UYGULAMA İÇİ OYNATICI) */
         .music-panel {
             background: #f4f6f9;
             border: 1.5px solid #dcdde1;
@@ -178,6 +178,14 @@
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
+        }
+        .iframe-container {
+            margin-top: 10px;
+            width: 100%;
+            height: 120px;
+            border-radius: 10px;
+            overflow: hidden;
+            display: none;
         }
 
         /* 📊 GÜNLÜK İSTATİSTİK KUTUSU */
@@ -334,14 +342,17 @@
             <div class="music-btn-badge" onclick="toggleMusicPanel()">🎵 Müzik</div>
         </div>
 
-        <!-- 🎵 MÜZİK ARAMA PANELİ (YOUTUBE) -->
+        <!-- 🎵 UYGULAMA İÇİ MÜZİK OYNATICISI -->
         <div class="music-panel" id="music-panel">
-            <p style="font-size: 11px; font-weight: 600; margin-bottom: 6px; color: #333;">🎵 YouTube'da Müzik/Lofi Aç:</p>
+            <p style="font-size: 11px; font-weight: 600; margin-bottom: 6px; color: #333;">🎵 Uygulama İçi Müzik Çalar:</p>
             <div style="display: flex; gap: 5px;">
                 <input type="text" id="music-search-input" placeholder="Örn: Lofi hip hop">
-                <button onclick="openYouTubeMusic()">YouTube'da Aç 🎶</button>
+                <button onclick="playInAppMusic()">Müzik Çal 🎶</button>
             </div>
-            <p style="font-size: 10px; color: #888; margin-top: 5px;">*Yeni sekmede açılır, müziği arkaya verip test çözmeye devam edebilirsin!</p>
+            <div class="iframe-container" id="iframe-container">
+                <iframe id="youtube-player" width="100%" height="120" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <p style="font-size: 10px; color: #888; margin-top: 5px;">*Direk site içinde arka planda çalar!</p>
         </div>
 
         <!-- 📊 GÜNLÜK İSTATİSTİK KUTUSU -->
@@ -451,7 +462,6 @@
             const item = localStorage.getItem(key);
             if (item !== null) return JSON.parse(item);
             
-            // Eğer ana localStorage'da yoksa otomatik yedek kasasından (global backup) kurtarmaya çalış
             const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
             if (globalBackup[key] !== undefined) {
                 localStorage.setItem(key, JSON.stringify(globalBackup[key]));
@@ -466,8 +476,6 @@
     function setSafeStorage(key, value) {
         try {
             localStorage.setItem(key, JSON.stringify(value));
-            
-            // Otomatik olarak global yedeğe de kaydet (Böylece kod güncellemelerinde veri asla uçmaz)
             let globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
             globalBackup[key] = value;
             localStorage.setItem("quizask_global_backup", JSON.stringify(globalBackup));
@@ -476,7 +484,6 @@
         }
     }
 
-    // Sayfa açıldığında global yedekten eksik verileri otomatik kurtar
     (function restoreAllData() {
         try {
             const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup"));
@@ -538,7 +545,7 @@
                         {q:"Mısır'ın alınmasıyla Osmanlı Devleti'nin eline geçen ticaret yolu hangisidir?",options:["İpek Yolu","Kral Yolu","Hicaz Yolu","Baharat Yolu"],answer:3,note:"İpek Yolu ise Fatih Dönemi'nde ele geçmişti."},
                         {q:"Ridaniye Savaşı sürerken Avrupa'da yaşanan gelişme hangisidir?",options:["Reform","Rönesans","Coğrafi Keşifler","Fransız İhtilali"],answer:0},
                         {q:"Osmanlı tarihinin en uzun süre tahta kalan padişah kimdir?",options:["Fatih Sultan Mehmet","Kanuni Sultan Süleyman","Yavuz Sultan Selim","II. Selim"],answer:1,note:"Kanuni 46 yıl tahtta kaldı."},
-                        {q:"I. Süleyman için kullanılan «Kanuni» sıfatını ilk defa kim kullanmıştır?",options:["Matrakçı Nasuh","İdris-i Bitlisi","Cervantes","Dimitrie Cantemir"],answer:3,note:"Bu sıfat XVIII. yüzyıldarda kullanılmaya başlandı."},
+                        {q:"I. Süleyman için kullanılan «Kanuni» sıfatını ilk defa kim kullanmıştır?",options:["Matrakçı Nasuh","İdris-i Bitlisi","Cervantes","Dimitrie Cantemir"],answer:3,note:"Bu sıfat XVIII. yüzyılda kullanılmaya başlandı."},
                         {q:"Dünyanın en kısa süren ova savaşı olan ve Macaristan'ın yenildiği savaş hangisidir?",options:["Çaldıran Savaşı","Otlukbeli Savaşı","Mohaç Meydan Muharebesi","Ridaniye Savaşı"],answer:2,note:"Savaş 1526'da yapıldı."},
                         {q:"Viyana ilk defa hangi yılda kuşatılmıştır?",options:["1521","1526","1529","1538"],answer:2},
                         {q:"Osmanlı Devleti ile Avusturya arasındaki ilk resmî antlaşma hangisidir?",options:["İstanbul Antlaşması","Amasya Antlaşması","Zitvatorok Antlaşması","Edirne Antlaşması"],answer:0},
@@ -628,20 +635,64 @@
         document.querySelectorAll('.timer-badge').forEach(badge => badge.textContent = timeFormatted);
     }, 1000);
 
-    // 🎵 MÜZİK PANELİNİ AÇ/KAPAT VE YOUTUBE'DA AÇ
+    // 🎵 MÜZİK PANELİNİ AÇ/KAPAT VE UYGULAMA İÇİNDE OYNAT
     function toggleMusicPanel() {
         const panel = document.getElementById("music-panel");
         panel.style.display = panel.style.display === "block" ? "none" : "block";
     }
 
-    function openYouTubeMusic() {
+    function playInAppMusic() {
         const query = document.getElementById("music-search-input").value.trim();
         const searchVal = query ? query : "lofi hip hop radio";
-        const youtubeUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchVal)}`;
-        window.open(youtubeUrl, '_blank');
+        const container = document.getElementById("iframe-container");
+        const player = document.getElementById("youtube-player");
+
+        container.style.display = "block";
+        // YouTube embed arama ve otomatik oynatma parametresiyle uygulama içinde çalışır
+        player.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(searchVal)}&autoplay=1`;
     }
 
     // 📊 GÜNLÜK İSTATİSTİK & 00:00 SIFIRLAMA MANTIĞI
+    function getSafeStorage(key, defaultValue) {
+        try {
+            const item = localStorage.getItem(key);
+            if (item !== null) return JSON.parse(item);
+            
+            const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
+            if (globalBackup[key] !== undefined) {
+                localStorage.setItem(key, JSON.stringify(globalBackup[key]));
+                return globalBackup[key];
+            }
+        } catch (e) {
+            console.error("Yedekleme okuma hatası:", e);
+        }
+        return defaultValue;
+    }
+
+    function setSafeStorage(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+            let globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
+            globalBackup[key] = value;
+            localStorage.setItem("quizask_global_backup", JSON.stringify(globalBackup));
+        } catch (e) {
+            console.error("Yedekleme yazma hatası:", e);
+        }
+    }
+
+    (function restoreAllData() {
+        try {
+            const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup"));
+            if (globalBackup) {
+                for (let k in globalBackup) {
+                    if (localStorage.getItem(k) === null) {
+                        localStorage.setItem(k, JSON.stringify(globalBackup[k]));
+                    }
+                }
+            }
+        } catch (e) {}
+    })();
+
     function getDailyStatsData() {
         const statsKey = `${currentUser}_daily_stats`;
         const todayStr = new Date().toISOString().split('T')[0];
@@ -798,7 +849,6 @@
         }
     }
 
-    // Enter tuşuna basınca giriş yapabilme
     document.addEventListener("DOMContentLoaded", () => {
         const passwordInput = document.getElementById("password-input");
         if (passwordInput) {
