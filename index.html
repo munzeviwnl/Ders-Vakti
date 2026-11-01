@@ -542,7 +542,6 @@
     }
 
     function addXP(amount) {
-        if (isBrotherMode) return;
         let data = getXPData(currentUser);
         data.xp += amount;
         setSafeStorage(`${currentUser}_xp_data`, data);
@@ -556,28 +555,26 @@
     }
 
     function updateLevelDisplay() {
-        if (isBrotherMode) return;
         const data = getXPData(currentUser);
         const lvlInfo = calculateLevel(data.xp);
         document.querySelectorAll('.level-badge').forEach(b => b.textContent = `⭐ Lv.${lvlInfo.level}`);
     }
 
     function showLevelInfo() {
-        if (isBrotherMode) return;
         const data = getXPData(currentUser);
         const lvlInfo = calculateLevel(data.xp);
         alert(`Seviye: ${lvlInfo.level} (${lvlInfo.title})\nToplam XP: ${data.xp}`);
     }
 
     function openDuelScreen() {
-        if (isBrotherMode) return;
         showScreen('duel-screen');
         const arenaDiv = document.getElementById("duel-arena-content");
         arenaDiv.innerHTML = "";
 
         const users = [
             { id: "askim", name: "Özge Bakır 💖" },
-            { id: "askim1", name: "Enes Furkan Arslan 👑" }
+            { id: "askim1", name: "Enes Furkan Arslan 👑" },
+            { id: "kardes", name: "Ezgi Bakır 📚" }
         ];
 
         const todayStr = new Date().toISOString().split('T')[0];
@@ -605,7 +602,7 @@
             const card = document.createElement("div");
             card.className = `duel-card ${isLeader ? 'winner' : ''}`;
             card.innerHTML = `
-                <h3><span>${index === 0 ? '👑' : '🥈'} ${st.name}</span> <span style="font-size:12px; color:#888;">${st.levelTitle}</span></h3>
+                <h3><span>${index === 0 ? '👑' : index === 1 ? '🥈' : '🥉'} ${st.name}</span> <span style="font-size:12px; color:#888;">${st.levelTitle}</span></h3>
                 <div class="duel-stats-row"><span>Bugün Çözülen Soru:</span> <b>${st.totalQ} Soru</b></div>
                 <div class="duel-stats-row"><span>Doğru / Yanlış:</span> <b style="color:#27ae60;">${st.correct}D</b> / <b style="color:#e84118;">${st.wrong}Y</b></div>
                 <div class="duel-stats-row"><span>Toplam Puan (XP):</span> <b style="color:#2980b9;">${st.xp} XP</b></div>
@@ -659,7 +656,7 @@
         document.querySelectorAll('.streak-badge').forEach(b => b.textContent = `🔥 ${data.streak}`);
         document.querySelectorAll('.coin-badge').forEach(b => b.textContent = `🪙 ${data.coins}`);
         updateDailyStatsDisplay();
-        if (!isBrotherMode) updateLevelDisplay();
+        updateLevelDisplay();
     }
 
     function recordTestCompletion(testCorrect, testWrong) {
@@ -669,22 +666,20 @@
         stats.wrong += testWrong;
         setSafeStorage(`${currentUser}_daily_stats`, stats);
 
-        if (!isBrotherMode) {
-            addXP(50);
-            let data = getStreakData();
-            const todayStr = new Date().toISOString().split('T')[0];
-            data.coins += 1;
+        addXP(50);
+        let data = getStreakData();
+        const todayStr = new Date().toISOString().split('T')[0];
+        data.coins += 1;
 
-            if (data.lastDate === todayStr) {
-                data.testsToday++;
-            } else {
-                data.streak = (data.streak || 0) + 1;
-                data.testsToday = 1;
-                data.lastDate = todayStr;
-                data.broken = false;
-            }
-            saveStreakData(data);
+        if (data.lastDate === todayStr) {
+            data.testsToday++;
+        } else {
+            data.streak = (data.streak || 0) + 1;
+            data.testsToday = 1;
+            data.lastDate = todayStr;
+            data.broken = false;
         }
+        saveStreakData(data);
     }
 
     function showScreen(screenId) {
@@ -745,7 +740,6 @@
 
         modal.style.display = "flex";
         
-        // 🎊 Konfetileri Patlat!
         confetti({
             particleCount: 150,
             spread: 90,
@@ -759,25 +753,13 @@
     }
 
     function setupBrotherMode() {
-        const duelBtn = document.getElementById("duel-menu-btn");
-        if (duelBtn) duelBtn.style.display = "none";
-
         const notifBox = document.getElementById("notification-box-area");
         if (notifBox) notifBox.style.display = "none";
-
-        const statsCard = document.getElementById("daily-stats-card-area");
-        if (statsCard) statsCard.style.display = "none";
     }
 
     function setupNormalMode() {
-        const duelBtn = document.getElementById("duel-menu-btn");
-        if (duelBtn) duelBtn.style.display = "block";
-
         const notifBox = document.getElementById("notification-box-area");
         if (notifBox) notifBox.style.display = "block";
-
-        const statsCard = document.getElementById("daily-stats-card-area");
-        if (statsCard) statsCard.style.display = "block";
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -1015,7 +997,7 @@
                 feedbackBox.className = "feedback-box correct-fb";
                 feedbackBox.innerHTML = `<strong>Doğru!</strong>`;
                 score++;
-                if (!isBrotherMode) addXP(10);
+                addXP(10);
 
                 if (isMistakeMode) {
                     existingMistakes = existingMistakes.filter(m => m.q !== q.q);
@@ -1027,7 +1009,7 @@
                 let explanationText = q.note ? `<br><em>Not: ${q.note}</em>` : "";
                 feedbackBox.className = "feedback-box incorrect-fb";
                 feedbackBox.innerHTML = `<strong>Yanlış!</strong>${explanationText}`;
-                if (!isBrotherMode) addXP(5);
+                addXP(5);
 
                 if (!isMistakeMode) {
                     if (!existingMistakes.some(m => m.q === q.q)) {
