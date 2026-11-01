@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aşkımın Çalışma Ekranı 💖</title>
     
-    <!-- 💖 İPHONE İÇİN FOTOĞRAF İKONU AYARLARI 💖 -->
     <link rel="apple-touch-icon" sizes="180x180" href="myphoto.png">
     <link rel="icon" type="image/png" sizes="32x32" href="myphoto.png">
     <link rel="icon" type="image/png" sizes="16x16" href="myphoto.png">
@@ -51,16 +50,14 @@
             position: relative;
         }
 
-        /* Tüm Ekranların Varsayılan Gizli Hali */
-        #auth-screen, #admin-screen, #category-screen, #main-app {
+        .screen {
             display: none;
         }
 
-        /* Şifre Ekranı */
         #auth-screen {
+            display: block;
             text-align: center;
             padding: 20px;
-            display: block;
         }
 
         #auth-screen h2 {
@@ -78,14 +75,8 @@
             text-align: center;
             margin-bottom: 15px;
             outline: none;
-            transition: border-color 0.2s;
         }
 
-        #auth-screen input:focus {
-            border-color: var(--primary-color);
-        }
-
-        /* Yönetici Paneli Ekranı */
         #admin-screen {
             text-align: center;
         }
@@ -106,14 +97,8 @@
             resize: none;
             outline: none;
             margin-bottom: 15px;
-            transition: border-color 0.2s;
         }
 
-        #admin-screen textarea:focus {
-            border-color: var(--primary-color);
-        }
-
-        /* Kategori Seçim Ekranı */
         #category-screen {
             text-align: center;
         }
@@ -136,18 +121,11 @@
             border: 2px solid #f1f2f6;
             border-radius: 16px;
             cursor: pointer;
-            transition: all 0.2s ease;
             background: #fafafa;
             text-align: left;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .category-card:hover {
-            border-color: var(--accent-color);
-            background: #fff0f5;
-            transform: translateY(-2px);
         }
 
         .category-card h3 {
@@ -171,12 +149,6 @@
             border: 1px dashed var(--primary-color);
             border-radius: 14px;
             text-align: center;
-        }
-
-        .notification-box p {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 10px;
         }
 
         header {
@@ -228,14 +200,8 @@
             border: 2px solid #f1f2f6;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
             font-weight: 500;
             background: #fafafa;
-        }
-
-        .option-item:hover {
-            border-color: var(--accent-color);
-            background: #fff0f5;
         }
 
         .option-item.selected {
@@ -286,17 +252,6 @@
             cursor: pointer;
             width: 100%;
             box-shadow: 0 5px 15px rgba(255, 101, 132, 0.3);
-            transition: opacity 0.2s;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        .btn:disabled {
-            background: #bdc3c7;
-            box-shadow: none;
-            cursor: not-allowed;
         }
 
         .back-btn {
@@ -310,24 +265,13 @@
             text-align: center;
             display: none;
         }
-
-        .result-container h2 {
-            color: var(--primary-color);
-            font-size: 28px;
-            margin-bottom: 15px;
-        }
-
-        .result-container p {
-            font-size: 18px;
-            margin-bottom: 25px;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <!-- ŞİFRE EKRANI -->
-    <div id="auth-screen">
+    <div id="auth-screen" class="screen" style="display: block;">
         <h2>💖 Aşkımın Çalışma Ekranı</h2>
         <p style="margin-bottom: 15px; color: #666;">Şifreyi gir sevgilim:</p>
         <input type="password" id="password-input" placeholder="Gizli Şifre">
@@ -335,7 +279,7 @@
     </div>
 
     <!-- YÖNETİCİ PANELİ -->
-    <div id="admin-screen">
+    <div id="admin-screen" class="screen">
         <h2>👑 Yönetici Bildirim Paneli</h2>
         <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Sevgiline göndermek istediğin mesajı aşağıya yaz kanka:</p>
         <textarea id="admin-msg" placeholder="Örn: Haydi bakalım, bugün hiç Osmanlı çözmedin masaya! 📚"></textarea>
@@ -344,7 +288,7 @@
     </div>
 
     <!-- KATEGORİ SEÇİM EKRANI -->
-    <div id="category-screen">
+    <div id="category-screen" class="screen">
         <h2>📚 Konu Seçimi</h2>
         <p style="color: #666; font-size: 14px; margin-bottom: 10px;">Çalışmak istediğin dönemi seç sevgilim:</p>
         <div class="category-list" id="category-list"></div>
@@ -356,7 +300,7 @@
     </div>
 
     <!-- ANA TEST UYGULAMASI -->
-    <div id="main-app">
+    <div id="main-app" class="screen">
         <header>
             <button class="btn back-btn" onclick="goBackToCategories()">⬅️ Konulara Dön</button>
             <h1 id="topic-title">Konu Başlığı</h1>
@@ -383,7 +327,6 @@
 </div>
 
 <script>
-    // 🔑 ŞİFRELER
     const SECRET_PASSWORD = "aşkım";       
     const ADMIN_PASSWORD = "yonetici123";  
 
@@ -422,7 +365,7 @@
                 {q:"Memlük Devleti hangi savaşın sonucunda yıkılmıştır?",options:["Mercidabık Savaşı","Çaldıran Savaşı","Ridaniye Savaşı","Turnadağ Savaşı"],answer:2,note:"Mercidabık 1516'da, Ridaniye 1517'de yapıldı."},
                 {q:"Mısır'ın alınmasıyla Osmanlı Devleti'nin eline geçen ticaret yolu hangisidir?",options:["İpek Yolu","Kral Yolu","Hicaz Yolu","Baharat Yolu"],answer:3,note:"İpek Yolu ise Fatih Dönemi'nde ele geçmişti."},
                 {q:"Ridaniye Savaşı sürerken Avrupa'da yaşanan gelişme hangisidir?",options:["Reform","Rönesans","Coğrafi Keşifler","Fransız İhtilali"],answer:0},
-                {q:"Osmanlı tarihinin en uzun süre tahta kalan padişahı kimdir?",options:["Fatih Sultan Mehmet","Kanuni Sultan Süleyman","Yavuz Sultan Selim","II. Selim"],answer:1,note:"Kanuni 46 yıl tahtta kaldı."},
+                {q:"Osmanlı tarihinin en uzun süre tahta kalan padişah kimdir?",options:["Fatih Sultan Mehmet","Kanuni Sultan Süleyman","Yavuz Sultan Selim","II. Selim"],answer:1,note:"Kanuni 46 yıl tahtta kaldı."},
                 {q:"I. Süleyman için kullanılan «Kanuni» sıfatını ilk defa kim kullanmıştır?",options:["Matrakçı Nasuh","İdris-i Bitlisi","Cervantes","Dimitrie Cantemir"],answer:3,note:"Bu sıfat XVIII. yüzyılda kullanılmaya başlandı."},
                 {q:"Dünyanın en kısa süren ova savaşı olan ve Macaristan'ın yenildiği savaş hangisidir?",options:["Çaldıran Savaşı","Otlukbeli Savaşı","Mohaç Meydan Muharebesi","Ridaniye Savaşı"],answer:2,note:"Savaş 1526'da yapıldı."},
                 {q:"Viyana ilk defa hangi yılda kuşatılmıştır?",options:["1521","1526","1529","1538"],answer:2},
@@ -484,7 +427,7 @@
                 {q:"Osmanlı tarihinde ilk defa bir şeyhülislamı idam ettiren padişah kimdir?",options:["I. Ahmet","II. Osman","IV. Mehmet","IV. Murat"],answer:3,note:"Lakabı Bağdat Fatihi'dir."},
                 {q:"Koçi Bey ve Kâtip Çelebi hangi padişaha risalelerini (raporlarını) sunmuştur?",options:["II. Osman","I. Ahmet","IV. Murat","III. Mehmet"],answer:2},
                 {q:"IV. Murat'ın gece sokağa çıkma yasağı, içki ve tütün yasağı getirmesinin temel sebebi nedir?",options:["Vergi gelirlerini artırmak","İstanbul'da ortaya çıkan yangınların önüne geçmek","Yeniçerileri disipline etmek","Halkın gelirini artırmak"],answer:1,note:"Kanuni Dönemi'nde açılan kahve ve meyhaneleri de kapattı."},
-                {q:"Ekber ve erşed sistemini getirerek veraset sisteminde son değişikliği yapan padişah kimdir?",options:["III. Mehmet","IV. Murat","II. Osman","I. Ahmet"],answer:3,note:"Kız kardeşinle ilgili sisteme göre ailenin en büyük üyesi seçilir."},
+                {q:"Ekber ve erşed sistemini getirerek veraset sisteminde son değişikliği yapan padişah kimdir?",options:["III. Mehmet","IV. Murat","II. Osman","I. Ahmet"],answer:3},
                 {q:"Şehzadelerin sancağa çıkma uygulamasını kaldıran padişah kimdir?",options:["I. Ahmet","IV. Mehmet","III. Mehmet","II. Selim"],answer:2},
                 {q:"Köprülü Mehmet Paşa, Venedik'in Çanakkale'ye uyguladığı ablukayı kaldırarak hangi devlete karşı başarı kazanmıştır?",options:["Rusya","Lehistan","Avusturya","Venedik"],answer:3},
                 {q:"Köprülüler Dönemi için aşağıdakilerden hangisi söylenir?",options:["Duraklama Dönemi içinde Yükselme Dönemi yaşatmışlardır","Yükselme Dönemi içinde Duraklama yaşatmışlardır","Kuruluş Dönemi'ni yeniden başlatmışlardır","Gerileme Dönemi'ni başlatmışlardır"],answer:0}
@@ -501,29 +444,23 @@
     let selectedOption = null;
     let isAnswered = false;
 
-    // Sayfa açıldığında sadece şifre ekranı görünsün
-    window.onload = function() {
-        document.getElementById("auth-screen").style.display = "block";
-    };
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(el => el.style.display = 'none');
+        document.getElementById(screenId).style.display = 'block';
+    }
 
-    // Şifre Kontrolü
     function checkPassword() {
         const val = document.getElementById("password-input").value.trim();
         
         if (val === ADMIN_PASSWORD) {
-            // Yönetici paneli açılacak
-            document.getElementById("auth-screen").style.display = "none";
-            document.getElementById("admin-screen").style.display = "block";
+            showScreen('admin-screen');
         } else if (val === SECRET_PASSWORD) {
-            // Kız arkadaş paneli açılacak
-            document.getElementById("auth-screen").style.display = "none";
             showCategories();
         } else {
             alert("Şifre yanlış aşkım, bir daha dene! ❤️");
         }
     }
 
-    // Bildirim İzni İsteme
     function requestNotificationPermission() {
         if (!("Notification" in window)) {
             alert("Tarayıcınız bildirimleri desteklemiyor.");
@@ -542,7 +479,6 @@
         });
     }
 
-    // Senin Yönetici Panelinden Bildirim Göndermen
     function sendAdminNotification() {
         const msg = document.getElementById("admin-msg").value.trim();
         if (!msg) {
@@ -574,9 +510,7 @@
             listDiv.appendChild(card);
         });
 
-        document.getElementById("category-screen").style.display = "block";
-        document.getElementById("admin-screen").style.display = "none";
-        document.getElementById("main-app").style.display = "none";
+        showScreen('category-screen');
     }
 
     function startTopic(index) {
@@ -584,8 +518,7 @@
         currentQuestion = 0;
         score = 0;
         document.getElementById("topic-title").textContent = TOPICS[index].name;
-        document.getElementById("category-screen").style.display = "none";
-        document.getElementById("main-app").style.display = "block";
+        showScreen('main-app');
         document.getElementById("quiz-screen").style.display = "block";
         document.getElementById("result-screen").style.display = "none";
         loadQuestion();
