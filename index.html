@@ -79,15 +79,15 @@
             align-items: center;
         }
 
-        #category-screen, #topic-screen, #part-screen, #mistake-screen { text-align: center; }
-        #category-screen h2, #topic-screen h2, #part-screen h2, #mistake-screen h2 { color: var(--primary-color); font-size: 24px; margin-bottom: 10px; }
+        #category-screen, #topic-screen, #part-screen, #mistake-screen, #duel-screen { text-align: center; }
+        #category-screen h2, #topic-screen h2, #part-screen h2, #mistake-screen h2, #duel-screen h2 { color: var(--primary-color); font-size: 24px; margin-bottom: 10px; }
 
         .category-list, .topic-list, .part-list {
             display: flex;
             flex-direction: column;
             gap: 15px;
             margin-top: 20px;
-            max-height: 260px;
+            max-height: 250px;
             overflow-y: auto;
             padding-right: 5px;
         }
@@ -195,6 +195,39 @@
             transition: width 0.4s ease;
         }
 
+        /* ⚔️ DÜELLO EKRANI KARTLARI */
+        .duel-arena {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .duel-card {
+            background: #fafafa;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: left;
+        }
+        .duel-card.winner {
+            border-color: #f1c40f;
+            background: #fef9e7;
+        }
+        .duel-card h3 {
+            font-size: 15px;
+            color: #2f3640;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .duel-stats-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #555;
+            margin-top: 4px;
+        }
+
         .notification-box {
             margin-top: 12px;
             padding: 10px;
@@ -232,6 +265,11 @@
             background: linear-gradient(135deg, #ff9966, #ff5e62);
             margin-top: 8px;
             box-shadow: 0 5px 15px rgba(255, 94, 98, 0.3);
+        }
+        .duel-main-btn {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            margin-top: 8px;
+            box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3);
         }
         .rescue-btn {
             background: linear-gradient(135deg, #f39c12, #d35400);
@@ -365,12 +403,25 @@
         <div class="category-list" id="category-list"></div>
         
         <button class="btn mistake-btn" onclick="startMistakeQuiz()">🚨 Tekrar Etmem Gerekenler (Yanlışlarım)</button>
+        <button class="btn duel-main-btn" onclick="openDuelScreen()">⚔️ Günlük Düello & Kapışma Ligi</button>
         <button class="btn rescue-btn" id="rescue-btn" style="display: none;" onclick="rescueStreakWithCoins()">🛡️ 5 Coin ile Seriyi Kurtar!</button>
 
         <div class="notification-box">
             <p style="font-size: 12px;">🔔 Siteden anlık bildirimler almak için tıkla!</p>
             <button class="btn" style="padding: 8px; font-size: 13px; margin-top: 5px;" onclick="requestNotificationPermission()">Bildirimleri Aç 💖</button>
         </div>
+    </div>
+
+    <!-- ⚔️ DÜELLO / KAPIŞMA EKRANI -->
+    <div id="duel-screen" class="screen">
+        <h2>⚔️ Günlük Düello Arenası</h2>
+        <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Bugün kim daha çok çalıştı? Kapışma tablosu:</p>
+        
+        <div class="duel-arena" id="duel-arena-content">
+            <!-- JavaScript ile doldurulacak -->
+        </div>
+
+        <button class="btn back-btn" onclick="showCategories()">⬅️ Derslere Geri Dön</button>
     </div>
 
     <!-- KONU SEÇİMİ EKRANI -->
@@ -572,7 +623,7 @@
                         {q:"Aşağıdakilerden hangisi Celali isyanlarının sonuçlarından biri DEĞİLDİR?",options:["Üretimin düşmesi","Vergi gelirlerinin azalması","Boşalan köylere eşkıyaların yerleşmesi","Tarımsal üretimin artması"],answer:3},
                         {q:"Osmanlı'da medrese öğrencilerine verilen «suhte» ya da «softa» adı hangi ayaklanmaların adıdır?",options:["Eyalet isyanları","Celali isyanları","Suhte ayaklanmaları","Merkez isyanları"],answer:2},
                         {q:"Suhte ayaklanmalarının nedenlerinden biri aşağıdakilerden hangisidir?",options:["Medrese gelirlerinin artması","Nüfus artışı ve enflasyon yüzünden gençlerin burslu medreselere sığınması","Medreselerin kapatılması","Öğrencilerin askere alınması"],answer:1},
-                        {q:"17. yüzyılda gayrimüslimlerin çıkardığı ayaklanmalar hakkında aşağıdakilerden hangisi doğrudur?",options:["XIX. yüzyıldaki ulusçuluk isyanlarının bir devamıdır","Fransız İhtilali'nin etkisiyle çıkmıştır","XIX. yüzyıl ulusçuluk isyanlarıyla bir ilgisi yoktur","Bağımsız devlet kurmayı amaçlamıştır"],answer:2},
+                        {q:"17. yüzyılda gayrimüslimlerin çıkardığı ayaklanmalar hakkında aşağıdakilerden hang doğrudur?",options:["XIX. yüzyıldaki ulusçuluk isyanlarının bir devamıdır","Fransız İhtilali'nin etkisiyle çıkmıştır","XIX. yüzyıl ulusçuluk isyanlarıyla bir ilgisi yoktur","Bağımsız devlet kurmayı amaçlamıştır"],answer:2},
                         {q:"1596 Haçova Meydan Muharebesi'nden sonra «Eğri Fatihi» unvanı kime verilmiştir?",options:["III. Mehmet","Tirkayi Hasan Paşa","Kuyucu Murat Paşa","IV. Murat"],answer:0,note:"Kanije Fatihi unvanı ise Tirkayi Hasan Paşa'ya verildi."},
                         {q:"Avusturya kralını Osmanlı padişahına tekrar denk sayan ve Orta Avrupa'daki siyasi üstünlüğü sona erdiren antlaşma hangisidir?",options:["Vasvar Antlaşması","Karlofça Antlaşması","Zitvatorok Antlaşması","İstanbul Antlaşması"],answer:2,note:"Antlaşma 1606'da imzalandı."},
                         {q:"Osmanlı'nın bu yüzyılda Avusturya'ya karşı son kazançlı antlaşması hangisidir?",options:["Vasvar Antlaşması","Zitvatorok Antlaşması","Karlofça Antlaşması","Bucaş Antlaşması"],answer:0,note:"1664'te imzalandı ve Uyvar Kalesi alındı."},
@@ -626,13 +677,13 @@
     }, 1000);
 
     // 🛡️ XP VE SEVİYE SİSTEMİ MANTIĞI
-    function getXPData() {
-        const xpKey = `${currentUser}_xp_data`;
+    function getXPData(userKey = currentUser) {
+        const xpKey = `${userKey}_xp_data`;
         return getSafeStorage(xpKey, { xp: 0 });
     }
 
     function addXP(amount) {
-        let data = getXPData();
+        let data = getXPData(currentUser);
         data.xp += amount;
         setSafeStorage(`${currentUser}_xp_data`, data);
         updateLevelDisplay();
@@ -647,7 +698,7 @@
     }
 
     function updateLevelDisplay() {
-        const data = getXPData();
+        const data = getXPData(currentUser);
         const lvlInfo = calculateLevel(data.xp);
         const badgeText = `⭐ Lv.${lvlInfo.level}`;
 
@@ -655,9 +706,56 @@
     }
 
     function showLevelInfo() {
-        const data = getXPData();
+        const data = getXPData(currentUser);
         const lvlInfo = calculateLevel(data.xp);
         alert(`Seviye Durumun: ${lvlInfo.title}\nSeviye: ${lvlInfo.level} ⭐\nToplam XP: ${data.xp} XP\n\nTest çözerek XP kazan ve level atla! 🚀`);
+    }
+
+    // ⚔️ DÜELLO EKRANI MANTIĞI
+    function openDuelScreen() {
+        showScreen('duel-screen');
+        const arenaDiv = document.getElementById("duel-arena-content");
+        arenaDiv.innerHTML = "";
+
+        const users = [
+            { id: "askim", name: "💖 Sevgilim (aşkım)" },
+            { id: "askim1", name: "👑 Sen (aşkım1)" }
+        ];
+
+        // Bugünün istatistiklerini her iki kullanıcı için çek
+        const todayStr = new Date().toISOString().split('T')[0];
+        
+        let statsList = users.map(u => {
+            const statsKey = `${u.id}_daily_stats`;
+            const stats = getSafeStorage(statsKey, { date: todayStr, totalQuestions: 0, correct: 0, wrong: 0 });
+            const xpData = getXPData(u.id);
+            const lvl = calculateLevel(xpData.xp);
+            return {
+                id: u.id,
+                name: u.name,
+                totalQ: stats.totalQuestions,
+                correct: stats.correct,
+                wrong: stats.wrong,
+                xp: xpData.xp,
+                levelTitle: lvl.title
+            };
+        });
+
+        // Soru sayısına göre sırala (Kim önde?)
+        statsList.sort((a, b) => b.totalQ - a.totalQ);
+
+        statsList.forEach((st, index) => {
+            const isLeader = index === 0 && st.totalQ > 0;
+            const card = document.createElement("div");
+            card.className = `duel-card ${isLeader ? 'winner' : ''}`;
+            card.innerHTML = `
+                <h3><span>${index === 0 ? '👑' : '🥈'} ${st.name}</span> <span style="font-size:12px; color:#888;">${st.levelTitle}</span></h3>
+                <div class="duel-stats-row"><span>Bugün Çözülen Soru:</span> <b>${st.totalQ} Soru</b></div>
+                <div class="duel-stats-row"><span>Doğru / Yanlış:</span> <b style="color:#27ae60;">${st.correct}D</b> / <b style="color:#e84118;">${st.wrong}Y</b></div>
+                <div class="duel-stats-row"><span>Toplam Puan (XP):</span> <b style="color:#2980b9;">${st.xp} XP</b></div>
+            `;
+            arenaDiv.appendChild(card);
+        });
     }
 
     // 🛡️ OTOMATİK YEDEKLEME VE GÜVENLİ VERİ YÖNETİMİ
