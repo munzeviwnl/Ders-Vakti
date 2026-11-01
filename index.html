@@ -113,10 +113,11 @@
         .category-card h3, .topic-card h3, .part-card h3 { font-size: 16px; color: #2f3640; }
         .part-score { font-size: 12px; font-weight: 600; background: #e8f8f5; color: #27ae60; padding: 5px 8px; border-radius: 8px; }
 
+        /* 🌟 4'LÜ KUSURSUZ ÜST ROZETLER */
         .top-badges {
-            display: flex;
-            justify-content: space-between;
-            gap: 6px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
             margin-bottom: 12px;
         }
 
@@ -124,13 +125,20 @@
             background: #fff0f5;
             border: 1px solid var(--primary-color);
             color: var(--primary-color);
-            padding: 8px 6px;
-            border-radius: 20px;
-            font-size: 11px;
+            padding: 7px 4px;
+            border-radius: 12px;
+            font-size: 10px;
             font-weight: 600;
-            flex: 1;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(255, 101, 132, 0.1);
+            box-shadow: 0 2px 6px rgba(255, 101, 132, 0.1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .timer-badge {
+            background: #f0f3f4;
+            border-color: #7f8c8d;
+            color: #2c3e50;
         }
         .streak-badge {
             background: #fffaf0;
@@ -366,6 +374,7 @@
     <!-- DERS KATEGORİLERİ EKRANI -->
     <div id="category-screen" class="screen">
         <div class="top-badges">
+            <div class="timer-badge" id="timer-badge">⏳ 00:00</div>
             <div class="level-badge" id="level-badge" onclick="showLevelInfo()">⭐ Lv.1</div>
             <div class="streak-badge" id="streak-badge">🔥 Seri: 0</div>
             <div class="coin-badge" id="coin-badge" onclick="showCoinInfo()">🪙 0 Coin</div>
@@ -427,6 +436,7 @@
     <!-- KONU SEÇİMİ EKRANI -->
     <div id="topic-screen" class="screen">
         <div class="top-badges">
+            <div class="timer-badge" id="timer-badge-2">⏳ 00:00</div>
             <div class="level-badge" id="level-badge-2" onclick="showLevelInfo()">⭐ Lv.1</div>
             <div class="streak-badge" id="streak-badge-2">🔥 Seri: 0</div>
             <div class="coin-badge" id="coin-badge-2" onclick="showCoinInfo()">🪙 0 Coin</div>
@@ -439,6 +449,7 @@
     <!-- TEST PARÇALARI EKRANI -->
     <div id="part-screen" class="screen">
         <div class="top-badges">
+            <div class="timer-badge" id="timer-badge-3">⏳ 00:00</div>
             <div class="level-badge" id="level-badge-3" onclick="showLevelInfo()">⭐ Lv.1</div>
             <div class="streak-badge" id="streak-badge-3">🔥 Seri: 0</div>
             <div class="coin-badge" id="coin-badge-3" onclick="showCoinInfo()">🪙 0 Coin</div>
@@ -451,6 +462,7 @@
     <!-- TEST UYGULAMA EKRANI -->
     <div id="main-app" class="screen">
         <div class="top-badges">
+            <div class="timer-badge" id="timer-badge-4">⏳ 00:00</div>
             <div class="level-badge" id="level-badge-4" onclick="showLevelInfo()">⭐ Lv.1</div>
             <div class="streak-badge" id="streak-badge-4">🔥 Seri: 0</div>
             <div class="coin-badge" id="coin-badge-4" onclick="showCoinInfo()">🪙 0 Coin</div>
@@ -623,7 +635,7 @@
                         {q:"Aşağıdakilerden hangisi Celali isyanlarının sonuçlarından biri DEĞİLDİR?",options:["Üretimin düşmesi","Vergi gelirlerinin azalması","Boşalan köylere eşkıyaların yerleşmesi","Tarımsal üretimin artması"],answer:3},
                         {q:"Osmanlı'da medrese öğrencilerine verilen «suhte» ya da «softa» adı hangi ayaklanmaların adıdır?",options:["Eyalet isyanları","Celali isyanları","Suhte ayaklanmaları","Merkez isyanları"],answer:2},
                         {q:"Suhte ayaklanmalarının nedenlerinden biri aşağıdakilerden hangisidir?",options:["Medrese gelirlerinin artması","Nüfus artışı ve enflasyon yüzünden gençlerin burslu medreselere sığınması","Medreselerin kapatılması","Öğrencilerin askere alınması"],answer:1},
-                        {q:"17. yüzyılda gayrimüslimlerin çıkardığı ayaklanmalar hakkında aşağıdakilerden hang doğrudur?",options:["XIX. yüzyıldaki ulusçuluk isyanlarının bir devamıdır","Fransız İhtilali'nin etkisiyle çıkmıştır","XIX. yüzyıl ulusçuluk isyanlarıyla bir ilgisi yoktur","Bağımsız devlet kurmayı amaçlamıştır"],answer:2},
+                        {q:"17. yüzyılda gayrimüslimlerin çıkardığı ayaklanmalar hakkında aşağıdakilerden hangisidir?",options:["XIX. yüzyıldaki ulusçuluk isyanlarının bir devamıdır","Fransız İhtilali'nin etkisiyle çıkmıştır","XIX. yüzyıl ulusçuluk isyanlarıyla bir ilgisi yoktur","Bağımsız devlet kurmayı amaçlamıştır"],answer:2},
                         {q:"1596 Haçova Meydan Muharebesi'nden sonra «Eğri Fatihi» unvanı kime verilmiştir?",options:["III. Mehmet","Tirkayi Hasan Paşa","Kuyucu Murat Paşa","IV. Murat"],answer:0,note:"Kanije Fatihi unvanı ise Tirkayi Hasan Paşa'ya verildi."},
                         {q:"Avusturya kralını Osmanlı padişahına tekrar denk sayan ve Orta Avrupa'daki siyasi üstünlüğü sona erdiren antlaşma hangisidir?",options:["Vasvar Antlaşması","Karlofça Antlaşması","Zitvatorok Antlaşması","İstanbul Antlaşması"],answer:2,note:"Antlaşma 1606'da imzalandı."},
                         {q:"Osmanlı'nın bu yüzyılda Avusturya'ya karşı son kazançlı antlaşması hangisidir?",options:["Vasvar Antlaşması","Zitvatorok Antlaşması","Karlofça Antlaşması","Bucaş Antlaşması"],answer:0,note:"1664'te imzalandı ve Uyvar Kalesi alındı."},
@@ -666,13 +678,13 @@
     let selectedOption = null;
     let isAnswered = false;
 
-    // ⏱️ KRONOMETRE
+    // ⏱️ KRONOMETRE (Her yerde güncellenir)
     let totalSeconds = 0;
     setInterval(() => {
         totalSeconds++;
         const mins = Math.floor(totalSeconds / 60);
         const secs = totalSeconds % 60;
-        const timeFormatted = `⏳ Süre: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        const timeFormatted = `⏳ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         document.querySelectorAll('.timer-badge').forEach(badge => badge.textContent = timeFormatted);
     }, 1000);
 
@@ -722,7 +734,6 @@
             { id: "askim1", name: "👑 Sen (aşkım1)" }
         ];
 
-        // Bugünün istatistiklerini her iki kullanıcı için çek
         const todayStr = new Date().toISOString().split('T')[0];
         
         let statsList = users.map(u => {
@@ -741,7 +752,6 @@
             };
         });
 
-        // Soru sayısına göre sırala (Kim önde?)
         statsList.sort((a, b) => b.totalQ - a.totalQ);
 
         statsList.forEach((st, index) => {
@@ -857,8 +867,8 @@
             }
         }
 
-        const streakText = `🔥 Seri: ${data.streak}`;
-        const coinText = `🪙 ${data.coins} Coin`;
+        const streakText = `🔥 ${data.streak}`;
+        const coinText = `🪙 ${data.coins}`;
 
         document.querySelectorAll('.streak-badge').forEach(b => b.textContent = streakText);
         document.querySelectorAll('.coin-badge').forEach(b => b.textContent = coinText);
