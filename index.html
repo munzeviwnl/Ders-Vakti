@@ -444,7 +444,7 @@
     let currentUser = "askim"; 
     let currentUserName = "Sevgilim";
     let isMistakeMode = false;
-    const DAILY_GOAL_QUESTIONS = 50; // Günlük soru hedefi
+    const DAILY_GOAL_QUESTIONS = 50; 
 
     // 🛡️ OTOMATİK YEDEKLEME VE GÜVENLİ VERİ YÖNETİMİ
     function getSafeStorage(key, defaultValue) {
@@ -724,7 +724,6 @@
         document.getElementById("daily-dw").textContent = `${correct}D / ${wrong}Y`;
         document.getElementById("daily-success").textContent = `%${successRate}`;
 
-        // Günlük Hedef Çubuğu Güncellemesi
         const goalFill = document.getElementById("goal-progress-fill");
         const goalText = document.getElementById("goal-text");
         const progressPercent = Math.min(Math.round((totalQ / DAILY_GOAL_QUESTIONS) * 100), 100);
@@ -786,13 +785,12 @@
         stats.wrong += testWrong;
         setSafeStorage(`${currentUser}_daily_stats`, stats);
 
-        // Hedefe ilk kez bugün ulaşıldıysa kutlama patlat!
         if (oldTotal < DAILY_GOAL_QUESTIONS && stats.totalQuestions >= DAILY_GOAL_QUESTIONS) {
             confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 } });
             alert("Tebrikler kanka! Bugünün günlük 50 soru hedefini başarıyla tamamladın! 🎯🏆");
         }
 
-        addXP(50); // Test tamamlama bonusu +50 XP
+        addXP(50); 
 
         let data = getStreakData();
         const todayStr = new Date().toISOString().split('T')[0];
@@ -1143,7 +1141,7 @@
                 feedbackBox.className = "feedback-box correct-fb";
                 feedbackBox.innerHTML = `<strong>Tebrikler ${currentUserName} ❤️</strong><br>${randomPraise}`;
                 score++;
-                addXP(10); // Doğru soru başına +10 XP
+                addXP(10); 
                 confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
 
                 if (isMistakeMode) {
@@ -1156,7 +1154,7 @@
                 let explanationText = q.note ? `<br><em>Not: ${q.note}</em>` : "";
                 feedbackBox.className = "feedback-box incorrect-fb";
                 feedbackBox.innerHTML = `<strong>Minik bir hata!</strong> Öğrendin, harikasın. ✨${explanationText}`;
-                addXP(5); // Yanlış yapsa bile öğrenme çabasına +5 XP
+                addXP(5); 
 
                 if (!isMistakeMode) {
                     const alreadyExists = existingMistakes.some(m => m.q === q.q);
