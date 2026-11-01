@@ -126,6 +126,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.2s;
+        }
+
+        .category-card:hover {
+            border-color: var(--accent-color);
+            background: #fff0f5;
+            transform: translateY(-2px);
         }
 
         .category-card h3 {
@@ -138,6 +145,64 @@
             color: var(--primary-color);
             font-weight: 600;
             background: #ffe4e9;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        #part-screen {
+            text-align: center;
+        }
+
+        #part-screen h2 {
+            color: var(--primary-color);
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .part-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .part-card {
+            padding: 15px 18px;
+            border: 2px solid #f1f2f6;
+            border-radius: 14px;
+            cursor: pointer;
+            background: #fafafa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .part-card:hover {
+            border-color: var(--accent-color);
+            background: #fff0f5;
+        }
+
+        .part-info h3 {
+            font-size: 15px;
+            color: #2f3640;
+            margin-bottom: 3px;
+        }
+
+        .part-info p {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .part-score {
+            font-size: 13px;
+            font-weight: 600;
+            background: #e8f8f5;
+            color: #27ae60;
             padding: 5px 10px;
             border-radius: 8px;
         }
@@ -158,7 +223,7 @@
 
         header h1 {
             color: var(--primary-color);
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
             margin-bottom: 5px;
         }
@@ -202,6 +267,12 @@
             cursor: pointer;
             font-weight: 500;
             background: #fafafa;
+            transition: all 0.2s;
+        }
+
+        .option-item:hover {
+            border-color: var(--accent-color);
+            background: #fff0f5;
         }
 
         .option-item.selected {
@@ -252,6 +323,17 @@
             cursor: pointer;
             width: 100%;
             box-shadow: 0 5px 15px rgba(255, 101, 132, 0.3);
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn:disabled {
+            background: #bdc3c7;
+            box-shadow: none;
+            cursor: not-allowed;
         }
 
         .back-btn {
@@ -264,6 +346,18 @@
         .result-container {
             text-align: center;
             display: none;
+        }
+
+        .result-container h2 {
+            color: var(--primary-color);
+            font-size: 26px;
+            margin-bottom: 15px;
+        }
+
+        .result-container p {
+            font-size: 17px;
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -299,12 +393,20 @@
         </div>
     </div>
 
+    <!-- 10'ARLI TEST PARÇALARI SEÇİM EKRANI -->
+    <div id="part-screen" class="screen">
+        <button class="btn back-btn" onclick="showCategories()">⬅️ Konulara Dön</button>
+        <h2 id="selected-topic-title">Test Seçimi</h2>
+        <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Çözmek istediğin 10'ar soruluk parçayı seç sevgilim:</p>
+        <div class="part-list" id="part-list"></div>
+    </div>
+
     <!-- ANA TEST UYGULAMASI -->
     <div id="main-app" class="screen">
         <header>
-            <button class="btn back-btn" onclick="goBackToCategories()">⬅️ Konulara Dön</button>
+            <button class="btn back-btn" onclick="backToParts()">⬅️ Test Seçimine Dön</button>
             <h1 id="topic-title">Konu Başlığı</h1>
-            <p id="question-counter">Soru 1 / 0</p>
+            <p id="question-counter">Soru 1 / 10</p>
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
@@ -320,8 +422,8 @@
         <div class="result-container" id="result-screen">
             <h2>Test Tamamlandı! 🎉</h2>
             <p id="score-text"></p>
-            <button class="btn" onclick="restartQuiz()">Bu Konuyu Yeniden Çöz ❤️</button>
-            <button class="btn back-btn" style="margin-top: 10px;" onclick="goBackToCategories()">Konu Seçimine Dön 📚</button>
+            <button class="btn" onclick="restartCurrentPart()">Bu Testi Yeniden Çöz ❤️</button>
+            <button class="btn back-btn" style="margin-top: 10px;" onclick="backToParts()">Test Seçimine Dön 📚</button>
         </div>
     </div>
 </div>
@@ -438,6 +540,8 @@
     const PRAISE = ["Harikasın! 🎉", "Aynen böyle devam! 💪", "Bravo, tam isabet! ⭐", "Çok iyisin, gurur duyuyorum! 💖", "Mükemmel! Sen bunu yaparsın! 🌟", "Süpersin! Hiç durma! 🚀"];
     const COMFORT = ["Sorun değil, hata öğrenmenin parçası. 💛", "Pes yok, bir sonrakini alırsın! 💪", "Şimdi öğrendin, sınavda unutmazsın. 🌱", "Sana inanıyorum, devam! ✨", "Herkes yanılır, önemli olan vazgeçmemek. 🤍", "Bir adım geri, iki adım ileri! 🌈"];
 
+    let currentTopicIndex = 0;
+    let currentPartIndex = 0;
     let currentQuestions = [];
     let currentQuestion = 0;
     let score = 0;
@@ -451,7 +555,6 @@
 
     function checkPassword() {
         const val = document.getElementById("password-input").value.trim();
-        
         if (val === ADMIN_PASSWORD) {
             showScreen('admin-screen');
         } else if (val === SECRET_PASSWORD) {
@@ -485,7 +588,6 @@
             alert("Lütfen bir mesaj yaz kanka!");
             return;
         }
-
         if (Notification.permission === "granted") {
             new Notification("Aşkından Bildirim Var! 💖", {
                 body: msg,
@@ -506,26 +608,77 @@
             const card = document.createElement("div");
             card.className = "category-card";
             card.innerHTML = `<h3>📚 ${topic.name}</h3><span>${topic.questions.length} Soru</span>`;
-            card.onclick = () => startTopic(index);
+            card.onclick = () => showParts(index);
             listDiv.appendChild(card);
         });
 
         showScreen('category-screen');
     }
 
-    function startTopic(index) {
-        currentQuestions = TOPICS[index].questions;
+    // 10'ar soruluk parçaları ve kaydedilmiş skorları listeleme
+    function showParts(topicIndex) {
+        currentTopicIndex = topicIndex;
+        const topic = TOPICS[topicIndex];
+        document.getElementById("selected-topic-title").textContent = topic.name;
+        
+        const partListDiv = document.getElementById("part-list");
+        partListDiv.innerHTML = "";
+
+        const totalQuestions = topic.questions.length;
+        const chunkSize = 10;
+        const totalParts = Math.ceil(totalQuestions / chunkSize);
+
+        for (let i = 0; i < totalParts; i++) {
+            const start = i * chunkSize + 1;
+            const end = Math.min((i + 1) * chunkSize, totalQuestions);
+            const count = end - start + 1;
+
+            // Kaydedilmiş skoru kontrol et (LocalStorage)
+            const savedScoreKey = `score_t${topicIndex}_p${i}`;
+            const savedData = localStorage.getItem(savedScoreKey);
+
+            let scoreHtml = `<span>${count} Soru</span>`;
+            if (savedData) {
+                const parsed = JSON.parse(savedData);
+                scoreHtml = `<span class="part-score">✅ ${parsed.correct} D, ❌ ${parsed.wrong} Y</span>`;
+            }
+
+            const card = document.createElement("div");
+            card.className = "part-card";
+            card.innerHTML = `
+                <div class="part-info">
+                    <h3>🎯 Test ${i + 1} (Soru ${start} - ${end})</h3>
+                    <p>${count} Soru</p>
+                </div>
+                ${scoreHtml}
+            `;
+            card.onclick = () => startPart(i);
+            partListDiv.appendChild(card);
+        }
+
+        showScreen('part-screen');
+    }
+
+    function startPart(partIndex) {
+        currentPartIndex = partIndex;
+        const topic = TOPICS[currentTopicIndex];
+        const chunkSize = 10;
+        const start = partIndex * chunkSize;
+        const end = start + chunkSize;
+
+        currentQuestions = topic.questions.slice(start, end);
         currentQuestion = 0;
         score = 0;
-        document.getElementById("topic-title").textContent = TOPICS[index].name;
+
+        document.getElementById("topic-title").textContent = `${topic.name} (Test ${partIndex + 1})`;
         showScreen('main-app');
         document.getElementById("quiz-screen").style.display = "block";
         document.getElementById("result-screen").style.display = "none";
         loadQuestion();
     }
 
-    function goBackToCategories() {
-        showCategories();
+    function backToParts() {
+        showParts(currentTopicIndex);
     }
 
     const questionText = document.getElementById("question-text");
@@ -612,16 +765,23 @@
         quizScreen.style.display = "none";
         resultScreen.style.display = "block";
         progressBar.style.width = "100%";
-        scoreText.innerHTML = `${currentQuestions.length} sorudan <b>${score}</b> doğru yaptın!<br>Seni çok seviyorum, harika hazırlandın! ❤️`;
+        
+        const wrong = currentQuestions.length - score;
+
+        // Skoru tarayıcının hafızasına (localStorage) kaydediyoruz
+        const scoreData = { correct: score, wrong: wrong };
+        localStorage.setItem(`score_t${currentTopicIndex}_p${currentPartIndex}`, JSON.stringify(scoreData));
+
+        scoreText.innerHTML = `Bu testi tamamladın sevgilim! 🌟<br><br>
+            ✅ Doğru Sayısı: <b>${score}</b><br>
+            ❌ Yanlış Sayısı: <b>${wrong}</b><br><br>
+            Sonucun kaydedildi, test seçim ekranından görebilirsin! ❤️`;
+        
         confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
     }
 
-    function restartQuiz() {
-        currentQuestion = 0;
-        score = 0;
-        resultScreen.style.display = "none";
-        quizScreen.style.display = "block";
-        loadQuestion();
+    function restartCurrentPart() {
+        startPart(currentPartIndex);
     }
 </script>
 
