@@ -41,4 +41,74 @@
             background: var(--card-bg);
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            padding: 3
+            padding: 30px;
+            position: relative;
+        }
+
+        .screen { display: none; }
+
+        #auth-screen { display: block; text-align: center; padding: 20px; }
+        #auth-screen h2 { color: var(--primary-color); margin-bottom: 15px; font-size: 26px; }
+        #auth-screen input { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; text-align: center; margin-bottom: 15px; outline: none; }
+
+        #admin-screen { text-align: center; }
+        #admin-screen h2 { color: #2f3640; margin-bottom: 10px; font-size: 22px; }
+        #admin-screen textarea { width: 100%; height: 75px; padding: 10px; border: 2px solid #ddd; border-radius: 12px; font-size: 14px; resize: none; outline: none; margin-bottom: 10px; }
+
+        .admin-report-box {
+            background: #fafafa;
+            border: 2px solid #f1f2f6;
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 15px;
+            max-height: 220px;
+            overflow-y: auto;
+            text-align: left;
+        }
+        .admin-report-box h3 { font-size: 14px; color: var(--primary-color); margin-bottom: 8px; text-align: center; }
+        .report-section-title { font-size: 13px; font-weight: 700; color: #2f3640; margin: 8px 0 4px 0; }
+        .report-item {
+            font-size: 12px;
+            padding: 6px 10px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            border: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #category-screen, #part-screen { text-align: center; }
+        #category-screen h2, #part-screen h2 { color: var(--primary-color); font-size: 24px; margin-bottom: 10px; }
+
+        .category-list, .part-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .category-card, .part-card {
+            padding: 18px 20px;
+            border: 2px solid #f1f2f6;
+            border-radius: 16px;
+            cursor: pointer;
+            background: #fafafa;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .category-card:hover, .part-card:hover {
+            border-color: var(--accent-color);
+            background: #fff0f5;
+        }
+
+        .category-card h3, .part-card h3 { font-size: 16px; color: #2f3640; }
+        .part-score { font-size: 12px; font-weight: 600; background: #e8f8f5; color: #27
