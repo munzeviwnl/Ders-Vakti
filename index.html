@@ -445,6 +445,51 @@
     let currentUserName = "Sevgilim";
     let isMistakeMode = false;
 
+    // 🛡️ OTOMATİK YEDEKLEME VE GÜVENLİ VERİ YÖNETİMİ
+    function getSafeStorage(key, defaultValue) {
+        try {
+            const item = localStorage.getItem(key);
+            if (item !== null) return JSON.parse(item);
+            
+            // Eğer ana localStorage'da yoksa otomatik yedek kasasından (global backup) kurtarmaya çalış
+            const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
+            if (globalBackup[key] !== undefined) {
+                localStorage.setItem(key, JSON.stringify(globalBackup[key]));
+                return globalBackup[key];
+            }
+        } catch (e) {
+            console.error("Yedekleme okuma hatası:", e);
+        }
+        return defaultValue;
+    }
+
+    function setSafeStorage(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+            
+            // Otomatik olarak global yedeğe de kaydet (Böylece kod güncellemelerinde veri asla uçmaz)
+            let globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
+            globalBackup[key] = value;
+            localStorage.setItem("quizask_global_backup", JSON.stringify(globalBackup));
+        } catch (e) {
+            console.error("Yedekleme yazma hatası:", e);
+        }
+    }
+
+    // Sayfa açıldığında global yedekten eksik verileri otomatik kurtar
+    (function restoreAllData() {
+        try {
+            const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup"));
+            if (globalBackup) {
+                for (let k in globalBackup) {
+                    if (localStorage.getItem(k) === null) {
+                        localStorage.setItem(k, JSON.stringify(globalBackup[k]));
+                    }
+                }
+            }
+        } catch (e) {}
+    })();
+
     const GIFTS = [
         "☕ 1 Adet Leziz Kahve Ismarla Hakkı!",
         "🍕 Akşam Yemek Menüsünü Seçme Hakkı!",
@@ -493,7 +538,7 @@
                         {q:"Mısır'ın alınmasıyla Osmanlı Devleti'nin eline geçen ticaret yolu hangisidir?",options:["İpek Yolu","Kral Yolu","Hicaz Yolu","Baharat Yolu"],answer:3,note:"İpek Yolu ise Fatih Dönemi'nde ele geçmişti."},
                         {q:"Ridaniye Savaşı sürerken Avrupa'da yaşanan gelişme hangisidir?",options:["Reform","Rönesans","Coğrafi Keşifler","Fransız İhtilali"],answer:0},
                         {q:"Osmanlı tarihinin en uzun süre tahta kalan padişah kimdir?",options:["Fatih Sultan Mehmet","Kanuni Sultan Süleyman","Yavuz Sultan Selim","II. Selim"],answer:1,note:"Kanuni 46 yıl tahtta kaldı."},
-                        {q:"I. Süleyman için kullanılan «Kanuni» sıfatını ilk defa kim kullanmıştır?",options:["Matrakçı Nasuh","İdris-i Bitlisi","Cervantes","Dimitrie Cantemir"],answer:3,note:"Bu sıfat XVIII. yüzyılda kullanılmaya başlandı."},
+                        {q:"I. Süleyman için kullanılan «Kanuni» sıfatını ilk defa kim kullanmıştır?",options:["Matrakçı Nasuh","İdris-i Bitlisi","Cervantes","Dimitrie Cantemir"],answer:3,note:"Bu sıfat XVIII. yüzyıldarda kullanılmaya başlandı."},
                         {q:"Dünyanın en kısa süren ova savaşı olan ve Macaristan'ın yenildiği savaş hangisidir?",options:["Çaldıran Savaşı","Otlukbeli Savaşı","Mohaç Meydan Muharebesi","Ridaniye Savaşı"],answer:2,note:"Savaş 1526'da yapıldı."},
                         {q:"Viyana ilk defa hangi yılda kuşatılmıştır?",options:["1521","1526","1529","1538"],answer:2},
                         {q:"Osmanlı Devleti ile Avusturya arasındaki ilk resmî antlaşma hangisidir?",options:["İstanbul Antlaşması","Amasya Antlaşması","Zitvatorok Antlaşması","Edirne Antlaşması"],answer:0},
@@ -600,11 +645,11 @@
     function getDailyStatsData() {
         const statsKey = `${currentUser}_daily_stats`;
         const todayStr = new Date().toISOString().split('T')[0];
-        let statsData = JSON.parse(localStorage.getItem(statsKey));
+        let statsData = getSafeStorage(statsKey, null);
 
         if (!statsData || statsData.date !== todayStr) {
             statsData = { date: todayStr, totalQuestions: 0, correct: 0, wrong: 0 };
-            localStorage.setItem(statsKey, JSON.stringify(statsData));
+            setSafeStorage(statsKey, statsData);
         }
         return statsData;
     }
@@ -623,12 +668,12 @@
 
     function getStreakData() {
         const streakKey = `${currentUser}_streak_data`;
-        return JSON.parse(localStorage.getItem(streakKey)) || { streak: 0, lastDate: "", testsToday: 0, coins: 0, broken: false };
+        return getSafeStorage(streakKey, { streak: 0, lastDate: "", testsToday: 0, coins: 0, broken: false });
     }
 
     function saveStreakData(data) {
         const streakKey = `${currentUser}_streak_data`;
-        localStorage.setItem(streakKey, JSON.stringify(data));
+        setSafeStorage(streakKey, data);
         updateStreakDisplay();
     }
 
@@ -670,7 +715,7 @@
         stats.totalQuestions += (testCorrect + testWrong);
         stats.correct += testCorrect;
         stats.wrong += testWrong;
-        localStorage.setItem(`${currentUser}_daily_stats`, JSON.stringify(stats));
+        setSafeStorage(`${currentUser}_daily_stats`, stats);
 
         let data = getStreakData();
         const todayStr = new Date().toISOString().split('T')[0];
@@ -788,12 +833,12 @@
 
                     for (let pIndex = 0; pIndex < totalParts; pIndex++) {
                         const savedScoreKey = `${user.id}_score_c${cIndex}_t${tIndex}_p${pIndex}`;
-                        const savedData = localStorage.getItem(savedScoreKey);
+                        const savedData = getSafeStorage(savedScoreKey, null);
 
                         if (savedData) {
                             userHasRecord = true;
                             totalRecordsFound = true;
-                            const parsed = JSON.parse(savedData);
+                            const parsed = savedData;
                             const start = pIndex * 10 + 1;
                             const end = Math.min((pIndex + 1) * 10, totalQuestions);
 
@@ -900,10 +945,10 @@
             const count = end - start + 1;
 
             const savedScoreKey = `${currentUser}_score_c${currentCategoryIndex}_t${topicIndex}_p${i}`;
-            const savedData = localStorage.getItem(savedScoreKey);
+            const savedData = getSafeStorage(savedScoreKey, null);
             let scoreHtml = `<span>${count} Soru</span>`;
             if (savedData) {
-                const parsed = JSON.parse(savedData);
+                const parsed = savedData;
                 scoreHtml = `<span class="part-score">✅ ${parsed.correct}D ❌ ${parsed.wrong}Y</span>`;
             }
 
@@ -937,15 +982,15 @@
 
     function startMistakeQuiz() {
         const mistakeKey = `${currentUser}_mistakes`;
-        const savedMistakes = localStorage.getItem(mistakeKey);
+        const savedMistakes = getSafeStorage(mistakeKey, []);
         
-        if (!savedMistakes || JSON.parse(savedMistakes).length === 0) {
+        if (!savedMistakes || savedMistakes.length === 0) {
             alert("Harika! Tekrar etmen gereken yanlış soru bulunmuyor kanka! 🎉");
             return;
         }
 
         isMistakeMode = true;
-        currentQuestions = JSON.parse(savedMistakes);
+        currentQuestions = savedMistakes;
         currentQuestion = 0;
         score = 0;
 
@@ -1014,7 +1059,7 @@
             feedbackBox.style.display = "block";
 
             const mistakeKey = `${currentUser}_mistakes`;
-            let existingMistakes = JSON.parse(localStorage.getItem(mistakeKey)) || [];
+            let existingMistakes = getSafeStorage(mistakeKey, []);
 
             if (selectedOption === q.answer) {
                 optionItems[selectedOption].classList.add("correct");
@@ -1026,7 +1071,7 @@
 
                 if (isMistakeMode) {
                     existingMistakes = existingMistakes.filter(m => m.q !== q.q);
-                    localStorage.setItem(mistakeKey, JSON.stringify(existingMistakes));
+                    setSafeStorage(mistakeKey, existingMistakes);
                 }
             } else {
                 optionItems[selectedOption].classList.add("incorrect");
@@ -1039,7 +1084,7 @@
                     const alreadyExists = existingMistakes.some(m => m.q === q.q);
                     if (!alreadyExists) {
                         existingMistakes.push(q);
-                        localStorage.setItem(mistakeKey, JSON.stringify(existingMistakes));
+                        setSafeStorage(mistakeKey, existingMistakes);
                     }
                 }
             }
@@ -1069,7 +1114,7 @@
         
         if (!isMistakeMode) {
             const scoreKey = `${currentUser}_score_c${currentCategoryIndex}_t${currentTopicIndex}_p${currentPartIndex}`;
-            localStorage.setItem(scoreKey, JSON.stringify({ correct: score, wrong: wrong }));
+            setSafeStorage(scoreKey, { correct: score, wrong: wrong });
             
             recordTestCompletion(score, wrong);
 
