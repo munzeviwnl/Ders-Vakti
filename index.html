@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aşkımın Çalışma Ekranı 💖</title>
+    <title>QuizAşk 💖</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="myphoto.png">
     <link rel="icon" type="image/png" sizes="32x32" href="myphoto.png">
@@ -87,7 +87,7 @@
             flex-direction: column;
             gap: 15px;
             margin-top: 20px;
-            max-height: 310px;
+            max-height: 290px;
             overflow-y: auto;
             padding-right: 5px;
         }
@@ -120,7 +120,7 @@
             margin-bottom: 12px;
         }
 
-        .timer-badge, .streak-badge, .coin-badge {
+        .timer-badge, .streak-badge, .coin-badge, .music-btn-badge {
             background: #fff0f5;
             border: 1px solid var(--primary-color);
             color: var(--primary-color);
@@ -143,25 +143,67 @@
             color: #8e44ad;
             cursor: pointer;
         }
+        .music-btn-badge {
+            background: #e8f8f5;
+            border-color: #27ae60;
+            color: #27ae60;
+            cursor: pointer;
+        }
+
+        /* 🎵 MÜZİK KUTUSU PANELİ */
+        .music-panel {
+            background: #f4f6f9;
+            border: 1.5px solid #dcdde1;
+            border-radius: 14px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            display: none;
+            text-align: left;
+        }
+        .music-panel input {
+            width: 70%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 12px;
+            outline: none;
+        }
+        .music-panel button {
+            width: 27%;
+            padding: 8px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        #player-container {
+            margin-top: 8px;
+            width: 100%;
+            height: 80px;
+            display: none;
+        }
 
         /* 📊 GÜNLÜK İSTATİSTİK KUTUSU */
         .daily-stats-card {
             background: #fdf2f4;
             border: 1.5px solid #ffb6c1;
             border-radius: 16px;
-            padding: 12px 15px;
-            margin-bottom: 15px;
+            padding: 10px 15px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             text-align: center;
         }
         .stat-item h4 { font-size: 11px; color: #888; margin-bottom: 2px; }
-        .stat-item p { font-size: 15px; font-weight: 700; color: #2f3640; }
+        .stat-item p { font-size: 14px; font-weight: 700; color: #2f3640; }
 
         .notification-box {
-            margin-top: 15px;
-            padding: 12px;
+            margin-top: 12px;
+            padding: 10px;
             background: #fff0f5;
             border: 1px dashed var(--primary-color);
             border-radius: 14px;
@@ -266,7 +308,7 @@
 <div class="container">
     <!-- GİRİŞ EKRANI -->
     <div id="auth-screen" class="screen" style="display: block;">
-        <h2>💖 Aşkımın Çalışma Ekranı</h2>
+        <h2>💖 QuizAşk</h2>
         <p style="margin-bottom: 15px; color: #666;">Şifreyi gir sevgilim / kanka / yönetici:</p>
         <input type="password" id="password-input" placeholder="Şifre Giriniz">
         <button class="btn" onclick="checkPassword()">Giriş Yap ❤️</button>
@@ -295,6 +337,17 @@
             <div class="timer-badge" id="welcome-badge">⏳ Süre: 00:00</div>
             <div class="streak-badge" id="streak-badge">🔥 Seri: 0</div>
             <div class="coin-badge" id="coin-badge" onclick="showCoinInfo()">🪙 0 Coin</div>
+            <div class="music-btn-badge" onclick="toggleMusicPanel()">🎵 Müzik</div>
+        </div>
+
+        <!-- 🎵 MÜZİK ARAMA PANELİ -->
+        <div class="music-panel" id="music-panel">
+            <p style="font-size: 11px; font-weight: 600; margin-bottom: 5px; color: #333;">🎵 YouTube'dan Şarkı / Playlist Aç:</p>
+            <div style="display: flex; gap: 5px;">
+                <input type="text" id="music-search-input" placeholder="Örn: Lofi hip hop veya şarkı adı">
+                <button onclick="playCustomMusic()">Çal 🎶</button>
+            </div>
+            <div id="player-container"></div>
         </div>
 
         <!-- 📊 GÜNLÜK İSTATİSTİK KUTUSU -->
@@ -536,13 +589,30 @@
         document.querySelectorAll('.timer-badge').forEach(badge => badge.textContent = timeFormatted);
     }, 1000);
 
+    // 🎵 MÜZİK PANELİNİ AÇ/KAPAT VE OYNAT
+    function toggleMusicPanel() {
+        const panel = document.getElementById("music-panel");
+        panel.style.display = panel.style.display === "block" ? "none" : "block";
+    }
+
+    function playCustomMusic() {
+        const query = document.getElementById("music-search-input").value.trim();
+        if (!query) {
+            alert("Lütfen aratmak istediğin şarkıyı veya müziği yaz kanka! 🎶");
+            return;
+        }
+        const container = document.getElementById("player-container");
+        container.style.display = "block";
+        // YouTube arama terimine göre otomatik gömülü oynatıcı oluşturulur
+        container.innerHTML = `<iframe width="100%" height="80" src="https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}&autoplay=1" frameborder="0" allow="autoplay"></iframe>`;
+    }
+
     // 📊 GÜNLÜK İSTATİSTİK & 00:00 SIFIRLAMA MANTIĞI
     function getDailyStatsData() {
         const statsKey = `${currentUser}_daily_stats`;
         const todayStr = new Date().toISOString().split('T')[0];
         let statsData = JSON.parse(localStorage.getItem(statsKey));
 
-        // Eğer kayıt yoksa VEYA tarih bugünden eskiyse (gece 00:00 geçilmişse) sıfırla
         if (!statsData || statsData.date !== todayStr) {
             statsData = { date: todayStr, totalQuestions: 0, correct: 0, wrong: 0 };
             localStorage.setItem(statsKey, JSON.stringify(statsData));
@@ -562,7 +632,6 @@
         document.getElementById("daily-success").textContent = `%${successRate}`;
     }
 
-    // 🔥 STREAK (SERİ) VE COIN KONTROLÜ
     function getStreakData() {
         const streakKey = `${currentUser}_streak_data`;
         return JSON.parse(localStorage.getItem(streakKey)) || { streak: 0, lastDate: "", testsToday: 0, coins: 0, broken: false };
@@ -606,18 +675,16 @@
     }
 
     function recordTestCompletion(testCorrect, testWrong) {
-        // 1. Günlük İstatistikleri Güncelle (00:00 Kontrollü)
         let stats = getDailyStatsData();
         stats.totalQuestions += (testCorrect + testWrong);
         stats.correct += testCorrect;
         stats.wrong += testWrong;
         localStorage.setItem(`${currentUser}_daily_stats`, JSON.stringify(stats));
 
-        // 2. Streak ve Coin Güncelle
         let data = getStreakData();
         const todayStr = new Date().toISOString().split('T')[0];
 
-        data.coins += 1; // Test başına +1 coin
+        data.coins += 1;
 
         if (data.lastDate === todayStr) {
             data.testsToday++;
@@ -748,7 +815,7 @@
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
                 alert("Bildirimler başarıyla açıldı! 💖");
-                new Notification("Çalışma Ekranı 💖", { body: "Bildirimler aktif!", icon: "myphoto.png" });
+                new Notification("QuizAşk 💖", { body: "Bildirimler aktif!", icon: "myphoto.png" });
             } else {
                 alert("Bildirim iznini kapattın. ❤️");
             }
@@ -991,7 +1058,6 @@
             const scoreKey = `${currentUser}_score_c${currentCategoryIndex}_t${currentTopicIndex}_p${currentPartIndex}`;
             localStorage.setItem(scoreKey, JSON.stringify({ correct: score, wrong: wrong }));
             
-            // Test tamamlandığında günlük istatistikleri, coin ve seriyi kaydet
             recordTestCompletion(score, wrong);
 
             document.getElementById("result-primary-btn").textContent = "Bu Testi Yeniden Çöz ❤️";
