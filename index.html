@@ -610,7 +610,7 @@
     }
 
     function addXP(amount) {
-        if (isBrotherMode) return; // Kardeş modunda XP/Seviye yok
+        if (isBrotherMode) return;
         let data = getXPData(currentUser);
         data.xp += amount;
         setSafeStorage(`${currentUser}_xp_data`, data);
@@ -838,7 +838,7 @@
             showCategories();
         } else if (val === PASS_KARDES) {
             currentUser = "kardes";
-            currentUserName = "Kardeş";
+            currentUserName = "Ezgi Bakır";
             isBrotherMode = true;
             setupBrotherMode();
             showCategories();
@@ -850,9 +850,8 @@
 
     function setupBrotherMode() {
         const welcomeSub = document.getElementById("user-welcome-sub");
-        if (welcomeSub) welcomeSub.textContent = "Hoş geldin, çözmek istediğin dersi seç:";
+        if (welcomeSub) welcomeSub.textContent = "Hoşgeldin Ezgi Bakır, çözmek istediğin dersi seç:";
         
-        // Kardeş modunda düello butonu ve bildirim alanı gizlenir
         const duelBtn = document.getElementById("duel-menu-btn");
         if (duelBtn) duelBtn.style.display = "none";
 
@@ -862,7 +861,11 @@
 
     function setupNormalMode() {
         const welcomeSub = document.getElementById("user-welcome-sub");
-        if (welcomeSub) welcomeSub.textContent = `Hoş geldin ${currentUserName}, çalışmak istediğin dersi seç:`;
+        if (currentUser === "askim") {
+            if (welcomeSub) welcomeSub.textContent = "Hoşgeldin Özge Bakır, çalışmak istediğin dersi seç:";
+        } else if (currentUser === "askim1") {
+            if (welcomeSub) welcomeSub.textContent = "Hoşgeldin Enes Furkan Arslan, çalışmak istediğin dersi seç:";
+        }
         
         const duelBtn = document.getElementById("duel-menu-btn");
         if (duelBtn) duelBtn.style.display = "block";
@@ -888,7 +891,7 @@
         const users = [
             { id: "askim", title: "💖 Özge Bakır'ın Karnesi" },
             { id: "askim1", title: "👑 Enes Furkan Arslan'ın Karnesi" },
-            { id: "kardes", title: "📚 Kardeşin Karnesi" }
+            { id: "kardes", title: "📚 Ezgi Bakır'ın Karnesi" }
         ];
 
         let totalRecordsFound = false;
