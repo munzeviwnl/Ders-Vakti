@@ -51,6 +51,44 @@
         #auth-screen h2 { color: var(--primary-color); margin-bottom: 15px; font-size: 26px; }
         #auth-screen input { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; text-align: center; margin-bottom: 15px; outline: none; }
 
+        /* 🌟 KOCAMAN GÖRKEMLİ KARŞILAMA MODALI */
+        #welcome-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+        .welcome-modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 35px 25px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: modalPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes modalPopIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .welcome-modal-content h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        .welcome-modal-content p {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
         #admin-screen { text-align: center; }
         #admin-screen h2 { color: #2f3640; margin-bottom: 10px; font-size: 22px; }
         #admin-screen textarea { width: 100%; height: 75px; padding: 10px; border: 2px solid #ddd; border-radius: 12px; font-size: 14px; resize: none; outline: none; margin-bottom: 10px; }
@@ -113,7 +151,6 @@
         .category-card h3, .topic-card h3, .part-card h3 { font-size: 16px; color: #2f3640; }
         .part-score { font-size: 12px; font-weight: 600; background: #e8f8f5; color: #27ae60; padding: 5px 8px; border-radius: 8px; }
 
-        /* ÜST ROZETLER */
         .top-badges {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -140,7 +177,6 @@
         .coin-badge { background: #f4ecf7; border-color: #8e44ad; color: #8e44ad; cursor: pointer; }
         .level-badge { background: #ebf5fb; border-color: #3498db; color: #2980b9; cursor: pointer; }
 
-        /* GÜNLÜK HEDEF KUTUSU */
         .daily-stats-card {
             background: #fdf2f4;
             border: 1.5px solid #ffb6c1;
@@ -185,7 +221,6 @@
             transition: width 0.4s ease;
         }
 
-        /* DÜELLO EKRANI KARTLARI */
         .duel-arena {
             display: flex;
             flex-direction: column;
@@ -275,6 +310,15 @@
 </head>
 <body>
 
+<!-- 🌟 KOCAMAN GÖRKEMLİ KARŞILAMA MODALI -->
+<div id="welcome-modal">
+    <div class="welcome-modal-content">
+        <h1 id="modal-welcome-title">Hoşgeldin!</h1>
+        <p id="modal-welcome-sub">Çalışmaya hazır mısın?</p>
+        <button class="btn" onclick="closeWelcomeModal()">Hadi Başlayalım 🚀</button>
+    </div>
+</div>
+
 <div class="container">
     <!-- GİRİŞ EKRANI -->
     <div id="auth-screen" class="screen" style="display: block;">
@@ -310,8 +354,7 @@
             <div class="coin-badge" id="coin-badge" onclick="showCoinInfo()">🪙 0 Coin</div>
         </div>
 
-        <!-- 📊 GÜNLÜK HEDEF VE İSTATİSTİK KUTUSU -->
-        <div class="daily-stats-card">
+        <div class="daily-stats-card" id="daily-stats-card-area">
             <div class="daily-stats-top">
                 <div class="stat-item">
                     <h4>Bugün Çözülen</h4>
@@ -338,7 +381,6 @@
         </div>
 
         <h2>📖 Ders Kategorileri</h2>
-        <p id="user-welcome-sub" style="color: #666; font-size: 13px; margin-bottom: 8px;"></p>
         <div class="category-list" id="category-list"></div>
         
         <button class="btn mistake-btn" onclick="startMistakeQuiz()">🚨 Tekrar Etmem Gerekenler (Yanlışlarım)</button>
@@ -351,14 +393,12 @@
         </div>
     </div>
 
-    <!-- ⚔️ DÜELLO / KAPIŞMA EKRANI -->
+    <!-- DÜELLO EKRANI -->
     <div id="duel-screen" class="screen">
         <h2>⚔️ Günlük Düello Arenası</h2>
         <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Bugün kim daha çok çalıştı? Kapışma tablosu:</p>
         
-        <div class="duel-arena" id="duel-arena-content">
-            <!-- JavaScript ile doldurulacak -->
-        </div>
+        <div class="duel-arena" id="duel-arena-content"></div>
 
         <button class="btn back-btn" onclick="showCategories()">⬅️ Derslere Geri Dön</button>
     </div>
@@ -433,7 +473,6 @@
     let isMistakeMode = false;
     const DAILY_GOAL_QUESTIONS = 50; 
 
-    // 🛡️ OTOMATİK YEDEKLEME VE GÜVENLİ VERİ YÖNETİMİ
     function getSafeStorage(key, defaultValue) {
         try {
             const item = localStorage.getItem(key);
@@ -444,9 +483,7 @@
                 localStorage.setItem(key, JSON.stringify(globalBackup[key]));
                 return globalBackup[key];
             }
-        } catch (e) {
-            console.error("Yedekleme okuma hatası:", e);
-        }
+        } catch (e) {}
         return defaultValue;
     }
 
@@ -456,23 +493,8 @@
             let globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
             globalBackup[key] = value;
             localStorage.setItem("quizask_global_backup", JSON.stringify(globalBackup));
-        } catch (e) {
-            console.error("Yedekleme yazma hatası:", e);
-        }
-    }
-
-    (function restoreAllData() {
-        try {
-            const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup"));
-            if (globalBackup) {
-                for (let k in globalBackup) {
-                    if (localStorage.getItem(k) === null) {
-                        localStorage.setItem(k, JSON.stringify(globalBackup[k]));
-                    }
-                }
-            }
         } catch (e) {}
-    })();
+    }
 
     const CATEGORIES = [
         {
@@ -481,103 +503,16 @@
                 {
                     name: "Osmanlı Yükselme Dönemi (1453-1579)",
                     questions: [
-                        {q:"Fatih Sultan Mehmet şiirlerinde hangi mahlası kullanmıştır?",options:["Muhibbi","Avni","Fuzuli","Baki"],answer:1,note:"Fatih «Avni» mahlasını kullandı. Muhibbi, Kanuni'nin mahlasıdır."},
+                        {q:"Fatih Sultan Mehmet şiirlerinde hangi mahlası kullanmıştır?",options:["Muhibbi","Avni","Fuzuli","Baki"],answer:1,note:"Fatih «Avni» mahlasını kullandı."},
                         {q:"İstanbul'un fethi hazırlıklarında yapılan Rumeli Hisarı'nın diğer adı nedir?",options:["Güzelce Hisar","Yedikule","Boğazkesen","Anadolu Hisarı"],answer:2},
-                        {q:"Aşağıdakilerden hangisi Bizans'ın fethe karşı aldığı önlemlerden biri DEĞİLDİR?",options:["Grejuva ateşinin çoğaltılması","Haliç'e zincir çekilmesi","Şahi toplarının döktürülmesi","Avrupa'dan yardım istenmesi"],answer:2,note:"Şahi topları Osmanlı'nın hazırlıklarındandı."},
-                        {q:"«İstanbul'da Kardinal külahı görmektense Osmanlı sarığı görmeyi tercih ederim» sözü Bizans'ın hangi önlemine tepkidir?",options:["Surların güçlendirilmesi","Halkın silahlandırılması","Katolik ve Ortodoks kiliselerinin birleştirilmesi","Haliç'e zincir çekilmesi"],answer:2,note:"Sözün sahibi Grivas (Grandük) Notaras'tır."},
-                        {q:"Fetihten sonra Rum patriği olarak kim atandı?",options:["Ovakim","Notaras","Amirutzes","Gennadios"],answer:3,note:"Ermeni patriği ise Ovakim oldu."},
+                        {q:"Aşağıdakilerden hangisi Bizans'ın fethe karşı aldığı önlemlerden biri DEĞİLDİR?",options:["Grejuva ateşinin çoğaltılması","Haliç'e zincir çekilmesi","Şahi toplarının döktürülmesi","Avrupa'dan yardım istenmesi"],answer:2},
+                        {q:"«İstanbul'da Kardinal külahı görmektense Osmanlı sarığı görmeyi tercih ederim» sözü Bizans'ın hangi önlemine tepkidir?",options:["Surların güçlendirilmesi","Halkın silahlandırılması","Katolik ve Ortodoks kiliselerinin birleştirilmesi","Haliç'e zincir çekilmesi"],answer:2},
+                        {q:"Fetihten sonra Rum patriği olarak kim atandı?",options:["Ovakim","Notaras","Amirutzes","Gennadios"],answer:3},
                         {q:"Fatih'in aldığı «Kayser-i Rum» unvanı ne anlama gelir?",options:["Roma Kayseri","İki karanın hükümdarı","Fetihlerin sultanı","Denizlerin hâkimi"],answer:0},
                         {q:"İstanbul'un fethiyle hangi çağ kapanmış, hangi çağ başlamıştır?",options:["Yeni Çağ kapanmış, Yakın Çağ başlamıştır","İlk Çağ kapanmış, Orta Çağ başlamıştır","Orta Çağ kapanmış, Yeni Çağ başlamıştır","Orta Çağ kapanmış, Yakın Çağ başlamıştır"],answer:2},
-                        {q:"Aşağıdakilerden hangisi İstanbul'un fethinin sonuçlarından DEĞİLDİR?",options:["Kuruluş Dönemi bitip Yükselme Dönemi başlamıştır","Anadolu ile Rumeli arasındaki toprak bütünlüğü sağlanmıştır","Boğazlar ve İpek Yolu Osmanlı'nın eline geçmiştir","Halifelik Osmanlı'ya geçmiştir"],answer:3,note:"Halifelik Yavuz Sultan Selim döneminde Osmanlı'ya geçti."},
+                        {q:"Aşağıdakilerden hangisi İstanbul'un fethinin sonuçlarından DEĞİLDİR?",options:["Kuruluş Dönemi bitip Yükselme Dönemi başlamıştır","Anadolu ile Rumeli arasındaki toprak bütünlüğü sağlanmıştır","Boğazlar ve İpek Yolu Osmanlı'nın eline geçmiştir","Halifelik Osmanlı'ya geçmiştir"],answer:3},
                         {q:"Topların surları yıkabileceğinin anlaşılması hangi sistemin zayıflamasına yol açmıştır?",options:["Tımar sistemi","Feodalite","Divan sistemi","Medrese sistemi"],answer:1},
-                        {q:"İstanbul'dan kaçan bilim insanlarının İtalya'ya gitmesi hangi gelişmenin başlamasına neden olmuştur?",options:["Reform","Coğrafi Keşifler","Sanayi Devrimi","Rönesans"],answer:3},
-                        {q:"İstanbul'un fethi İslam dünyasında sevinçle karşılanmış ve «Feth-i Mübin» olarak adlandırılmıştır. Bu söz ne anlama gelir?",options:["Parlak Fetih","Kutsal Fetih","Hızlı Fetih","Büyük Fetih"],answer:0},
-                        {q:"Fatih Dönemi'nde Konya ve Karaman hangi beylikten alınmıştır?",options:["Candaroğulları","Dulkadiroğulları","Karamanoğulları","Akkoyunlular"],answer:2,note:"Candaroğullarından ise Sinop ve Samsun alındı."},
-                        {q:"Kırım'ın alınmasıyla Karadeniz için ne sonuç doğmuştur?",options:["Bir Venedik gölü hâline gelmiştir","Bir Türk gölü hâline gelmiştir","Bir Rus gölü hâline gelmiştir","Savaş bölgesi olmuştur"],answer:1},
-                        {q:"«Sultanü'l-Bahreyn ve Hakanü'l-Berreyn» unvanı ne anlama gelir?",options:["Doğu ve Batı'nın hükümdarı","İki denizin ve iki karanın hükümdarı","Üç kıtanın hükümdarı","Fetihlerin hükümdarı"],answer:1},
-                        {q:"Fatih Dönemi'nde Hicaz su yolları sorunu yüzünden aşağıdakilerden hangisiyle ilişkiler gerilmiştir?",options:["Memlükler","Akkoyunlular","Safeviler","Venedik"],answer:0,note:"Karamanoğulları ve Dulkadiroğulları ile de ilişkiler gerildi."},
-                        {q:"Fatih Dönemi'nde vergi toplama yöntemi olarak ilk defa uygulanan sistem hangisidir?",options:["Müsadere","İltizam","Cizye","Cülus"],answer:1,note:"Mala el koyma anlamına gelen sistem ise müsaderedir."},
-                        {q:"Fatih Dönemi'nde basılan ilk altın paranın adı nedir?",options:["Akçe","Kuruş","Sikke-i Hasene","Mangır"],answer:2},
-                        {q:"Fatih Dönemi'nde Divan'a başkanlık etmeye başlayan görevli kimdir?",options:["Padişah","Nişancı","Kazasker","Sadrazam"],answer:3},
-                        {q:"Fatih Dönemi'nde yazılı hâle getirilen kanunname hangisidir?",options:["Kanunname-i Âli Osman","Mecelle","Tanzimat Fermanı","Düstur"],answer:0,note:"Örfi hukuk kuralları yazılı hâle getirildi."},
-                        {q:"Fatih, Akkoyunluları Otlukbeli Savaşı'nda yenerek hangi bölgeyi egemenliği altına almıştır?",options:["Balkanlar","Doğu Anadolu","Kuzey Afrika","Karadeniz kıyıları"],answer:1},
-                        {q:"Osmanlı'da ilk elçiliği hangi devlet açmıştır?",options:["Ceneviz","Fransa","Venedik","İngiltere"],answer:2,note:"İstanbul'daki Venedik elçisine «Baylos» (Balyos) denilirdi."},
-                        {q:"Osmanlı'da ilk defa bir iç sorunun (taht mücadelesi) devletler arası soruna dönüşmesine neden olan olay hangisidir?",options:["Şah Kulu İsyanı","Celali İsyanları","Cem Sultan Olayı","Kalender Çelebi İsyanı"],answer:2,note:"Cem Sultan Olayı II. Bayezid Dönemi'ne damgasını vurdu."},
-                        {q:"Antalya ve çevresinde 1511'de çıkan isyan hangisidir?",options:["Şah Kulu İsyanı","Celali İsyanı","Baba Zünnûn İsyanı","Canberdi Gazali İsyanı"],answer:0},
-                        {q:"İspanya'da zulüm gören Yahudi ve Müslümanları İstanbul'a getiren denizci kimdir?",options:["Barbaros Hayrettin Paşa","Turgut Reis","Kemal Reis","Piyale Paşa"],answer:2},
-                        {q:"II. Bayezid Dönemi, yaşanan sorunlar nedeniyle Yükselme Dönemi içinde hangi dönem olarak tarihe geçmiştir?",options:["Gerileme","Duraklama","Kuruluş","Dağılma"],answer:1},
-                        {q:"Tarihçilerce «8 yıla 80 yıllık iş sığdıran padişah» olarak nitelendirilen hükümdar kimdir?",options:["Kanuni Sultan Süleyman","II. Selim","Yavuz Sultan Selim","Fatih Sultan Mehmet"],answer:2},
-                        {q:"1514 Çaldıran Savaşı'nın kazanılmasında en çok hangi unsurun etkisi olmuştur?",options:["Donanmanın üstünlüğü","Mancınık ve kuleler","Süvari birliklerinin sayısı","Tüfekli askerler"],answer:3,note:"Savaş, Yavuz Selim ile İran'ın Safevi hükümdarı arasında yapıldı."},
-                        {q:"1515 Turnadağ Savaşı'yla hangi beyliğe son verilmiştir?",options:["Karamanoğulları","Dulkadiroğulları","Candaroğulları","Akkoyunlular"],answer:1},
-                        {q:"Memlük Devleti hangi savaşın sonucunda yıkılmıştır?",options:["Mercidabık Savaşı","Çaldıran Savaşı","Ridaniye Savaşı","Turnadağ Savaşı"],answer:2,note:"Mercidabık 1516'da, Ridaniye 1517'de yapıldı."},
-                        {q:"Mısır'ın alınmasıyla Osmanlı Devleti'nin eline geçen ticaret yolu hangisidir?",options:["İpek Yolu","Kral Yolu","Hicaz Yolu","Baharat Yolu"],answer:3,note:"İpek Yolu ise Fatih Dönemi'nde ele geçmişti."},
-                        {q:"Ridaniye Savaşı sürerken Avrupa'da yaşanan gelişme hangisidir?",options:["Reform","Rönesans","Coğrafi Keşifler","Fransız İhtilali"],answer:0},
-                        {q:"Osmanlı tarihinin en uzun süre tahta kalan padişah kimdir?",options:["Fatih Sultan Mehmet","Kanuni Sultan Süleyman","Yavuz Sultan Selim","II. Selim"],answer:1,note:"Kanuni 46 yıl tahtta kaldı."},
-                        {q:"I. Süleyman için kullanılan «Kanuni» sıfatını ilk defa kim kullanmıştır?",options:["Matrakçı Nasuh","İdris-i Bitlisi","Cervantes","Dimitrie Cantemir"],answer:3,note:"Bu sıfat XVIII. yüzyılda kullanılmaya başlandı."},
-                        {q:"Dünyanın en kısa süren ova savaşı olan ve Macaristan'ın yenildiği savaş hangisidir?",options:["Çaldıran Savaşı","Otlukbeli Savaşı","Mohaç Meydan Muharebesi","Ridaniye Savaşı"],answer:2,note:"Savaş 1526'da yapıldı."},
-                        {q:"Viyana ilk defa hangi yılda kuşatılmıştır?",options:["1521","1526","1529","1538"],answer:2},
-                        {q:"Osmanlı Devleti ile Avusturya arasındaki ilk resmî antlaşma hangisidir?",options:["İstanbul Antlaşması","Amasya Antlaşması","Zitvatorok Antlaşması","Edirne Antlaşması"],answer:0},
-                        {q:"1538 Preveze Deniz Savaşı'nda Osmanlı donanmasının komutanı kimdir?",options:["Turgut Reis","Kemal Reis","Barbaros Hayrettin Paşa","Piyale Paşa"],answer:2,note:"Bu zaferle Akdeniz bir Türk gölü hâline geldi."},
-                        {q:"Osmanlı Devleti'nin İran ile imzaladığı ilk antlaşma hangisidir?",options:["Kasr-ı Şirin","Amasya Antlaşması","Zühab Antlaşması","Nasuh Paşa Antlaşması"],answer:1,note:"Antlaşma 1555'te imzalandı."},
-                        {q:"Haçlılara karşı Kuzey Afrika'daki egemenliği pekiştiren deniz savaşı hangisidir?",options:["İnebahtı","Preveze","Cerbe","Sinop"],answer:2,note:"Savaş 1560'ta yapıldı."},
-                        {q:"Kanuni'nin son seferi ve ölüm yeri olan sefer hangisidir?",options:["Alman Seferi","Zigetvar Seferi","Irakeyn Seferi","Mohaç Seferi"],answer:1},
-                        {q:"Kanuni'nin seferlerini anlatan «Süleymanname» ve «Beyan-ı Menazil-i Sefer-i Irakeyn» adlı minyatürlü eserler kime aittir?",options:["Matrakçı Nasuh","Kemal Reis","İdris-i Bitlisi","Piri Reis"],answer:0},
-                        {q:"Ordunun başında sefere çıkma geleneğini terk eden ve İstanbul'da ölen ilk Osmanlı padişahı kimdir?",options:["III. Murat","II. Bayezid","Kanuni Sultan Süleyman","II. Selim"],answer:3},
-                        {q:"Sokullu Mehmet Paşa hangi padişahlar zamanında devlet işlerini yürütmüştür?",options:["II. Selim ve III. Murat","Fatih ve II. Bayezid","Yavuz ve Kanuni","I. Ahmed ve II. Osman"],answer:0,note:"Bu yüzden dönem «Sokullu Mehmet Paşa Dönemi» diye anılır."},
-                        {q:"1571'de Kıbrıs'ın alınmasına tepki gösteren Haçlılar, Osmanlı donanmasını hangi savaşta yakmıştır?",options:["Preveze","İnebahtı","Cerbe","Malta"],answer:1,note:"Sokullu: «Siz İnebahtı'nda sakalımızı tıraş ettiniz, kesilen sakal daha gür çıkar.»"},
-                        {q:"Aşağıdakilerden hangisi Osmanlı donanmasının yıkıldığı olaylardan biri DEĞİLDİR?",options:["İnebahtı (1571)","Çeşme (1770)","Navarin (1827)","Preveze (1538)"],answer:3,note:"Dördüncüsü 1853 Sinop Baskınıdır."},
-                        {q:"Aşağıdakilerden hangisi Don ve Volga Nehirlerini Birleştirme Projesi'nin amaçlarından biri DEĞİLDİR?",options:["Rusların güneye inmesini engellemek","Kırım'ı korumak","İran'ı kuzeyden kontrol etmek","Hindistan'a ulaşmak"],answer:3,note:"Hindistan'a ulaşma amacı Süveyş Kanalı Projesi'ne aittir."},
-                        {q:"Süveyş Kanalı Projesi hangi iki denizi birleştirmeyi amaçlıyordu?",options:["Karadeniz ile Akdeniz","Kızıldeniz ile Akdeniz","Hazar ile Karadeniz","Marmara ile Ege"],answer:1,note:"Kanal 1869'da Fransa ve İngiltere'nin iş birliğiyle açıldı."},
-                        {q:"Marmara-Karadeniz Projesi'nin amaçlarından biri aşağıdakilerden hangisidir?",options:["Hindistan'a ulaşmak","İpek Yolu'nu canlandırmak","Gemi yapımı için gereken kereste ihtiyacını karşılamak","Rusya'yı kontrol etmek"],answer:2}
-                    ]
-                },
-                {
-                    name: "XVII. Yüzyıl: Duraklama Dönemi (1579-1699)",
-                    questions: [
-                        {q:"Duraklama Dönemi hangi yıllar arasını kapsar?",options:["1453-1579","1579-1699","1699-1792","1566-1648"],answer:1},
-                        {q:"IV. Mehmet kaç yaşında tahta çıkmıştır?",options:["6","10","14","18"],answer:0,note:"Küçük yaştaki çocukların tahta çıkması Duraklama nedenlerindendir."},
-                        {q:"Aşağıdakilerden hangisi Duraklama Dönemi'ne girişin nedenlerinden biri DEĞİLDİR?",options:["Merkezî otoritenin bozulması","Kapitülasyonların yaygınlaşması","Coğrafi Keşiflerle İpek ve Baharat yollarının önem kaybetmesi","Halifeliğin Osmanlı'ya geçmesi"],answer:3},
-                        {q:"«Âlimin oğlu âlimdir» anlayışına dayanan, ilmiye sınıfındaki bozulmaya verilen ad nedir?",options:["Suhte","Beşik ulemalığı","Kuyucu sistemi","Cülus bahşişi"],answer:1},
-                        {q:"Avrupa'da feodalitenin sona ermesi, Osmanlı'nın karşısında hangi gelişmeye yol açmıştır?",options:["Merkezî krallıkların kurulmasına","Ticaret yollarının kapanmasına","Haçlı Seferlerinin başlamasına","Osmanlı'nın doğal sınırlara ulaşmasına"],answer:0},
-                        {q:"Aşağıdakilerden hangisi tımar sisteminin bozulma nedenlerinden biri DEĞİLDİR?",options:["Tımarların rüşvet karşılığı verilmesi","Tımarların saray görevlilerinin eline geçerek özel mülke dönüşmesi","Sipahilerin ateşli silah eğitimine ayak uyduramaması","Devşirme sisteminin yeniden canlandırılması"],answer:3},
-                        {q:"IV. Mehmet Dönemi'nde otuza yakın devlet adamının öldürüldüğü olay hangisidir?",options:["Vaka-i Hayriye","Kabakçı Mustafa İsyanı","Vaka-i Vakvakiye (Çınar Vakası)","Hotin Olayı"],answer:2},
-                        {q:"Merkez (Yeniçeri) isyanlarının temel nedeni aşağıdakilerden hangisidir?",options:["Cülus ve ulufelerin geç ödenmesi","Merkezî otoritenin bozulması","Devşirme Kanunu'na aykırı asker alınması","Enflasyon"],answer:1,note:"Diğer şıklar da nedenlerdendir ama temel neden merkezî otoritenin bozulmasıdır."},
-                        {q:"II. Osman'ı (Genç Osman) Yedikule zindanlarında idam eden kesim hangisidir?",options:["Yeniçeriler","Sipahiler","Suhteler","Celaliler"],answer:0},
-                        {q:"Celali isyanları ilk defa hangi padişah zamanında çıkmıştır?",options:["Fatih Sultan Mehmet","Kanuni Sultan Süleyman","III. Mehmet","Yavuz Sultan Selim"],answer:3},
-                        {q:"Celali isyanlarında halkı devlete karşı kışkırtan ve eşkıyalık yapan kesim hangisidir?",options:["Medrese öğrencileri","Yeniçeriler","Haçova Meydan Muharebesi'nden kaçan askerler","Tımarlı sipahiler"],answer:2},
-                        {q:"Celali isyanları sonucunda köylerden kentlere büyük göç yaşanmıştır. Bu duruma ne ad verilir?",options:["Sürgün","Büyük Kaçgun","İskân","Büyük Göç"],answer:1},
-                        {q:"Aşağıdakilerden hangisi Celali isyancılarından biri DEĞİLDİR?",options:["Karayazıcı","Deli Hasan","Canbulatoğlu","Koçi Bey"],answer:3},
-                        {q:"Aşağıdakilerden hangisi Celali isyanlarının sonuçlarından biri DEĞİLDİR?",options:["Üretimin düşmesi","Vergi gelirlerinin azalması","Boşalan köylere eşkıyaların yerleşmesi","Tarımsal üretimin artması"],answer:3},
-                        {q:"Osmanlı'da medrese öğrencilerine verilen «suhte» ya da «softa» adı hangi ayaklanmaların adıdır?",options:["Eyalet isyanları","Celali isyanları","Suhte ayaklanmaları","Merkez isyanları"],answer:2},
-                        {q:"Suhte ayaklanmalarının nedenlerinden biri aşağıdakilerden hangisidir?",options:["Medrese gelirlerinin artması","Nüfus artışı ve enflasyon yüzünden gençlerin burslu medreselere sığınması","Medreselerin kapatılması","Öğrencilerin askere alınması"],answer:1},
-                        {q:"17. yüzyılda gayrimüslimlerin çıkardığı ayaklanmalar hakkında aşağıdakilerden hangisidir?",options:["XIX. yüzyıldaki ulusçuluk isyanlarının bir devamıdır","Fransız İhtilali'nin etkisiyle çıkmıştır","XIX. yüzyıl ulusçuluk isyanlarıyla bir ilgisi yoktur","Bağımsız devlet kurmayı amaçlamıştır"],answer:2},
-                        {q:"1596 Haçova Meydan Muharebesi'nden sonra «Eğri Fatihi» unvanı kime verilmiştir?",options:["III. Mehmet","Tirkayi Hasan Paşa","Kuyucu Murat Paşa","IV. Murat"],answer:0,note:"Kanije Fatihi unvanı ise Tirkayi Hasan Paşa'ya verildi."},
-                        {q:"Avusturya kralını Osmanlı padişahına tekrar denk sayan ve Orta Avrupa'daki siyasi üstünlüğü sona erdiren antlaşma hangisidir?",options:["Vasvar Antlaşması","Karlofça Antlaşması","Zitvatorok Antlaşması","İstanbul Antlaşması"],answer:2,note:"Antlaşma 1606'da imzalandı."},
-                        {q:"Osmanlı'nın bu yüzyılda Avusturya'ya karşı son kazançlı antlaşması hangisidir?",options:["Vasvar Antlaşması","Zitvatorok Antlaşması","Karlofça Antlaşması","Bucaş Antlaşması"],answer:0,note:"1664'te imzalandı ve Uyvar Kalesi alındı."},
-                        {q:"1683'te II. Viyana kuşatmasını yöneten sadrazam kimdir?",options:["Köprülü Mehmet Paşa","Merzifonlu Kara Mustafa Paşa","Amcazade Hüseyin Paşa","Tarhuncu Ahmet Paşa"],answer:1,note:"Kuşatmadaki başarısızlığı nedeniyle idam edildi."},
-                        {q:"1699'a kadar süren savaşta Osmanlı'ya karşı oluşan Kutsal İttifak'ta aşağıdaki devletlerden hangisi yer ALMAMIŞTIR?",options:["Venedik","Malta","Rusya","İngiltere"],answer:3},
-                        {q:"Osmanlı Devleti'nin Batı'da ilk defa geniş anlamda toprak kaybettiği antlaşma hangisidir?",options:["Zitvatorok","Karlofça","Vasvar","Bucaş"],answer:1,note:"1699'da Avusturya, Venedik ve Lehistan ile imzalandı."},
-                        {q:"Karlofça Antlaşması'nda Osmanlı Devleti ilk defa hangi devletlerin arabuluculuğunu kabul etmek zorunda kalmıştır?",options:["Fransa ve İspanya","Rusya ve Prusya","Venedik ve Ceneviz","İngiltere ve Hollanda"],answer:3,note:"Osmanlı ayrıca ilk kez müzakere yoluyla bir antlaşma imzalamak zorunda kaldı."},
-                        {q:"Azak Kalesi'nin Rusya'ya verilmesiyle Rusya'ya Karadeniz'e inmek için ilk fırsatı veren antlaşma hangisidir?",options:["Bahçesaray (Çehrin) Antlaşması","Karlofça Antlaşması","Hotin Antlaşması","İstanbul Antlaşması (1700)"],answer:3,note:"Bu antlaşma Karlofça'nın devamı sayılır."},
-                        {q:"Osmanlı ile Rusya arasında imzalanan ilk antlaşma hangisidir?",options:["Bahçesaray (Çehrin) Antlaşması","İstanbul Antlaşması","Bucaş Antlaşması","Hotin Antlaşması"],answer:0,note:"1681'de imzalandı."},
-                        {q:"Osmanlı Devleti'nin Doğu'da en geniş sınırlara ulaştığı antlaşma hangisidir?",options:["Nasuh Paşa Antlaşması","Serav Antlaşması","Kasr-ı Şirin Antlaşması","Ferhat Paşa Antlaşması"],answer:3,note:"1590'da İran'la yapıldı."},
-                        {q:"Günümüz Türkiye-İran sınırını hemen hemen belirleyen antlaşma hangisidir?",options:["Kasr-ı Şirin Antlaşması","Amasya Antlaşması","Ferhat Paşa Antlaşması","Serav Antlaşması"],answer:0,note:"1639'da IV. Murat Dönemi'nde imzalandı."},
-                        {q:"Osmanlı'nın Batı'da en geniş sınırlara ulaştığı antlaşma hangisidir?",options:["Karlofça","Vasvar","Bucaş","Zitvatorok"],answer:2,note:"1672'de Lehistan ile imzalandı, Podolya Osmanlı'ya bırakıldı."},
-                        {q:"1621 Hotin Seferi'nde Hotin Kalesi'nin alınamamasının nedeni aşağıdakilerden hangisidir?",options:["Donanmanın yetersizliği","Hava koşulları","Yeniçerilerin isteksizliği","Cephane eksikliği"],answer:2},
-                        {q:"Köprülü Fazıl Ahmet Paşa 24 yıllık kuşatmanın ardından hangi adayı almıştır?",options:["Rodos","Kıbrıs","Sakız","Girit"],answer:3,note:"Girit 1645'te kuşatıldı, 1669'da Venedik'ten alındı."},
-                        {q:"Aşağıdakilerden hangisi 17. yüzyıl ıslahatçılarından biri DEĞİLDİR?",options:["Tarhuncu Ahmet Paşa","Kuyucu Murat Paşa","Köprülü Mehmet Paşa","Sokullu Mehmet Paşa"],answer:3,note:"Sokullu 16. yüzyıl sadrazamıdır. Islahatçılar için şifre: TOKMAK."},
-                        {q:"Aşağıdakilerden hangisi 17. yüzyıl ıslahatlarının ortak özelliklerinden biri DEĞİLDİR?",options:["Avrupa örnek alınmadı","Kişilere bağlı kaldı","Halk desteği alındı","Baskı ve şiddet yoluyla benimsetilmek istendi"],answer:2},
-                        {q:"«Tarhuncu Bütçesi» adında modern ve denk bir bütçe hazırlayan sadrazam kimdir?",options:["Köprülü Fazıl Ahmet Paşa","Kuyucu Murat Paşa","Merzifonlu Kara Mustafa Paşa","Tarhuncu Ahmet Paşa"],answer:3,note:"IV. Mehmet'in sadrazamıdır."},
-                        {q:"Osmanlı tarihinde ilk ıslahat yapan padişah kimdir?",options:["I. Ahmet","IV. Murat","II. Osman","IV. Mehmet"],answer:2},
-                        {q:"Aşağıdakilerden hangisi II. Osman'ın yaptığı ya da düşündüğü ıslahatlardan biri DEĞİLDİR?",options:["Yeniçeriye ödenen fazla maaşları kesmek","Şeyhülislamın yetkilerini kısıtlamak","Yeniçeri Ocağı'nı kaldırmayı düşünmek","Gece sokağa çıkma yasağı getirmek"],answer:3,note:"Gece sokağa çıkma yasağı IV. Murat'a aittir."},
-                        {q:"I. Ahmet'in sadrazamı olan ve Celali isyanlarını şiddetle bastıran ıslahatçı kimdir?",options:["Kuyucu Murat Paşa","Tarhuncu Ahmet Paşa","Köprülü Mehmet Paşa","Amcazade Hüseyin Paşa"],answer:0},
-                        {q:"Osmanlı tarihinde ilk defa bir şeyhülislamı idam ettiren padişah kimdir?",options:["I. Ahmet","II. Osman","IV. Mehmet","IV. Murat"],answer:3,note:"Lakabı Bağdat Fatihi'dir."},
-                        {q:"Koçi Bey ve Kâtip Çelebi hangi padişaha risalelerini (raporlarını) sunmuştur?",options:["II. Osman","I. Ahmet","IV. Murat","III. Mehmet"],answer:2},
-                        {q:"IV. Murat'ın gece sokağa çıkma yasağı, içki ve tütün yasağı getirmesinin temel sebebi nedir?",options:["Vergi gelirlerini artırmak","İstanbul'da ortaya çıkan yangınların önüne geçmek","Yeniçerileri disipline etmek","Halkın gelirini artırmak"],answer:1,note:"Kanuni Dönemi'nde açılan kahve ve meyhaneleri de kapattı."},
-                        {q:"Ekber ve erşed sistemini getirerek veraset sisteminde son değişikliği yapan padişah kimdir?",options:["III. Mehmet","IV. Murat","II. Osman","I. Ahmet"],answer:3},
-                        {q:"Şehzadelerin sancağa çıkma uygulamasını kaldıran padişah kimdir?",options:["I. Ahmet","IV. Mehmet","III. Mehmet","II. Selim"],answer:2},
-                        {q:"Köprülü Mehmet Paşa, Venedik'in Çanakkale'ye uyguladığı ablukayı kaldırarak hangi devlete karşı başarı kazanmıştır?",options:["Rusya","Lehistan","Avusturya","Venedik"],answer:3},
-                        {q:"Köprülüler Dönemi için aşağıdakilerden hangisi söylenir?",options:["Duraklama Dönemi içinde Yükselme Dönemi yaşatmışlardır","Yükselme Dönemi içinde Duraklama yaşatmışlardır","Kuruluş Dönemi'ni yeniden başlatmışlardır","Gerileme Dönemi'ni başlatmışlardır"],answer:0}
+                        {q:"İstanbul'dan kaçan bilim insanlarının İtalya'ya gitmesi hangi gelişmenin başlamasına neden olmuştur?",options:["Reform","Coğrafi Keşifler","Sanayi Devrimi","Rönesans"],answer:3}
                     ]
                 }
             ]
@@ -593,7 +528,6 @@
     let selectedOption = null;
     let isAnswered = false;
 
-    // ⏱️ KRONOMETRE
     let totalSeconds = 0;
     setInterval(() => {
         totalSeconds++;
@@ -603,10 +537,8 @@
         document.querySelectorAll('.timer-badge').forEach(badge => badge.textContent = timeFormatted);
     }, 1000);
 
-    // XP VE SEVİYE SİSTEMİ
     function getXPData(userKey = currentUser) {
-        const xpKey = `${userKey}_xp_data`;
-        return getSafeStorage(xpKey, { xp: 0 });
+        return getSafeStorage(`${userKey}_xp_data`, { xp: 0 });
     }
 
     function addXP(amount) {
@@ -620,9 +552,7 @@
     function calculateLevel(xp) {
         if (xp < 200) return { level: 1, title: "Acemi" };
         if (xp < 500) return { level: 2, title: "Çalışkan" };
-        if (xp < 1000) return { level: 3, title: "İyi Durumda" };
-        if (xp < 2000) return { level: 4, title: "Uzman" };
-        return { level: 5, title: "Şampiyon" };
+        return { level: 3, title: "Uzman" };
     }
 
     function updateLevelDisplay() {
@@ -716,43 +646,18 @@
     }
 
     function getStreakData() {
-        const streakKey = `${currentUser}_streak_data`;
-        return getSafeStorage(streakKey, { streak: 0, lastDate: "", testsToday: 0, coins: 0, broken: false });
+        return getSafeStorage(`${currentUser}_streak_data`, { streak: 0, lastDate: "", testsToday: 0, coins: 0, broken: false });
     }
 
     function saveStreakData(data) {
-        const streakKey = `${currentUser}_streak_data`;
-        setSafeStorage(streakKey, data);
+        setSafeStorage(`${currentUser}_streak_data`, data);
         updateStreakDisplay();
     }
 
     function updateStreakDisplay() {
         const data = getStreakData();
-        const todayStr = new Date().toISOString().split('T')[0];
-
-        if (!isBrotherMode && data.lastDate && data.lastDate !== todayStr) {
-            const lastD = new Date(data.lastDate);
-            const todayD = new Date(todayStr);
-            const diffDays = Math.floor((todayD - lastD) / (1000 * 60 * 60 * 24));
-
-            if (diffDays > 1 && data.streak > 0 && !data.broken) {
-                data.broken = true;
-                data.streak = 0;
-                saveStreakData(data);
-            }
-        }
-
         document.querySelectorAll('.streak-badge').forEach(b => b.textContent = `🔥 ${data.streak}`);
         document.querySelectorAll('.coin-badge').forEach(b => b.textContent = `🪙 ${data.coins}`);
-
-        const rescueBtn = document.getElementById("rescue-btn");
-        if (rescueBtn && !isBrotherMode) {
-            if (data.broken && data.coins >= 5) {
-                rescueBtn.style.display = "block";
-            } else {
-                rescueBtn.style.display = "none";
-            }
-        }
         updateDailyStatsDisplay();
         if (!isBrotherMode) updateLevelDisplay();
     }
@@ -773,39 +678,13 @@
             if (data.lastDate === todayStr) {
                 data.testsToday++;
             } else {
-                const lastD = data.lastDate ? new Date(data.lastDate) : null;
-                const todayD = new Date(todayStr);
-                const diffDays = lastD ? Math.floor((todayD - lastD) / (1000 * 60 * 60 * 24)) : 0;
-
-                if (diffDays === 1) data.streak++;
-                else if (diffDays > 1 || !data.lastDate) data.streak = 1;
-
+                data.streak = (data.streak || 0) + 1;
                 data.testsToday = 1;
                 data.lastDate = todayStr;
                 data.broken = false;
             }
             saveStreakData(data);
         }
-    }
-
-    function rescueStreakWithCoins() {
-        if (isBrotherMode) return;
-        let data = getStreakData();
-        if (data.coins >= 5) {
-            data.coins -= 5;
-            data.streak = 1; 
-            data.broken = false;
-            saveStreakData(data);
-            alert("Seri kurtarıldı! 🛡️");
-        } else {
-            alert("Yeterli coin'in yok.");
-        }
-    }
-
-    function showCoinInfo() {
-        if (isBrotherMode) return;
-        const data = getStreakData();
-        alert(`Coin: ${data.coins}`);
     }
 
     function showScreen(screenId) {
@@ -829,49 +708,76 @@
             currentUserName = "Özge Bakır";
             isBrotherMode = false;
             setupNormalMode();
-            showCategories();
+            triggerWelcomeModal();
         } else if (val === PASS_KANKA) {
             currentUser = "askim1";
             currentUserName = "Enes Furkan Arslan";
             isBrotherMode = false;
             setupNormalMode();
-            showCategories();
+            triggerWelcomeModal();
         } else if (val === PASS_KARDES) {
             currentUser = "kardes";
             currentUserName = "Ezgi Bakır";
             isBrotherMode = true;
             setupBrotherMode();
-            showCategories();
+            triggerWelcomeModal();
         } else {
             alert("Şifre yanlış! ❌");
             inputEl.value = "";
         }
     }
 
-    function setupBrotherMode() {
-        const welcomeSub = document.getElementById("user-welcome-sub");
-        if (welcomeSub) welcomeSub.textContent = "Hoşgeldin Ezgi Bakır, çözmek istediğin dersi seç:";
+    function triggerWelcomeModal() {
+        const modal = document.getElementById("welcome-modal");
+        const titleEl = document.getElementById("modal-welcome-title");
+        const subEl = document.getElementById("modal-welcome-sub");
+
+        if (isBrotherMode) {
+            titleEl.textContent = "Hoşgeldin Ezgi Bakır";
+            subEl.textContent = "Bugün hangi testi çözmek istersin?";
+        } else if (currentUser === "askim") {
+            titleEl.textContent = "Hoşgeldin Özge Bakır 💖";
+            subEl.textContent = "Harika bir çalışma günü seni bekliyor sevgilim!";
+        } else if (currentUser === "askim1") {
+            titleEl.textContent = "Hoşgeldin Enes Furkan Arslan 👑";
+            subEl.textContent = "Düello arenası ve testler seni bekliyor kanka!";
+        }
+
+        modal.style.display = "flex";
         
+        // 🎊 Konfetileri Patlat!
+        confetti({
+            particleCount: 150,
+            spread: 90,
+            origin: { y: 0.5 }
+        });
+    }
+
+    function closeWelcomeModal() {
+        document.getElementById("welcome-modal").style.display = "none";
+        showCategories();
+    }
+
+    function setupBrotherMode() {
         const duelBtn = document.getElementById("duel-menu-btn");
         if (duelBtn) duelBtn.style.display = "none";
 
         const notifBox = document.getElementById("notification-box-area");
         if (notifBox) notifBox.style.display = "none";
+
+        const statsCard = document.getElementById("daily-stats-card-area");
+        if (statsCard) statsCard.style.display = "none";
     }
 
     function setupNormalMode() {
-        const welcomeSub = document.getElementById("user-welcome-sub");
-        if (currentUser === "askim") {
-            if (welcomeSub) welcomeSub.textContent = "Hoşgeldin Özge Bakır, çalışmak istediğin dersi seç:";
-        } else if (currentUser === "askim1") {
-            if (welcomeSub) welcomeSub.textContent = "Hoşgeldin Enes Furkan Arslan, çalışmak istediğin dersi seç:";
-        }
-        
         const duelBtn = document.getElementById("duel-menu-btn");
         if (duelBtn) duelBtn.style.display = "block";
 
         const notifBox = document.getElementById("notification-box-area");
         if (notifBox) notifBox.style.display = "block";
+
+        const statsCard = document.getElementById("daily-stats-card-area");
+        if (statsCard) statsCard.style.display = "block";
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -902,21 +808,15 @@
 
             CATEGORIES.forEach((cat, cIndex) => {
                 cat.topics.forEach((topic, tIndex) => {
-                    const totalQuestions = topic.questions.length;
-                    const totalParts = Math.ceil(totalQuestions / 10);
-
-                    for (let pIndex = 0; pIndex < totalParts; pIndex++) {
-                        const savedScoreKey = `${user.id}_score_c${cIndex}_t${tIndex}_p${pIndex}`;
-                        const savedData = getSafeStorage(savedScoreKey, null);
-
+                    for (let pIndex = 0; pIndex < Math.ceil(topic.questions.length / 10); pIndex++) {
+                        const savedData = getSafeStorage(`${user.id}_score_c${cIndex}_t${tIndex}_p${pIndex}`, null);
                         if (savedData) {
                             userHasRecord = true;
                             totalRecordsFound = true;
-                            const parsed = savedData;
                             userHtml += `
                                 <div class="report-item">
                                     <span><b>${topic.name.substring(0, 18)}... (Test ${pIndex + 1})</b></span>
-                                    <span style="color: #27ae60; font-weight: 600;">✅ ${parsed.correct} D | ❌ ${parsed.wrong} Y</span>
+                                    <span style="color: #27ae60; font-weight: 600;">✅ ${savedData.correct} D | ❌ ${savedData.wrong} Y</span>
                                 </div>
                             `;
                         }
@@ -924,16 +824,11 @@
                 });
             });
 
-            if (!userHasRecord) {
-                userHtml += `<div style="font-size: 11px; color: #888; margin-bottom: 5px; padding-left: 5px;">Henüz test çözülmemiş.</div>`;
-            }
-
+            if (!userHasRecord) userHtml += `<div style="font-size: 11px; color: #888; margin-bottom: 5px; padding-left: 5px;">Henüz test çözülmemiş.</div>`;
             reportListDiv.innerHTML += userHtml;
         });
 
-        if (!totalRecordsFound) {
-            reportListDiv.innerHTML = `<p style="text-align: center; color: #888; font-size: 12px;">Henüz hiçbir kullanıcı test tamamlamamış!</p>`;
-        }
+        if (!totalRecordsFound) reportListDiv.innerHTML = `<p style="text-align: center; color: #888; font-size: 12px;">Henüz hiçbir kullanıcı test tamamlamamış!</p>`;
     }
 
     function requestNotificationPermission() {
@@ -1008,12 +903,10 @@
             const end = Math.min((i + 1) * chunkSize, totalQuestions);
             const count = end - start + 1;
 
-            const savedScoreKey = `${currentUser}_score_c${currentCategoryIndex}_t${topicIndex}_p${i}`;
-            const savedData = getSafeStorage(savedScoreKey, null);
+            const savedData = getSafeStorage(`${currentUser}_score_c${currentCategoryIndex}_t${topicIndex}_p${i}`, null);
             let scoreHtml = `<span>${count} Soru</span>`;
             if (savedData) {
-                const parsed = savedData;
-                scoreHtml = `<span class="part-score">✅ ${parsed.correct}D ❌ ${parsed.wrong}Y</span>`;
+                scoreHtml = `<span class="part-score">✅ ${savedData.correct}D ❌ ${savedData.wrong}Y</span>`;
             }
 
             const card = document.createElement("div");
@@ -1029,9 +922,8 @@
         isMistakeMode = false;
         currentPartIndex = partIndex;
         const topic = CATEGORIES[currentCategoryIndex].topics[currentTopicIndex];
-        const chunkSize = 10;
-        const start = partIndex * chunkSize;
-        const end = start + chunkSize;
+        const start = partIndex * 10;
+        const end = start + 10;
 
         currentQuestions = topic.questions.slice(start, end);
         currentQuestion = 0;
@@ -1045,9 +937,7 @@
     }
 
     function startMistakeQuiz() {
-        const mistakeKey = `${currentUser}_mistakes`;
-        const savedMistakes = getSafeStorage(mistakeKey, []);
-        
+        const savedMistakes = getSafeStorage(`${currentUser}_mistakes`, []);
         if (!savedMistakes || savedMistakes.length === 0) {
             alert("Tekrar etmen gereken yanlış soru bulunmuyor!");
             return;
@@ -1118,8 +1008,7 @@
             const optionItems = document.querySelectorAll(".option-item");
 
             feedbackBox.style.display = "block";
-            const mistakeKey = `${currentUser}_mistakes`;
-            let existingMistakes = getSafeStorage(mistakeKey, []);
+            let existingMistakes = getSafeStorage(`${currentUser}_mistakes`, []);
 
             if (selectedOption === q.answer) {
                 optionItems[selectedOption].classList.add("correct");
@@ -1130,7 +1019,7 @@
 
                 if (isMistakeMode) {
                     existingMistakes = existingMistakes.filter(m => m.q !== q.q);
-                    setSafeStorage(mistakeKey, existingMistakes);
+                    setSafeStorage(`${currentUser}_mistakes`, existingMistakes);
                 }
             } else {
                 optionItems[selectedOption].classList.add("incorrect");
@@ -1141,10 +1030,9 @@
                 if (!isBrotherMode) addXP(5);
 
                 if (!isMistakeMode) {
-                    const alreadyExists = existingMistakes.some(m => m.q === q.q);
-                    if (!alreadyExists) {
+                    if (!existingMistakes.some(m => m.q === q.q)) {
                         existingMistakes.push(q);
-                        setSafeStorage(mistakeKey, existingMistakes);
+                        setSafeStorage(`${currentUser}_mistakes`, existingMistakes);
                     }
                 }
             }
@@ -1169,8 +1057,7 @@
         const wrong = currentQuestions.length - score;
         
         if (!isMistakeMode) {
-            const scoreKey = `${currentUser}_score_c${currentCategoryIndex}_t${currentTopicIndex}_p${currentPartIndex}`;
-            setSafeStorage(scoreKey, { correct: score, wrong: wrong });
+            setSafeStorage(`${currentUser}_score_c${currentCategoryIndex}_t${currentTopicIndex}_p${currentPartIndex}`, { correct: score, wrong: wrong });
             recordTestCompletion(score, wrong);
             document.getElementById("result-primary-btn").textContent = "Bu Testi Yeniden Çöz";
         } else {
