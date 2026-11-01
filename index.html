@@ -86,8 +86,8 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-top: 25px;
-            max-height: 350px;
+            margin-top: 20px;
+            max-height: 310px;
             overflow-y: auto;
             padding-right: 5px;
         }
@@ -117,7 +117,7 @@
             display: flex;
             justify-content: space-between;
             gap: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .timer-badge, .streak-badge, .coin-badge {
@@ -144,9 +144,24 @@
             cursor: pointer;
         }
 
+        /* 📊 GÜNLÜK İSTATİSTİK KUTUSU */
+        .daily-stats-card {
+            background: #fdf2f4;
+            border: 1.5px solid #ffb6c1;
+            border-radius: 16px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+        }
+        .stat-item h4 { font-size: 11px; color: #888; margin-bottom: 2px; }
+        .stat-item p { font-size: 15px; font-weight: 700; color: #2f3640; }
+
         .notification-box {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 15px;
+            padding: 12px;
             background: #fff0f5;
             border: 1px dashed var(--primary-color);
             border-radius: 14px;
@@ -179,12 +194,12 @@
         }
         .mistake-btn {
             background: linear-gradient(135deg, #ff9966, #ff5e62);
-            margin-top: 10px;
+            margin-top: 8px;
             box-shadow: 0 5px 15px rgba(255, 94, 98, 0.3);
         }
         .rescue-btn {
             background: linear-gradient(135deg, #f39c12, #d35400);
-            margin-top: 10px;
+            margin-top: 8px;
             box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
         }
         .wheel-btn {
@@ -281,16 +296,33 @@
             <div class="streak-badge" id="streak-badge">🔥 Seri: 0</div>
             <div class="coin-badge" id="coin-badge" onclick="showCoinInfo()">🪙 0 Coin</div>
         </div>
+
+        <!-- 📊 GÜNLÜK İSTATİSTİK KUTUSU -->
+        <div class="daily-stats-card">
+            <div class="stat-item">
+                <h4>Bugün Çözülen</h4>
+                <p id="daily-total-q">0 Soru</p>
+            </div>
+            <div class="stat-item">
+                <h4>Doğru / Yanlış</h4>
+                <p id="daily-dw">0D / 0Y</p>
+            </div>
+            <div class="stat-item">
+                <h4>Başarı</h4>
+                <p id="daily-success">%0</p>
+            </div>
+        </div>
+
         <h2>📖 Ders Kategorileri</h2>
-        <p id="user-welcome-sub" style="color: #666; font-size: 14px; margin-bottom: 10px;"></p>
+        <p id="user-welcome-sub" style="color: #666; font-size: 13px; margin-bottom: 8px;"></p>
         <div class="category-list" id="category-list"></div>
         
         <button class="btn mistake-btn" onclick="startMistakeQuiz()">🚨 Tekrar Etmem Gerekenler (Yanlışlarım)</button>
         <button class="btn rescue-btn" id="rescue-btn" style="display: none;" onclick="rescueStreakWithCoins()">🛡️ 5 Coin ile Seriyi Kurtar!</button>
 
         <div class="notification-box">
-            <p>🔔 Siteden anlık bildirimler almak için tıkla!</p>
-            <button class="btn" style="padding: 10px; font-size: 14px;" onclick="requestNotificationPermission()">Bildirimleri Aç 💖</button>
+            <p style="font-size: 12px;">🔔 Siteden anlık bildirimler almak için tıkla!</p>
+            <button class="btn" style="padding: 8px; font-size: 13px; margin-top: 5px;" onclick="requestNotificationPermission()">Bildirimleri Aç 💖</button>
         </div>
     </div>
 
@@ -504,7 +536,33 @@
         document.querySelectorAll('.timer-badge').forEach(badge => badge.textContent = timeFormatted);
     }, 1000);
 
-    // 🔥 STREAK (SERİ) VE COIN (PARA) KONTROLÜ
+    // 📊 GÜNLÜK İSTATİSTİK & 00:00 SIFIRLAMA MANTIĞI
+    function getDailyStatsData() {
+        const statsKey = `${currentUser}_daily_stats`;
+        const todayStr = new Date().toISOString().split('T')[0];
+        let statsData = JSON.parse(localStorage.getItem(statsKey));
+
+        // Eğer kayıt yoksa VEYA tarih bugünden eskiyse (gece 00:00 geçilmişse) sıfırla
+        if (!statsData || statsData.date !== todayStr) {
+            statsData = { date: todayStr, totalQuestions: 0, correct: 0, wrong: 0 };
+            localStorage.setItem(statsKey, JSON.stringify(statsData));
+        }
+        return statsData;
+    }
+
+    function updateDailyStatsDisplay() {
+        const stats = getDailyStatsData();
+        const totalQ = stats.totalQuestions;
+        const correct = stats.correct;
+        const wrong = stats.wrong;
+        const successRate = totalQ > 0 ? Math.round((correct / totalQ) * 100) : 0;
+
+        document.getElementById("daily-total-q").textContent = `${totalQ} Soru`;
+        document.getElementById("daily-dw").textContent = `${correct}D / ${wrong}Y`;
+        document.getElementById("daily-success").textContent = `%${successRate}`;
+    }
+
+    // 🔥 STREAK (SERİ) VE COIN KONTROLÜ
     function getStreakData() {
         const streakKey = `${currentUser}_streak_data`;
         return JSON.parse(localStorage.getItem(streakKey)) || { streak: 0, lastDate: "", testsToday: 0, coins: 0, broken: false };
@@ -520,14 +578,13 @@
         const data = getStreakData();
         const todayStr = new Date().toISOString().split('T')[0];
 
-        // Gün kontrolü ve seri kırılma tespiti
         if (data.lastDate && data.lastDate !== todayStr) {
             const lastD = new Date(data.lastDate);
             const todayD = new Date(todayStr);
             const diffDays = Math.floor((todayD - lastD) / (1000 * 60 * 60 * 24));
 
             if (diffDays > 1 && data.streak > 0 && !data.broken) {
-                data.broken = true; // Seri kırıldı, kurtarılmayı bekliyor
+                data.broken = true;
                 data.streak = 0;
                 saveStreakData(data);
             }
@@ -545,14 +602,22 @@
         } else {
             rescueBtn.style.display = "none";
         }
+        updateDailyStatsDisplay();
     }
 
-    function recordTestCompletion() {
+    function recordTestCompletion(testCorrect, testWrong) {
+        // 1. Günlük İstatistikleri Güncelle (00:00 Kontrollü)
+        let stats = getDailyStatsData();
+        stats.totalQuestions += (testCorrect + testWrong);
+        stats.correct += testCorrect;
+        stats.wrong += testWrong;
+        localStorage.setItem(`${currentUser}_daily_stats`, JSON.stringify(stats));
+
+        // 2. Streak ve Coin Güncelle
         let data = getStreakData();
         const todayStr = new Date().toISOString().split('T')[0];
 
-        // Her tamamlanan test başına +1 coin ekle
-        data.coins += 1;
+        data.coins += 1; // Test başına +1 coin
 
         if (data.lastDate === todayStr) {
             data.testsToday++;
@@ -581,7 +646,7 @@
         let data = getStreakData();
         if (data.coins >= 5) {
             data.coins -= 5;
-            data.streak = 1; // Seriyi kurtar ve devam ettir
+            data.streak = 1; 
             data.broken = false;
             saveStreakData(data);
             alert("Harika! 5 Coin harcayarak serini başarıyla kurtardın! 🛡️🔥");
@@ -926,8 +991,8 @@
             const scoreKey = `${currentUser}_score_c${currentCategoryIndex}_t${currentTopicIndex}_p${currentPartIndex}`;
             localStorage.setItem(scoreKey, JSON.stringify({ correct: score, wrong: wrong }));
             
-            // Test tamamlandığında coin ve seri güncellemesini tetikle (+1 coin & seri)
-            recordTestCompletion();
+            // Test tamamlandığında günlük istatistikleri, coin ve seriyi kaydet
+            recordTestCompletion(score, wrong);
 
             document.getElementById("result-primary-btn").textContent = "Bu Testi Yeniden Çöz ❤️";
         } else {
