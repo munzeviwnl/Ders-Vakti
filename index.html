@@ -130,6 +130,22 @@
             border-radius: 8px;
         }
 
+        /* Bildirim İzin Butonu Alanı */
+        .notification-box {
+            margin-top: 25px;
+            padding: 15px;
+            background: #fff0f5;
+            border: 1px dashed var(--primary-color);
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .notification-box p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
         header {
             text-align: center;
             margin-bottom: 25px;
@@ -294,6 +310,12 @@
         <h2>📚 Konu Seçimi</h2>
         <p style="color: #666; font-size: 14px; margin-bottom: 10px;">Çalışmak istediğin dönemi seç sevgilim:</p>
         <div class="category-list" id="category-list"></div>
+
+        <!-- BİLDİRİM AÇMA BUTONU -->
+        <div class="notification-box">
+            <p>🔔 Siteden anlık bildirimler ve motivasyonlar almak için tıkla!</p>
+            <button class="btn" style="padding: 10px; font-size: 14px;" onclick="requestNotificationPermission()">Bildirimleri Aç 💖</button>
+        </div>
     </div>
 
     <!-- ANA TEST UYGULAMASI -->
@@ -327,7 +349,7 @@
     // 🔑 ŞİFRE
     const SECRET_PASSWORD = "aşkım";
 
-    // 📝 KATEGORİLİ SORU LİSTESİ[cite: 1]
+    // 📝 KATEGORİLİ SORU LİSTESİ
     const TOPICS = [
         {
             name: "Osmanlı Yükselme Dönemi (1453-1579)",
@@ -441,6 +463,27 @@
     let score = 0;
     let selectedOption = null;
     let isAnswered = false;
+
+    // 🔔 BİLDİRİM İZİN İSTEME FONKSİYONU
+    function requestNotificationPermission() {
+        if (!("Notification" in window)) {
+            alert("Tarayıcınız bildirimleri desteklemiyor sevgilim.");
+            return;
+        }
+
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                alert("Bildirimler başarıyla açıldı aşkım! Artık hazırsın 💖");
+                // Test bildirimi gönder
+                new Notification("Aşkımın Çalışma Ekranı 💖", {
+                    body: "Harika! Bildirimler aktif edildi. Haydi ders çalışmaya! ⭐",
+                    icon: "myphoto.png"
+                });
+            } else {
+                alert("Bildirim iznini kapattın ama dilersen ayarlardan açabilirsin! ❤️");
+            }
+        });
+    }
 
     function checkPassword() {
         const val = document.getElementById("password-input").value;
