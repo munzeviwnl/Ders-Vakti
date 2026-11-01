@@ -53,26 +53,26 @@
 
         #admin-screen { text-align: center; }
         #admin-screen h2 { color: #2f3640; margin-bottom: 10px; font-size: 22px; }
-        #admin-screen textarea { width: 100%; height: 90px; padding: 12px; border: 2px solid #ddd; border-radius: 12px; font-size: 15px; resize: none; outline: none; margin-bottom: 15px; }
+        #admin-screen textarea { width: 100%; height: 75px; padding: 10px; border: 2px solid #ddd; border-radius: 12px; font-size: 14px; resize: none; outline: none; margin-bottom: 10px; }
 
-        /* Yönetici Karnesi Alanı */
         .admin-report-box {
             background: #fafafa;
             border: 2px solid #f1f2f6;
             border-radius: 16px;
-            padding: 15px;
-            margin-top: 20px;
+            padding: 12px;
+            margin-top: 15px;
             max-height: 220px;
             overflow-y: auto;
             text-align: left;
         }
-        .admin-report-box h3 { font-size: 15px; color: var(--primary-color); margin-bottom: 10px; text-align: center; }
+        .admin-report-box h3 { font-size: 14px; color: var(--primary-color); margin-bottom: 8px; text-align: center; }
+        .report-section-title { font-size: 13px; font-weight: 700; color: #2f3640; margin: 8px 0 4px 0; }
         .report-item {
-            font-size: 13px;
-            padding: 8px 10px;
+            font-size: 12px;
+            padding: 6px 10px;
             background: white;
             border-radius: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             border: 1px solid #eee;
             display: flex;
             justify-content: space-between;
@@ -155,11 +155,11 @@
 
         .btn {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white; border: none; padding: 14px 24px; border-radius: 12px;
-            font-size: 16px; font-weight: 600; cursor: pointer; width: 100%;
+            color: white; border: none; padding: 12px 20px; border-radius: 12px;
+            font-size: 15px; font-weight: 600; cursor: pointer; width: 100%;
             box-shadow: 0 5px 15px rgba(255, 101, 132, 0.3);
         }
-        .back-btn { background: #f1f2f6; color: #4a4a4a; margin-bottom: 15px; box-shadow: none; }
+        .back-btn { background: #f1f2f6; color: #4a4a4a; margin-top: 10px; box-shadow: none; }
 
         .result-container { text-align: center; display: none; }
         .result-container h2 { color: var(--primary-color); font-size: 26px; margin-bottom: 15px; }
@@ -169,34 +169,37 @@
 <body>
 
 <div class="container">
+    <!-- GİRİŞ EKRANI -->
     <div id="auth-screen" class="screen" style="display: block;">
         <h2>💖 Aşkımın Çalışma Ekranı</h2>
-        <p style="margin-bottom: 15px; color: #666;">Şifreyi gir sevgilim:</p>
-        <input type="password" id="password-input" placeholder="Gizli Şifre">
+        <p style="margin-bottom: 15px; color: #666;">Şifreyi gir sevgilim / kanka / yönetici:</p>
+        <input type="password" id="password-input" placeholder="Şifre Giriniz">
         <button class="btn" onclick="checkPassword()">Giriş Yap ❤️</button>
     </div>
 
-    <!-- YÖNETİCİ PANELİ + ÖĞRENCİ KARNESİ -->
+    <!-- YÖNETİCİ PANELİ -->
     <div id="admin-screen" class="screen">
-        <h2>👑 Yönetici Bildirim & Takip Paneli</h2>
-        <textarea id="admin-msg" placeholder="Örn: Haydi bakalım, bugün hiç Osmanlı çözmedin masaya! 📚"></textarea>
-        <button class="btn" onclick="sendAdminNotification()">Anında Bildirim Gönder 🚀</button>
+        <h2>👑 Yönetici & Takip Paneli</h2>
+        <textarea id="admin-msg" placeholder="Sevgiline anlık bildirim gönder..."></textarea>
+        <button class="btn" onclick="sendAdminNotification()">Bildirim Gönder 🚀</button>
         
-        <!-- KIZ ARKADAŞININ ÇÖZDÜĞÜ TESTLERİN LİSTESİ -->
+        <!-- ÇİFTLİ KARNE -->
         <div class="admin-report-box">
-            <h3>📊 Sevgilinin Çözdüğü Test Karnesi</h3>
+            <h3>📊 Kullanıcı Karneleri</h3>
             <div id="admin-report-list">
-                <p style="text-align: center; color: #888; font-size: 12px;">Henüz çözülen bir test yok veya kayıt bulunamadı.</p>
+                <p style="text-align: center; color: #888; font-size: 12px;">Yükleniyor...</p>
             </div>
         </div>
 
-        <button class="btn back-btn" style="margin-top: 15px;" onclick="location.reload()">Çıkış Yap 🔙</button>
+        <button class="btn back-btn" onclick="loadAdminReport()" style="background: #ffe4e9; color: var(--primary-color);">🔄 Karneleri Yenile</button>
+        <button class="btn back-btn" onclick="location.reload()">Çıkış Yap 🔙</button>
     </div>
 
+    <!-- KATEGORİ SEÇİMİ -->
     <div id="category-screen" class="screen">
-        <div class="timer-badge">⏳ Oturum Süresi: 00:00</div>
+        <div class="timer-badge" id="welcome-badge">⏳ Oturum Süresi: 00:00</div>
         <h2>📚 Konu Seçimi</h2>
-        <p style="color: #666; font-size: 14px; margin-bottom: 10px;">Çalışmak istediğin dönemi seç sevgilim:</p>
+        <p id="user-welcome-sub" style="color: #666; font-size: 14px; margin-bottom: 10px;"></p>
         <div class="category-list" id="category-list"></div>
         <div class="notification-box">
             <p>🔔 Siteden anlık bildirimler almak için tıkla!</p>
@@ -204,6 +207,7 @@
         </div>
     </div>
 
+    <!-- TEST PARÇALARI EKRANI -->
     <div id="part-screen" class="screen">
         <div class="timer-badge">⏳ Oturum Süresi: 00:00</div>
         <button class="btn back-btn" onclick="showCategories()">⬅️ Konulara Dön</button>
@@ -211,6 +215,7 @@
         <div class="part-list" id="part-list"></div>
     </div>
 
+    <!-- TEST UYGULAMA EKRANI -->
     <div id="main-app" class="screen">
         <div class="timer-badge">⏳ Oturum Süresi: 00:00</div>
         <header>
@@ -237,8 +242,12 @@
 </div>
 
 <script>
-    const SECRET_PASSWORD = "aşkım";       
-    const ADMIN_PASSWORD = "yonetici123";  
+    const PASS_ASKIM = "aşkım";       
+    const PASS_KANKA = "aşkım1";       
+    const PASS_ADMIN = "yonetici123";  
+
+    let currentUser = "askim"; // 'askim' veya 'askim1'
+    let currentUserName = "Sevgilim";
 
     const TOPICS = [
         {
@@ -368,52 +377,77 @@
         document.getElementById(screenId).style.display = 'block';
     }
 
+    // ŞİFRE KONTROLÜ & KULLANICI SEÇİMİ
     function checkPassword() {
         const val = document.getElementById("password-input").value.trim();
-        if (val === ADMIN_PASSWORD) {
-            loadAdminReport(); // Yönetici panelinde skorları yükle
+        if (val === PASS_ADMIN) {
             showScreen('admin-screen');
-        } else if (val === SECRET_PASSWORD) {
+            loadAdminReport(); 
+        } else if (val === PASS_ASKIM) {
+            currentUser = "askim";
+            currentUserName = "Sevgilim 💖";
+            document.getElementById("user-welcome-sub").textContent = "Çalışmak istediğin dönemi seç sevgilim:";
+            showCategories();
+        } else if (val === PASS_KANKA) {
+            currentUser = "askim1";
+            currentUserName = "Kanka 👑";
+            document.getElementById("user-welcome-sub").textContent = "Hoş geldin kanka, çözmek istediğin dönemi seç:";
             showCategories();
         } else {
-            alert("Şifre yanlış aşkım, bir daha dene! ❤️");
+            alert("Şifre yanlış kanka! (aşkım, aşkım1 veya yönetici123 deneyebilirsin) ❤️");
         }
     }
 
-    // 📊 YÖNETİCİ PANELİ İÇİN KARNEYİ YÜKLEME
+    // YÖNETİCİ PANELİ: HER İKİ KULLANICININ DA KARNESİNİ GÖSTER
     function loadAdminReport() {
         const reportListDiv = document.getElementById("admin-report-list");
         reportListDiv.innerHTML = "";
 
-        let hasRecord = false;
+        const users = [
+            { id: "askim", title: "💖 Sevgilimin Karnesi (aşkım)" },
+            { id: "askim1", title: "👑 Senin Karnen (aşkım1)" }
+        ];
 
-        TOPICS.forEach((topic, tIndex) => {
-            const totalQuestions = topic.questions.length;
-            const totalParts = Math.ceil(totalQuestions / 10);
+        let totalRecordsFound = false;
 
-            for (let pIndex = 0; pIndex < totalParts; pIndex++) {
-                const savedScoreKey = `score_t${tIndex}_p${pIndex}`;
-                const savedData = localStorage.getItem(savedScoreKey);
+        users.forEach(user => {
+            let userHasRecord = false;
+            let userHtml = `<div class="report-section-title">${user.title}</div>`;
 
-                if (savedData) {
-                    hasRecord = true;
-                    const parsed = JSON.parse(savedData);
-                    const start = pIndex * 10 + 1;
-                    const end = Math.min((pIndex + 1) * 10, totalQuestions);
+            TOPICS.forEach((topic, tIndex) => {
+                const totalQuestions = topic.questions.length;
+                const totalParts = Math.ceil(totalQuestions / 10);
 
-                    const item = document.createElement("div");
-                    item.className = "report-item";
-                    item.innerHTML = `
-                        <span><b>${topic.name.split(' ')[0]} - Test ${pIndex + 1}</b> (Soru ${start}-${end})</span>
-                        <span style="color: #27ae60; font-weight: 600;">✅ ${parsed.correct} Doğru | ❌ ${parsed.wrong} Yanlış</span>
-                    `;
-                    reportListDiv.appendChild(item);
+                for (let pIndex = 0; pIndex < totalParts; pIndex++) {
+                    const savedScoreKey = `${user.id}_score_t${tIndex}_p${pIndex}`;
+                    const savedData = localStorage.getItem(savedScoreKey);
+
+                    if (savedData) {
+                        userHasRecord = true;
+                        totalRecordsFound = true;
+                        const parsed = JSON.parse(savedData);
+                        const start = pIndex * 10 + 1;
+                        const end = Math.min((pIndex + 1) * 10, totalQuestions);
+
+                        userHtml += `
+                            <div class="report-item">
+                                <span><b>Test ${pIndex + 1}</b> (Soru ${start}-${end})</span>
+                                <span style="color: #27ae60; font-weight: 600;">✅ ${parsed.correct} D | ❌ ${parsed.wrong} Y</span>
+                            </div>
+                        `;
+                    }
                 }
+            });
+
+            if (!userHasRecord) {
+                userHtml += `<div style="font-size: 11px; color: #888; margin-bottom: 5px; padding-left: 5px;">Henüz test çözülmemiş.</div>`;
             }
+
+            reportListDiv.innerHTML += userHtml;
         });
 
-        if (!hasRecord) {
-            reportListDiv.innerHTML = `<p style="text-align: center; color: #888; font-size: 13px;">Henüz sevgilin hiçbir testi çözmemiş kanka! 🕵️‍♂️</p>`;
+        if (!totalRecordsFound) {
+            reportListDiv.innerHTML = `<p style="text-align: center; color: #888; font-size: 12px;">Henüz hiçbir kullanıcı test tamamlamamış kanka! 🕵️‍♂️</p>`;
         }
     }
 
@@ -421,10 +455,10 @@
         if (!("Notification" in window)) { alert("Tarayıcınız bildirimleri desteklemiyor."); return; }
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
-                alert("Bildirimler başarıyla açıldı aşkım! Artık hazırsın 💖");
-                new Notification("Aşkımın Çalışma Ekranı 💖", { body: "Bildirimler aktif! Haydi ders çalışmaya! ⭐", icon: "myphoto.png" });
+                alert("Bildirimler başarıyla açıldı! 💖");
+                new Notification("Çalışma Ekranı 💖", { body: "Bildirimler aktif!", icon: "myphoto.png" });
             } else {
-                alert("Bildirim iznini kapattın aşkım. ❤️");
+                alert("Bildirim iznini kapattın. ❤️");
             }
         });
     }
@@ -437,7 +471,7 @@
             alert("Bildirim başarıyla gönderildi kanka! 🚀");
             document.getElementById("admin-msg").value = "";
         } else {
-            alert("Kız arkadaşın henüz bildirim izni vermemiş kanka!");
+            alert("Bildirim izni verilmemiş!");
         }
     }
 
@@ -471,7 +505,8 @@
             const end = Math.min((i + 1) * chunkSize, totalQuestions);
             const count = end - start + 1;
 
-            const savedScoreKey = `score_t${topicIndex}_p${i}`;
+            // Kullanıcıya özel skor anahtarı
+            const savedScoreKey = `${currentUser}_score_t${topicIndex}_p${i}`;
             const savedData = localStorage.getItem(savedScoreKey);
             let scoreHtml = `<span>${count} Soru</span>`;
             if (savedData) {
@@ -561,7 +596,7 @@
                 optionItems[selectedOption].classList.add("correct");
                 const randomPraise = ["Harikasın! 🎉", "Aynen böyle devam! 💪", "Çok iyisin! 💖"][Math.floor(Math.random() * 3)];
                 feedbackBox.className = "feedback-box correct-fb";
-                feedbackBox.innerHTML = `<strong>Tebrikler aşkım ❤️</strong><br>${randomPraise}`;
+                feedbackBox.innerHTML = `<strong>Tebrikler ${currentUserName} ❤️</strong><br>${randomPraise}`;
                 score++;
                 confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
             } else {
@@ -593,9 +628,12 @@
         progressBar.style.width = "100%";
         
         const wrong = currentQuestions.length - score;
-        localStorage.setItem(`score_t${currentTopicIndex}_p${currentPartIndex}`, JSON.stringify({ correct: score, wrong: wrong }));
+        
+        // Kullanıcıya özel anahtarla skoru kaydediyoruz!
+        const scoreKey = `${currentUser}_score_t${currentTopicIndex}_p${currentPartIndex}`;
+        localStorage.setItem(scoreKey, JSON.stringify({ correct: score, wrong: wrong }));
 
-        scoreText.innerHTML = `Testi tamamladın sevgilim! 🌟<br><br>✅ Doğru: <b>${score}</b><br>❌ Yanlış: <b>${wrong}</b><br><br>Sonucun kaydedildi! ❤️`;
+        scoreText.innerHTML = `Testi tamamladın ${currentUserName}! 🌟<br><br>✅ Doğru: <b>${score}</b><br>❌ Yanlış: <b>${wrong}</b><br><br>Skorun profiline kaydedildi! ❤️`;
         confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
     }
 
