@@ -79,8 +79,8 @@
             align-items: center;
         }
 
-        #category-screen, #part-screen { text-align: center; }
-        #category-screen h2, #part-screen h2 { color: var(--primary-color); font-size: 24px; margin-bottom: 10px; }
+        #category-screen, #part-screen, #mistake-screen { text-align: center; }
+        #category-screen h2, #part-screen h2, #mistake-screen h2 { color: var(--primary-color); font-size: 24px; margin-bottom: 10px; }
 
         .category-list, .part-list {
             display: flex;
@@ -164,35 +164,11 @@
             margin-top: 10px;
             box-shadow: 0 5px 15px rgba(255, 94, 98, 0.3);
         }
-        .wheel-btn {
-            background: linear-gradient(135deg, #f7b733, #fc4a1a);
-            margin-bottom: 10px;
-            box-shadow: 0 5px 15px rgba(252, 74, 26, 0.3);
-            display: none;
-        }
         .back-btn { background: #f1f2f6; color: #4a4a4a; margin-top: 10px; box-shadow: none; }
 
         .result-container { text-align: center; display: none; }
         .result-container h2 { color: var(--primary-color); font-size: 26px; margin-bottom: 15px; }
         .result-container p { font-size: 17px; margin-bottom: 20px; line-height: 1.6; }
-
-        /* HEDİYE ÇARKI STİLİ */
-        .wheel-box {
-            background: #fff0f5;
-            border: 2px dashed var(--primary-color);
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 15px;
-            display: none;
-        }
-        .wheel-box h3 { color: var(--primary-color); font-size: 16px; margin-bottom: 8px; }
-        .wheel-result {
-            font-size: 16px;
-            font-weight: 700;
-            color: #27ae60;
-            margin-top: 10px;
-            min-height: 25px;
-        }
     </style>
 </head>
 <body>
@@ -230,6 +206,7 @@
         <p id="user-welcome-sub" style="color: #666; font-size: 14px; margin-bottom: 10px;"></p>
         <div class="category-list" id="category-list"></div>
         
+        <!-- YANLIŞLARIM / TEKRAR KUTUSU BUTONU -->
         <button class="btn mistake-btn" onclick="startMistakeQuiz()">🚨 Tekrar Etmem Gerekenler (Yanlışlarım)</button>
 
         <div class="notification-box">
@@ -266,14 +243,6 @@
         <div class="result-container" id="result-screen">
             <h2>Test Tamamlandı! 🎉</h2>
             <p id="score-text"></p>
-            
-            <!-- HEDİYE ÇARKI ALANI -->
-            <div class="wheel-box" id="wheel-box">
-                <h3>🎁 Harika Başarı! Hediye Çarkını Çevir! 🎡</h3>
-                <button class="btn wheel-btn" id="wheel-spin-btn" onclick="spinWheel()">Çarkı Çevir 🎰</button>
-                <div class="wheel-result" id="wheel-result"></div>
-            </div>
-
             <button class="btn" id="result-primary-btn" onclick="restartCurrentPart()">Bu Testi Yeniden Çöz ❤️</button>
             <button class="btn back-btn" style="margin-top: 10px;" onclick="showCategories()">Konu Seçimine Dön 📚</button>
         </div>
@@ -287,16 +256,7 @@
 
     let currentUser = "askim"; 
     let currentUserName = "Sevgilim";
-    let isMistakeMode = false; 
-
-    const GIFTS = [
-        "☕ 1 Adet Leziz Kahve Ismarla Hakkı!",
-        "🍕 Akşam Yemek Menüsünü Seçme Hakkı!",
-        "💆‍♀️ 15 Dakika Sırt Masajı Hakkı!",
-        "🍫 İstediği Çikolatayı Alma Hakkı!",
-        "🎬 Film / Dizi Gecesi Seçim Hakkı!",
-        "💖 Günün Sözünü Dinletme / İtiraf Hakkı!"
-    ];
+    let isMistakeMode = false; // Yanlışlar modunda mı?
 
     const TOPICS = [
         {
@@ -589,6 +549,7 @@
         loadQuestion();
     }
 
+    // 🚨 YANLIŞLARIM (TEKRAR ETMEM GEREKENLER) MODUNU BAŞLAT
     function startMistakeQuiz() {
         const mistakeKey = `${currentUser}_mistakes`;
         const savedMistakes = localStorage.getItem(mistakeKey);
@@ -678,6 +639,7 @@
                 score++;
                 confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
 
+                // Eğer yanlışlar modundaysa ve doğru bildiyse, bu soruyu yanlışlar listesinden çıkarıyoruz!
                 if (isMistakeMode) {
                     existingMistakes = existingMistakes.filter(m => m.q !== q.q);
                     localStorage.setItem(mistakeKey, JSON.stringify(existingMistakes));
@@ -689,6 +651,7 @@
                 feedbackBox.className = "feedback-box incorrect-fb";
                 feedbackBox.innerHTML = `<strong>Minik bir hata!</strong> Öğrendin, harikasın. ✨${explanationText}`;
 
+                // Normal test çözerken yanlış yapıldıysa yanlışlar kutusuna ekle (mükerrer eklememek için kontrol ediyoruz)
                 if (!isMistakeMode) {
                     const alreadyExists = existingMistakes.some(m => m.q === q.q);
                     if (!alreadyExists) {
@@ -719,7 +682,6 @@
         progressBar.style.width = "100%";
         
         const wrong = currentQuestions.length - score;
-        const totalQ = currentQuestions.length;
         
         if (!isMistakeMode) {
             const scoreKey = `${currentUser}_score_t${currentTopicIndex}_p${currentPartIndex}`;
@@ -731,36 +693,7 @@
         }
 
         scoreText.innerHTML = `Testi tamamladın ${currentUserName}! 🌟<br><br>✅ Doğru: <b>${score}</b><br>❌ Yanlış: <b>${wrong}</b><br><br>${isMistakeMode ? "Yanlışlar tekrarı tamamlandı! 🎯" : "Skorun profiline kaydedildi! ❤️"}`;
-        
-        // 🎡 ÇARK KOŞULU: Testte en az 8 doğru veya %80 ve üzeri başarı varsa çarkı aç
-        const wheelBox = document.getElementById("wheel-box");
-        const wheelSpinBtn = document.getElementById("wheel-spin-btn");
-        const wheelResult = document.getElementById("wheel-result");
-        
-        wheelResult.textContent = "";
-        wheelSpinBtn.style.display = "block";
-
-        if (score >= 8 || (totalQ >= 10 && (score / totalQ) >= 0.8)) {
-            wheelBox.style.display = "block";
-            confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
-        } else {
-            wheelBox.style.display = "none"; // Başarı düşükse çark çıkmaz
-        }
-    }
-
-    // 🎰 ÇARKI ÇEVİRME FONKSİYONU
-    function spinWheel() {
-        const wheelResult = document.getElementById("wheel-result");
-        const wheelSpinBtn = document.getElementById("wheel-spin-btn");
-        
-        wheelResult.textContent = "🎲 Çark dönüyor...";
-        wheelSpinBtn.style.display = "none";
-
-        setTimeout(() => {
-            const randomGift = GIFTS[Math.floor(Math.random() * GIFTS.length)];
-            wheelResult.innerHTML = `🎉 TEBRİKLER! Çarktan Çıkan Hediye:<br><span style="font-size:18px; color:var(--primary-color);">${randomGift}</span>`;
-            confetti({ particleCount: 200, spread: 120, origin: { y: 0.4 } });
-        }, 1200);
+        confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
     }
 
     function restartCurrentPart() {
