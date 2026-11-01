@@ -79,8 +79,8 @@
             align-items: center;
         }
 
-        #category-screen, #part-screen { text-align: center; }
-        #category-screen h2, #part-screen h2 { color: var(--primary-color); font-size: 24px; margin-bottom: 10px; }
+        #category-screen, #part-screen, #mistake-screen { text-align: center; }
+        #category-screen h2, #part-screen h2, #mistake-screen h2 { color: var(--primary-color); font-size: 24px; margin-bottom: 10px; }
 
         .category-list, .part-list {
             display: flex;
@@ -127,7 +127,7 @@
         }
 
         .notification-box {
-            margin-top: 25px;
+            margin-top: 20px;
             padding: 15px;
             background: #fff0f5;
             border: 1px dashed var(--primary-color);
@@ -159,6 +159,11 @@
             font-size: 15px; font-weight: 600; cursor: pointer; width: 100%;
             box-shadow: 0 5px 15px rgba(255, 101, 132, 0.3);
         }
+        .mistake-btn {
+            background: linear-gradient(135deg, #ff9966, #ff5e62);
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(255, 94, 98, 0.3);
+        }
         .back-btn { background: #f1f2f6; color: #4a4a4a; margin-top: 10px; box-shadow: none; }
 
         .result-container { text-align: center; display: none; }
@@ -183,7 +188,6 @@
         <textarea id="admin-msg" placeholder="Sevgiline anlık bildirim gönder..."></textarea>
         <button class="btn" onclick="sendAdminNotification()">Bildirim Gönder 🚀</button>
         
-        <!-- ÇİFTLİ KARNE -->
         <div class="admin-report-box">
             <h3>📊 Kullanıcı Karneleri</h3>
             <div id="admin-report-list">
@@ -201,6 +205,10 @@
         <h2>📚 Konu Seçimi</h2>
         <p id="user-welcome-sub" style="color: #666; font-size: 14px; margin-bottom: 10px;"></p>
         <div class="category-list" id="category-list"></div>
+        
+        <!-- YANLIŞLARIM / TEKRAR KUTUSU BUTONU -->
+        <button class="btn mistake-btn" onclick="startMistakeQuiz()">🚨 Tekrar Etmem Gerekenler (Yanlışlarım)</button>
+
         <div class="notification-box">
             <p>🔔 Siteden anlık bildirimler almak için tıkla!</p>
             <button class="btn" style="padding: 10px; font-size: 14px;" onclick="requestNotificationPermission()">Bildirimleri Aç 💖</button>
@@ -219,7 +227,7 @@
     <div id="main-app" class="screen">
         <div class="timer-badge">⏳ Oturum Süresi: 00:00</div>
         <header>
-            <button class="btn back-btn" onclick="backToParts()">⬅️ Test Seçimine Dön</button>
+            <button class="btn back-btn" onclick="backToPartsOrCategory()">⬅️ Geri Dön</button>
             <h1 id="topic-title">Konu Başlığı</h1>
             <p id="question-counter">Soru 1 / 10</p>
             <div class="progress-bar"><div class="progress" id="progress"></div></div>
@@ -235,8 +243,8 @@
         <div class="result-container" id="result-screen">
             <h2>Test Tamamlandı! 🎉</h2>
             <p id="score-text"></p>
-            <button class="btn" onclick="restartCurrentPart()">Bu Testi Yeniden Çöz ❤️</button>
-            <button class="btn back-btn" style="margin-top: 10px;" onclick="backToParts()">Test Seçimine Dön 📚</button>
+            <button class="btn" id="result-primary-btn" onclick="restartCurrentPart()">Bu Testi Yeniden Çöz ❤️</button>
+            <button class="btn back-btn" style="margin-top: 10px;" onclick="showCategories()">Konu Seçimine Dön 📚</button>
         </div>
     </div>
 </div>
@@ -246,8 +254,9 @@
     const PASS_KANKA = "aşkım1";       
     const PASS_ADMIN = "yonetici123";  
 
-    let currentUser = "askim"; // 'askim' veya 'askim1'
+    let currentUser = "askim"; 
     let currentUserName = "Sevgilim";
+    let isMistakeMode = false; // Yanlışlar modunda mı?
 
     const TOPICS = [
         {
@@ -377,7 +386,6 @@
         document.getElementById(screenId).style.display = 'block';
     }
 
-    // ŞİFRE KONTROLÜ & KULLANICI SEÇİMİ
     function checkPassword() {
         const val = document.getElementById("password-input").value.trim();
         if (val === PASS_ADMIN) {
@@ -398,7 +406,6 @@
         }
     }
 
-    // YÖNETİCİ PANELİ: HER İKİ KULLANICININ DA KARNESİNİ GÖSTER
     function loadAdminReport() {
         const reportListDiv = document.getElementById("admin-report-list");
         reportListDiv.innerHTML = "";
@@ -476,6 +483,7 @@
     }
 
     function showCategories() {
+        isMistakeMode = false;
         const listDiv = document.getElementById("category-list");
         listDiv.innerHTML = "";
         TOPICS.forEach((topic, index) => {
@@ -505,7 +513,6 @@
             const end = Math.min((i + 1) * chunkSize, totalQuestions);
             const count = end - start + 1;
 
-            // Kullanıcıya özel skor anahtarı
             const savedScoreKey = `${currentUser}_score_t${topicIndex}_p${i}`;
             const savedData = localStorage.getItem(savedScoreKey);
             let scoreHtml = `<span>${count} Soru</span>`;
@@ -524,6 +531,7 @@
     }
 
     function startPart(partIndex) {
+        isMistakeMode = false;
         currentPartIndex = partIndex;
         const topic = TOPICS[currentTopicIndex];
         const chunkSize = 10;
@@ -541,7 +549,35 @@
         loadQuestion();
     }
 
-    function backToParts() { showParts(currentTopicIndex); }
+    // 🚨 YANLIŞLARIM (TEKRAR ETMEM GEREKENLER) MODUNU BAŞLAT
+    function startMistakeQuiz() {
+        const mistakeKey = `${currentUser}_mistakes`;
+        const savedMistakes = localStorage.getItem(mistakeKey);
+        
+        if (!savedMistakes || JSON.parse(savedMistakes).length === 0) {
+            alert("Harika! Tekrar etmen gereken yanlış soru bulunmuyor kanka! 🎉");
+            return;
+        }
+
+        isMistakeMode = true;
+        currentQuestions = JSON.parse(savedMistakes);
+        currentQuestion = 0;
+        score = 0;
+
+        document.getElementById("topic-title").textContent = `🚨 Tekrar Etmem Gerekenler (${currentQuestions.length} Soru)`;
+        showScreen('main-app');
+        document.getElementById("quiz-screen").style.display = "block";
+        document.getElementById("result-screen").style.display = "none";
+        loadQuestion();
+    }
+
+    function backToPartsOrCategory() {
+        if (isMistakeMode) {
+            showCategories();
+        } else {
+            showParts(currentTopicIndex);
+        }
+    }
 
     const questionText = document.getElementById("question-text");
     const optionsList = document.getElementById("options-list");
@@ -592,6 +628,9 @@
 
             feedbackBox.style.display = "block";
 
+            const mistakeKey = `${currentUser}_mistakes`;
+            let existingMistakes = JSON.parse(localStorage.getItem(mistakeKey)) || [];
+
             if (selectedOption === q.answer) {
                 optionItems[selectedOption].classList.add("correct");
                 const randomPraise = ["Harikasın! 🎉", "Aynen böyle devam! 💪", "Çok iyisin! 💖"][Math.floor(Math.random() * 3)];
@@ -599,12 +638,27 @@
                 feedbackBox.innerHTML = `<strong>Tebrikler ${currentUserName} ❤️</strong><br>${randomPraise}`;
                 score++;
                 confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+
+                // Eğer yanlışlar modundaysa ve doğru bildiyse, bu soruyu yanlışlar listesinden çıkarıyoruz!
+                if (isMistakeMode) {
+                    existingMistakes = existingMistakes.filter(m => m.q !== q.q);
+                    localStorage.setItem(mistakeKey, JSON.stringify(existingMistakes));
+                }
             } else {
                 optionItems[selectedOption].classList.add("incorrect");
                 optionItems[q.answer].classList.add("correct");
                 let explanationText = q.note ? `<br><em>Not: ${q.note}</em>` : "";
                 feedbackBox.className = "feedback-box incorrect-fb";
                 feedbackBox.innerHTML = `<strong>Minik bir hata!</strong> Öğrendin, harikasın. ✨${explanationText}`;
+
+                // Normal test çözerken yanlış yapıldıysa yanlışlar kutusuna ekle (mükerrer eklememek için kontrol ediyoruz)
+                if (!isMistakeMode) {
+                    const alreadyExists = existingMistakes.some(m => m.q === q.q);
+                    if (!alreadyExists) {
+                        existingMistakes.push(q);
+                        localStorage.setItem(mistakeKey, JSON.stringify(existingMistakes));
+                    }
+                }
             }
 
             if (currentQuestion < currentQuestions.length - 1) {
@@ -629,15 +683,26 @@
         
         const wrong = currentQuestions.length - score;
         
-        // Kullanıcıya özel anahtarla skoru kaydediyoruz!
-        const scoreKey = `${currentUser}_score_t${currentTopicIndex}_p${currentPartIndex}`;
-        localStorage.setItem(scoreKey, JSON.stringify({ correct: score, wrong: wrong }));
+        if (!isMistakeMode) {
+            const scoreKey = `${currentUser}_score_t${currentTopicIndex}_p${currentPartIndex}`;
+            localStorage.setItem(scoreKey, JSON.stringify({ correct: score, wrong: wrong }));
+            document.getElementById("result-primary-btn").textContent = "Bu Testi Yeniden Çöz ❤️";
+        } else {
+            document.getElementById("result-primary-btn").textContent = "Konu Seçimine Dön 📚";
+            document.getElementById("result-primary-btn").onclick = showCategories;
+        }
 
-        scoreText.innerHTML = `Testi tamamladın ${currentUserName}! 🌟<br><br>✅ Doğru: <b>${score}</b><br>❌ Yanlış: <b>${wrong}</b><br><br>Skorun profiline kaydedildi! ❤️`;
+        scoreText.innerHTML = `Testi tamamladın ${currentUserName}! 🌟<br><br>✅ Doğru: <b>${score}</b><br>❌ Yanlış: <b>${wrong}</b><br><br>${isMistakeMode ? "Yanlışlar tekrarı tamamlandı! 🎯" : "Skorun profiline kaydedildi! ❤️"}`;
         confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
     }
 
-    function restartCurrentPart() { startPart(currentPartIndex); }
+    function restartCurrentPart() {
+        if (isMistakeMode) {
+            showCategories();
+        } else {
+            startPart(currentPartIndex);
+        }
+    }
 </script>
 
 </body>
