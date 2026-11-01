@@ -164,11 +164,64 @@
             margin-top: 10px;
             box-shadow: 0 5px 15px rgba(255, 94, 98, 0.3);
         }
+        .wheel-btn {
+            background: linear-gradient(135deg, #f7b733, #fc4a1a);
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(252, 74, 26, 0.3);
+        }
         .back-btn { background: #f1f2f6; color: #4a4a4a; margin-top: 10px; box-shadow: none; }
 
         .result-container { text-align: center; display: none; }
         .result-container h2 { color: var(--primary-color); font-size: 26px; margin-bottom: 15px; }
         .result-container p { font-size: 17px; margin-bottom: 20px; line-height: 1.6; }
+
+        /* 🎡 GÖRSEL ÇARK STİLLERİ */
+        .wheel-box {
+            background: #fff0f5;
+            border: 2px dashed var(--primary-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+        .wheel-box h3 { color: var(--primary-color); font-size: 16px; margin-bottom: 15px; }
+        
+        .visual-wheel {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px auto;
+            border-radius: 50%;
+            background: conic-gradient(#ff6584 0deg 60deg, #f7b733 60deg 120deg, #4cd137 120deg 180deg, #a1c4fd 180deg 240deg, #ff9966 240deg 300deg, #9b59b6 300deg 360deg);
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .visual-wheel::after {
+            content: '▼';
+            position: absolute;
+            top: -14px;
+            color: #2f3640;
+            font-size: 16px;
+        }
+        .visual-wheel.spinning {
+            animation: spinWheelAnim 1.5s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+        }
+        @keyframes spinWheelAnim {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(1800deg); } /* 5 tam tur + rastgele açı */
+        }
+
+        .wheel-result {
+            font-size: 16px;
+            font-weight: 700;
+            color: #27ae60;
+            margin-top: 10px;
+            min-height: 30px;
+        }
     </style>
 </head>
 <body>
@@ -242,6 +295,15 @@
         <div class="result-container" id="result-screen">
             <h2>Test Tamamlandı! 🎉</h2>
             <p id="score-text"></p>
+            
+            <!-- 🎡 GÖRSEL ÇARK ALANI -->
+            <div class="wheel-box" id="wheel-box">
+                <h3>🎁 Harika Başarı! Hediye Çarkını Çevir!</h3>
+                <div class="visual-wheel" id="visual-wheel">🎁</div>
+                <button class="btn wheel-btn" id="wheel-spin-btn" onclick="spinWheel()">Çarkı Çevir 🎰</button>
+                <div class="wheel-result" id="wheel-result"></div>
+            </div>
+
             <button class="btn" id="result-primary-btn" onclick="restartCurrentPart()">Bu Testi Yeniden Çöz ❤️</button>
             <button class="btn back-btn" style="margin-top: 10px;" onclick="showCategories()">Konu Seçimine Dön 📚</button>
         </div>
@@ -256,6 +318,15 @@
     let currentUser = "askim"; 
     let currentUserName = "Sevgilim";
     let isMistakeMode = false;
+
+    const GIFTS = [
+        "☕ Kahve Date",
+        "🍕 Yemek Date",
+        "💆‍♀️ 1 Saat Görüntülü Sohbet!",
+        "🍫 Tatlı Ismarlama !",
+        "🎬 Film / Dizi Gecesi Seçim Hakkı!",
+        "💖 Romantik Bir Gece!"
+    ];
 
     const TOPICS = [
         {
@@ -681,6 +752,7 @@
         progressBar.style.width = "100%";
         
         const wrong = currentQuestions.length - score;
+        const totalQ = currentQuestions.length;
         
         if (!isMistakeMode) {
             const scoreKey = `${currentUser}_score_t${currentTopicIndex}_p${currentPartIndex}`;
@@ -692,7 +764,41 @@
         }
 
         scoreText.innerHTML = `Testi tamamladın ${currentUserName}! 🌟<br><br>✅ Doğru: <b>${score}</b><br>❌ Yanlış: <b>${wrong}</b><br><br>${isMistakeMode ? "Yanlışlar tekrarı tamamlandı! 🎯" : "Skorun profiline kaydedildi! ❤️"}`;
-        confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
+        
+        // 8 ve üzeri doğru yapıldıysa çarkı göster
+        const wheelBox = document.getElementById("wheel-box");
+        const wheelSpinBtn = document.getElementById("wheel-spin-btn");
+        const wheelResult = document.getElementById("wheel-result");
+        const visualWheel = document.getElementById("visual-wheel");
+        
+        if (wheelResult) wheelResult.textContent = "";
+        if (wheelSpinBtn) wheelSpinBtn.style.display = "block";
+        if (visualWheel) visualWheel.classList.remove("spinning");
+
+        if (score >= 8 || (totalQ >= 10 && (score / totalQ) >= 0.8)) {
+            if (wheelBox) wheelBox.style.display = "block";
+            confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
+        } else {
+            if (wheelBox) wheelBox.style.display = "none";
+        }
+    }
+
+    function spinWheel() {
+        const visualWheel = document.getElementById("visual-wheel");
+        const wheelSpinBtn = document.getElementById("wheel-spin-btn");
+        const wheelResult = document.getElementById("wheel-result");
+
+        if (visualWheel) visualWheel.classList.add("spinning");
+        if (wheelSpinBtn) wheelSpinBtn.style.display = "none";
+        if (wheelResult) wheelResult.textContent = "🎲 Çark dönüyor...";
+
+        setTimeout(() => {
+            const randomGift = GIFTS[Math.floor(Math.random() * GIFTS.length)];
+            if (wheelResult) {
+                wheelResult.innerHTML = `🎉 Çarktan Çıkan Hediye:<br><span style="font-size:16px; color:#ff6584;">${randomGift}</span>`;
+            }
+            confetti({ particleCount: 180, spread: 120, origin: { y: 0.4 } });
+        }, 1500);
     }
 
     function restartCurrentPart() {
