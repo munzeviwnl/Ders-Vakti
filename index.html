@@ -505,7 +505,7 @@
     const PASS_ADMIN = "yonetici123";  
 
     let currentUser = "askim"; 
-    let currentUserName = "Sevgilim";
+    let currentUserName = "Özge Bakır";
     let isMistakeMode = false;
     const DAILY_GOAL_QUESTIONS = 50; 
 
@@ -723,15 +723,15 @@
         alert(`Seviye Durumun: ${lvlInfo.title}\nSeviye: ${lvlInfo.level} ⭐\nToplam XP: ${data.xp} XP\n\nTest çözerek XP kazan ve level atla! 🚀`);
     }
 
-    // ⚔️ DÜELLO EKRANI MANTIĞI
+    // ⚔️ DÜELLO EKRANI MANTIĞI (Gerçek İsimlerle)
     function openDuelScreen() {
         showScreen('duel-screen');
         const arenaDiv = document.getElementById("duel-arena-content");
         arenaDiv.innerHTML = "";
 
         const users = [
-            { id: "askim", name: "💖 Sevgilim (aşkım)" },
-            { id: "askim1", name: "👑 Sen (aşkım1)" }
+            { id: "askim", name: "Özge Bakır 💖" },
+            { id: "askim1", name: "Enes Furkan Arslan 👑" }
         ];
 
         const todayStr = new Date().toISOString().split('T')[0];
@@ -965,15 +965,15 @@
             loadAdminReport(); 
         } else if (val === PASS_ASKIM) {
             currentUser = "askim";
-            currentUserName = "Sevgilim 💖";
+            currentUserName = "Özge Bakır";
             const welcomeSub = document.getElementById("user-welcome-sub");
-            if (welcomeSub) welcomeSub.textContent = "Çalışmak istediğin dersi seç sevgilim:";
+            if (welcomeSub) welcomeSub.textContent = "Hoş geldin Özge Bakır, çalışmak istediğin dersi seç:";
             showCategories();
         } else if (val === PASS_KANKA) {
             currentUser = "askim1";
-            currentUserName = "Kanka 👑";
+            currentUserName = "Enes Furkan Arslan";
             const welcomeSub = document.getElementById("user-welcome-sub");
-            if (welcomeSub) welcomeSub.textContent = "Hoş geldin kanka, çözmek istediğin dersi seç:";
+            if (welcomeSub) welcomeSub.textContent = "Hoş geldin Enes Furkan Arslan, çözmek istediğin dersi seç:";
             showCategories();
         } else {
             alert("Şifre yanlış kanka! ❌");
@@ -998,8 +998,8 @@
         reportListDiv.innerHTML = "";
 
         const users = [
-            { id: "askim", title: "💖 Sevgilimin Karnesi (aşkım)" },
-            { id: "askim1", title: "👑 Senin Karnen (aşkım1)" }
+            { id: "askim", title: "💖 Özge Bakır'ın Karnesi (aşkım)" },
+            { id: "askim1", title: "👑 Enes Furkan Arslan'ın Karnesi (aşkım1)" }
         ];
 
         let totalRecordsFound = false;
