@@ -113,17 +113,29 @@
         .category-card h3, .topic-card h3, .part-card h3 { font-size: 16px; color: #2f3640; }
         .part-score { font-size: 12px; font-weight: 600; background: #e8f8f5; color: #27ae60; padding: 5px 8px; border-radius: 8px; }
 
-        .timer-badge {
+        .top-badges {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .timer-badge, .streak-badge {
             background: #fff0f5;
             border: 1px solid var(--primary-color);
             color: var(--primary-color);
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
-            display: inline-block;
-            margin-bottom: 15px;
+            flex: 1;
+            text-align: center;
             box-shadow: 0 2px 8px rgba(255, 101, 132, 0.1);
+        }
+        .streak-badge {
+            background: #fffaf0;
+            border-color: #f39c12;
+            color: #d35400;
         }
 
         .notification-box {
@@ -253,7 +265,10 @@
 
     <!-- DERS KATEGORİLERİ EKRANI -->
     <div id="category-screen" class="screen">
-        <div class="timer-badge" id="welcome-badge">⏳ Oturum Süresi: 00:00</div>
+        <div class="top-badges">
+            <div class="timer-badge" id="welcome-badge">⏳ Süre: 00:00</div>
+            <div class="streak-badge" id="streak-badge">🔥 Seri: 0 Gün</div>
+        </div>
         <h2>📖 Ders Kategorileri</h2>
         <p id="user-welcome-sub" style="color: #666; font-size: 14px; margin-bottom: 10px;"></p>
         <div class="category-list" id="category-list"></div>
@@ -268,7 +283,10 @@
 
     <!-- KONU SEÇİMİ EKRANI -->
     <div id="topic-screen" class="screen">
-        <div class="timer-badge">⏳ Oturum Süresi: 00:00</div>
+        <div class="top-badges">
+            <div class="timer-badge">⏳ Süre: 00:00</div>
+            <div class="streak-badge" id="streak-badge-2">🔥 Seri: 0 Gün</div>
+        </div>
         <button class="btn back-btn" onclick="showCategories()">⬅️ Derslere Dön</button>
         <h2 id="selected-category-title">Konu Seçimi</h2>
         <div class="topic-list" id="topic-list"></div>
@@ -276,7 +294,10 @@
 
     <!-- TEST PARÇALARI EKRANI -->
     <div id="part-screen" class="screen">
-        <div class="timer-badge">⏳ Oturum Süresi: 00:00</div>
+        <div class="top-badges">
+            <div class="timer-badge">⏳ Süre: 00:00</div>
+            <div class="streak-badge" id="streak-badge-3">🔥 Seri: 0 Gün</div>
+        </div>
         <button class="btn back-btn" onclick="showTopics(currentCategoryIndex)">⬅️ Konulara Dön</button>
         <h2 id="selected-topic-title">Test Seçimi</h2>
         <div class="part-list" id="part-list"></div>
@@ -284,7 +305,10 @@
 
     <!-- TEST UYGULAMA EKRANI -->
     <div id="main-app" class="screen">
-        <div class="timer-badge">⏳ Oturum Süresi: 00:00</div>
+        <div class="top-badges">
+            <div class="timer-badge">⏳ Süre: 00:00</div>
+            <div class="streak-badge" id="streak-badge-4">🔥 Seri: 0 Gün</div>
+        </div>
         <header>
             <button class="btn back-btn" onclick="backToPartsOrCategory()">⬅️ Geri Dön</button>
             <h1 id="topic-title">Konu Başlığı</h1>
@@ -335,7 +359,6 @@
         "💖 Günün Sözünü Dinletme / İtiraf Hakkı!"
     ];
 
-    // 📚 DERSLER VE KONULAR YAPISI (İleride başka dersler de ekleyebilirsin)
     const CATEGORIES = [
         {
             categoryName: "🏛️ Tarih",
@@ -444,8 +467,6 @@
                 }
             ]
         }
-        // İleride buraya virgül koyup yeni dersler ekleyebilirsin:
-        // { categoryName: "🌍 Coğrafya", topics: [...] }
     ];
 
     let currentCategoryIndex = 0;
@@ -463,13 +484,75 @@
         totalSeconds++;
         const mins = Math.floor(totalSeconds / 60);
         const secs = totalSeconds % 60;
-        const timeFormatted = `⏳ Oturum Süresi: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        const timeFormatted = `⏳ Süre: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         document.querySelectorAll('.timer-badge').forEach(badge => badge.textContent = timeFormatted);
     }, 1000);
+
+    // 🔥 STREAK (SERİ) KONTROLÜ VE GÜNCELLEMESİ
+    function updateStreakDisplay() {
+        const streakKey = `${currentUser}_streak_data`;
+        const todayStr = new Date().toISOString().split('T')[0];
+        let streakData = JSON.parse(localStorage.getItem(streakKey)) || { streak: 0, lastDate: "", testsToday: 0 };
+
+        // Eğer bugün yeni bir günse ve dün test çözülmediyse (ve bugün henüz 3 test tamamlanmadıysa) seri sıfırlanır
+        if (streakData.lastDate) {
+            const lastD = new Date(streakData.lastDate);
+            const todayD = new Date(todayStr);
+            const diffTime = todayD - lastD;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays > 1 && streakData.testsToday < 3) {
+                streakData.streak = 0;
+                streakData.testsToday = 0;
+                localStorage.setItem(streakKey, JSON.stringify(streakData));
+            }
+        }
+
+        const streakText = `🔥 Seri: ${streakData.streak} Gün`;
+        document.querySelectorAll('.streak-badge').forEach(badge => badge.textContent = streakText);
+    }
+
+    function recordTestCompletion() {
+        const streakKey = `${currentUser}_streak_data`;
+        const todayStr = new Date().toISOString().split('T')[0];
+        let streakData = JSON.parse(localStorage.getItem(streakKey)) || { streak: 0, lastDate: "", testsToday: 0 };
+
+        if (streakData.lastDate === todayStr) {
+            streakData.testsToday++;
+        } else {
+            // Yeni güne geçildi
+            const lastD = streakData.lastDate ? new Date(streakData.lastDate) : null;
+            const todayD = new Date(todayStr);
+            const diffDays = lastD ? Math.floor((todayD - lastD) / (1000 * 60 * 60 * 24)) : 0;
+
+            if (diffDays === 1 && streakData.testsToday >= 3) {
+                streakData.streak++;
+            } else if (diffDays > 1) {
+                streakData.streak = streakData.testsToday >= 3 ? 1 : 0;
+            } else if (!streakData.lastDate) {
+                streakData.streak = 1; // İlk defa çözüyor
+            }
+
+            streakData.testsToday = 1;
+            streakData.lastDate = todayStr;
+        }
+
+        // Eğer bugün ilk kez 3 teste ulaştıysa seriyi artır
+        if (streakData.testsToday === 3) {
+            streakData.streak = Math.max(streakData.streak, 1);
+            // Eğer daha önceden ardışık günse seriyi artır
+            const lastD = new Date(streakData.lastDate);
+            // Basit artış mantığı: 3 teste ulaştığı an seri yanar
+        }
+
+        localStorage.setItem(streakKey, JSON.stringify(streakData));
+        updateStreakDisplay();
+    }
 
     function showScreen(screenId) {
         document.querySelectorAll('.screen').forEach(el => el.style.display = 'none');
         document.getElementById(screenId).style.display = 'block';
+        updateStreakDisplay();
     }
 
     function checkPassword() {
@@ -796,6 +879,10 @@
         if (!isMistakeMode) {
             const scoreKey = `${currentUser}_score_c${currentCategoryIndex}_t${currentTopicIndex}_p${currentPartIndex}`;
             localStorage.setItem(scoreKey, JSON.stringify({ correct: score, wrong: wrong }));
+            
+            // Test tamamlandığında günlük seri sayacını tetikle
+            recordTestCompletion();
+
             document.getElementById("result-primary-btn").textContent = "Bu Testi Yeniden Çöz ❤️";
         } else {
             document.getElementById("result-primary-btn").textContent = "Ders Seçimine Dön 📖";
