@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <head>
-    <!-- 💖 İŞTE FOTOĞRAFINI BURADAN ALACAK 💖 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aşkımın Çalışma Ekranı 💖</title>
+    
+    <!-- 💖 İPHONE İÇİN FOTOĞRAF İKONU AYARLARI 💖 -->
     <link rel="apple-touch-icon" sizes="180x180" href="myphoto.png">
     <link rel="icon" type="image/png" sizes="32x32" href="myphoto.png">
     <link rel="icon" type="image/png" sizes="16x16" href="myphoto.png">
-    <!-- ----------------------------------------- -->
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aşkımın Çalışma Ekranı 💖</title>
-    <!-- (Geri kalan mevcut kodların aynen devam ediyor...) -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aşkımın Çalışma Ekranı 💖</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
@@ -84,6 +79,57 @@
             border-color: var(--primary-color);
         }
 
+        /* Kategori Seçim Ekranı */
+        #category-screen {
+            text-align: center;
+        }
+
+        #category-screen h2 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .category-card {
+            padding: 18px 20px;
+            border: 2px solid #f1f2f6;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fafafa;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-card:hover {
+            border-color: var(--accent-color);
+            background: #fff0f5;
+            transform: translateY(-2px);
+        }
+
+        .category-card h3 {
+            font-size: 16px;
+            color: #2f3640;
+        }
+
+        .category-card span {
+            font-size: 13px;
+            color: var(--primary-color);
+            font-weight: 600;
+            background: #ffe4e9;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
         header {
             text-align: center;
             margin-bottom: 25px;
@@ -91,7 +137,7 @@
 
         header h1 {
             color: var(--primary-color);
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 600;
             margin-bottom: 5px;
         }
@@ -204,6 +250,13 @@
             cursor: not-allowed;
         }
 
+        .back-btn {
+            background: #f1f2f6;
+            color: #4a4a4a;
+            margin-bottom: 15px;
+            box-shadow: none;
+        }
+
         .result-container {
             text-align: center;
             display: none;
@@ -220,7 +273,7 @@
             margin-bottom: 25px;
         }
 
-        .main-app {
+        .main-app, #category-screen {
             display: none;
         }
     </style>
@@ -236,10 +289,18 @@
         <button class="btn" onclick="checkPassword()">Giriş Yap ❤️</button>
     </div>
 
-    <!-- ANA TEST UYGULAMASI (Şifre girilince açılır) -->
+    <!-- KATEGORİ SEÇİM EKRANI -->
+    <div id="category-screen">
+        <h2>📚 Konu Seçimi</h2>
+        <p style="color: #666; font-size: 14px; margin-bottom: 10px;">Çalışmak istediğin dönemi seç sevgilim:</p>
+        <div class="category-list" id="category-list"></div>
+    </div>
+
+    <!-- ANA TEST UYGULAMASI -->
     <div class="main-app" id="main-app">
         <header>
-            <h1 id="topic-title">💖 Aşkımın Çalışma Ekranı 💖</h1>
+            <button class="btn back-btn" onclick="goBackToCategories()">⬅️ Konulara Dön</button>
+            <h1 id="topic-title">Konu Başlığı</h1>
             <p id="question-counter">Soru 1 / 0</p>
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
@@ -256,16 +317,17 @@
         <div class="result-container" id="result-screen">
             <h2>Test Tamamlandı! 🎉</h2>
             <p id="score-text"></p>
-            <button class="btn" onclick="restartQuiz()">Yeniden Çöz ❤️</button>
+            <button class="btn" onclick="restartQuiz()">Bu Konuyu Yeniden Çöz ❤️</button>
+            <button class="btn back-btn" style="margin-top: 10px;" onclick="goBackToCategories()">Konu Seçimine Dön 📚</button>
         </div>
     </div>
 </div>
 
 <script>
-    // 🔑 ŞİFREYİ BURADAN DEĞİŞTİREBİLİRSİN
+    // 🔑 ŞİFRE
     const SECRET_PASSWORD = "aşkım";
 
-    // 📝 SORULAR (Osmanlı Yükselme ve Duraklama Dönemleri)
+    // 📝 KATEGORİLİ SORU LİSTESİ[cite: 1]
     const TOPICS = [
         {
             name: "Osmanlı Yükselme Dönemi (1453-1579)",
@@ -374,8 +436,7 @@
     const PRAISE = ["Harikasın! 🎉", "Aynen böyle devam! 💪", "Bravo, tam isabet! ⭐", "Çok iyisin, gurur duyuyorum! 💖", "Mükemmel! Sen bunu yaparsın! 🌟", "Süpersin! Hiç durma! 🚀"];
     const COMFORT = ["Sorun değil, hata öğrenmenin parçası. 💛", "Pes yok, bir sonrakini alırsın! 💪", "Şimdi öğrendin, sınavda unutmazsın. 🌱", "Sana inanıyorum, devam! ✨", "Herkes yanılır, önemli olan vazgeçmemek. 🤍", "Bir adım geri, iki adım ileri! 🌈"];
 
-    let currentTopicIndex = 0;
-    let questions = [];
+    let currentQuestions = [];
     let currentQuestion = 0;
     let score = 0;
     let selectedOption = null;
@@ -385,11 +446,42 @@
         const val = document.getElementById("password-input").value;
         if (val === SECRET_PASSWORD) {
             document.getElementById("auth-screen").style.display = "none";
-            document.getElementById("main-app").style.display = "block";
-            initQuiz();
+            showCategories();
         } else {
             alert("Şifre yanlış aşkım, bir daha dene! ❤️");
         }
+    }
+
+    function showCategories() {
+        const listDiv = document.getElementById("category-list");
+        listDiv.innerHTML = "";
+        
+        TOPICS.forEach((topic, index) => {
+            const card = document.createElement("div");
+            card.className = "category-card";
+            card.innerHTML = `<h3>📚 ${topic.name}</h3><span>${topic.questions.length} Soru</span>`;
+            card.onclick = () => startTopic(index);
+            listDiv.appendChild(card);
+        });
+
+        document.getElementById("category-screen").style.display = "block";
+        document.getElementById("main-app").style.display = "none";
+    }
+
+    function startTopic(index) {
+        currentQuestions = TOPICS[index].questions;
+        currentQuestion = 0;
+        score = 0;
+        document.getElementById("topic-title").textContent = TOPICS[index].name;
+        document.getElementById("category-screen").style.display = "none";
+        document.getElementById("main-app").style.display = "block";
+        document.getElementById("quiz-screen").style.display = "block";
+        document.getElementById("result-screen").style.display = "none";
+        loadQuestion();
+    }
+
+    function goBackToCategories() {
+        showCategories();
     }
 
     const questionText = document.getElementById("question-text");
@@ -401,18 +493,6 @@
     const quizScreen = document.getElementById("quiz-screen");
     const resultScreen = document.getElementById("result-screen");
     const scoreText = document.getElementById("score-text");
-    const topicTitle = document.getElementById("topic-title");
-
-    function initQuiz() {
-        // Tüm konuları birleştirip ya da sırayla sunabiliriz; şimdilik ilk konudan veya tümünden soruları alalım:
-        // Hepsini tek havuz yapmak istersen: TOPICS icindeki tum soruları alabiliriz. 
-        // Şimdilik konulardaki soruları birleştirelim:
-        questions = [];
-        TOPICS.forEach(t => {
-            questions = questions.concat(t.questions);
-        });
-        loadQuestion();
-    }
 
     function loadQuestion() {
         isAnswered = false;
@@ -421,10 +501,10 @@
         nextBtn.disabled = true;
         nextBtn.textContent = "Sonraki Soru";
 
-        const q = questions[currentQuestion];
+        const q = currentQuestions[currentQuestion];
         questionText.textContent = `${currentQuestion + 1}. ${q.q}`;
-        questionCounter.textContent = `Soru ${currentQuestion + 1} / ${questions.length}`;
-        progressBar.style.width = `${(currentQuestion / questions.length) * 100}%`;
+        questionCounter.textContent = `Soru ${currentQuestion + 1} / ${currentQuestions.length}`;
+        progressBar.style.width = `${(currentQuestion / currentQuestions.length) * 100}%`;
 
         optionsList.innerHTML = "";
         q.options.forEach((opt, index) => {
@@ -448,7 +528,7 @@
         if (!isAnswered) {
             if (selectedOption === null) return;
             isAnswered = true;
-            const q = questions[currentQuestion];
+            const q = currentQuestions[currentQuestion];
             const optionItems = document.querySelectorAll(".option-item");
 
             feedbackBox.style.display = "block";
@@ -469,14 +549,14 @@
                 feedbackBox.innerHTML = `<strong>Minik bir hata ama süpersin!</strong> ${randomComfort}${explanationText}`;
             }
 
-            if (currentQuestion < questions.length - 1) {
+            if (currentQuestion < currentQuestions.length - 1) {
                 nextBtn.textContent = "Sonraki Soruya Geç";
             } else {
                 nextBtn.textContent = "Sonuçları Gör";
             }
         } else {
             currentQuestion++;
-            if (currentQuestion < questions.length) {
+            if (currentQuestion < currentQuestions.length) {
                 loadQuestion();
             } else {
                 showResults();
@@ -488,7 +568,7 @@
         quizScreen.style.display = "none";
         resultScreen.style.display = "block";
         progressBar.style.width = "100%";
-        scoreText.innerHTML = `${questions.length} sorudan <b>${score}</b> doğru yaptın!<br>Seni çok seviyorum, harika hazırlandın! ❤️`;
+        scoreText.innerHTML = `${currentQuestions.length} sorudan <b>${score}</b> doğru yaptın!<br>Seni çok seviyorum, harika hazırlandın! ❤️`;
         confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
     }
 
