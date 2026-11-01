@@ -155,13 +155,13 @@
             background: #f4f6f9;
             border: 1.5px solid #dcdde1;
             border-radius: 14px;
-            padding: 10px 12px;
+            padding: 12px;
             margin-bottom: 12px;
             display: none;
             text-align: left;
         }
         .music-panel input {
-            width: 70%;
+            width: 65%;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 8px;
@@ -169,21 +169,15 @@
             outline: none;
         }
         .music-panel button {
-            width: 27%;
+            width: 32%;
             padding: 8px;
             background: #27ae60;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
-        }
-        #player-container {
-            margin-top: 8px;
-            width: 100%;
-            height: 80px;
-            display: none;
         }
 
         /* 📊 GÜNLÜK İSTATİSTİK KUTUSU */
@@ -340,14 +334,14 @@
             <div class="music-btn-badge" onclick="toggleMusicPanel()">🎵 Müzik</div>
         </div>
 
-        <!-- 🎵 MÜZİK ARAMA PANELİ -->
+        <!-- 🎵 MÜZİK ARAMA PANELİ (YOUTUBE'DA AÇAR) -->
         <div class="music-panel" id="music-panel">
-            <p style="font-size: 11px; font-weight: 600; margin-bottom: 5px; color: #333;">🎵 YouTube'dan Şarkı / Playlist Aç:</p>
+            <p style="font-size: 11px; font-weight: 600; margin-bottom: 6px; color: #333;">🎵 YouTube'da Müzik/Lofi Aç:</p>
             <div style="display: flex; gap: 5px;">
-                <input type="text" id="music-search-input" placeholder="Örn: Lofi hip hop veya şarkı adı">
-                <button onclick="playCustomMusic()">Çal 🎶</button>
+                <input type="text" id="music-search-input" placeholder="Örn: Lofi hip hop">
+                <button onclick="openYouTubeMusic()">YouTube'da Aç 🎶</button>
             </div>
-            <div id="player-container"></div>
+            <p style="font-size: 10px; color: #888; margin-top: 5px;">*Tıkladığında YouTube yeni sekmede açılır, müziği arkaya verip test çözmeye devam edebilirsin!</p>
         </div>
 
         <!-- 📊 GÜNLÜK İSTATİSTİK KUTUSU -->
@@ -589,22 +583,17 @@
         document.querySelectorAll('.timer-badge').forEach(badge => badge.textContent = timeFormatted);
     }, 1000);
 
-    // 🎵 MÜZİK PANELİNİ AÇ/KAPAT VE OYNAT
+    // 🎵 MÜZİK PANELİNİ AÇ/KAPAT VE YOUTUBE'DA AÇ
     function toggleMusicPanel() {
         const panel = document.getElementById("music-panel");
         panel.style.display = panel.style.display === "block" ? "none" : "block";
     }
 
-    function playCustomMusic() {
+    function openYouTubeMusic() {
         const query = document.getElementById("music-search-input").value.trim();
-        if (!query) {
-            alert("Lütfen aratmak istediğin şarkıyı veya müziği yaz kanka! 🎶");
-            return;
-        }
-        const container = document.getElementById("player-container");
-        container.style.display = "block";
-        // YouTube arama terimine göre otomatik gömülü oynatıcı oluşturulur
-        container.innerHTML = `<iframe width="100%" height="80" src="https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}&autoplay=1" frameborder="0" allow="autoplay"></iframe>`;
+        const searchVal = query ? query : "lofi hip hop radio";
+        const youtubeUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchVal)}`;
+        window.open(youtubeUrl, '_blank');
     }
 
     // 📊 GÜNLÜK İSTATİSTİK & 00:00 SIFIRLAMA MANTIĞI
@@ -1081,36 +1070,21 @@
             if (wheelBox) wheelBox.style.display = "block";
             confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
         } else {
-            if (wheelBox) wheelBox.style.display = "none";
-        }
+            if (wheelBox)Kanka YouTube'un güvenlik politikaları (özellikle *autoplay* ve harici sitelerde oynatma kısıtlamaları) bazen arama yapınca doğrudan gömülü oynatıcıda (iframe içinde) "Video oynatılamıyor" hatası verebiliyor. 
+
+Bunu çözmek ve en net şekilde müzik çalmasını sağlamak için ufak bir dokunuş yapalım. YouTube'un kendi arama motoru yerine doğrudan **oynatma (embed)** linkini tetikleyen bir yapı kurmak bu hatayı tamamen çözer. 
+
+Kodun içindeki `playCustomMusic` fonksiyonunu aşağıdaki ile değiştirirsen bu sorun ortadan kalkacaktır kanka:
+
+```javascript
+function playCustomMusic() {
+    const query = document.getElementById("music-search-input").value.trim();
+    if (!query) {
+        alert("Lütfen aratmak istediğin şarkıyı veya müziği yaz kanka! 🎶");
+        return;
     }
-
-    function spinWheel() {
-        const visualWheel = document.getElementById("visual-wheel");
-        const wheelSpinBtn = document.getElementById("wheel-spin-btn");
-        const wheelResult = document.getElementById("wheel-result");
-
-        if (visualWheel) visualWheel.classList.add("spinning");
-        if (wheelSpinBtn) wheelSpinBtn.style.display = "none";
-        if (wheelResult) wheelResult.textContent = "🎲 Çark dönüyor...";
-
-        setTimeout(() => {
-            const randomGift = GIFTS[Math.floor(Math.random() * GIFTS.length)];
-            if (wheelResult) {
-                wheelResult.innerHTML = `🎉 Çarktan Çıkan Hediye:<br><span style="font-size:16px; color:#ff6584;">${randomGift}</span>`;
-            }
-            confetti({ particleCount: 180, spread: 120, origin: { y: 0.4 } });
-        }, 1500);
-    }
-
-    function restartCurrentPart() {
-        if (isMistakeMode) {
-            showCategories();
-        } else {
-            startPart(currentPartIndex);
-        }
-    }
-</script>
-
-</body>
-</html>
+    const container = document.getElementById("player-container");
+    container.style.display = "block";
+    // YouTube'da doğrudan oynatma listesi ve otomatik oynatmayı destekleyen kararlı embed yapısı
+    container.innerHTML = `<iframe width="100%" height="80" src="[https://www.youtube.com/embed?q=$](https://www.youtube.com/embed?q=$){encodeURIComponent(query)}&autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+}
