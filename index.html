@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aşkımın Çalışma Ekranı 💖</title>
     
-    <!-- 💖 İPHONE İÇİN FOTOĞRAF İKONU AYARLARI 💖 -->
+    <!-- 💖 İPHONE İÇİN FOTOĞRAF İKONu AYARLARI 💖 -->
     <link rel="apple-touch-icon" sizes="180x180" href="myphoto.png">
     <link rel="icon" type="image/png" sizes="32x32" href="myphoto.png">
     <link rel="icon" type="image/png" sizes="16x16" href="myphoto.png">
@@ -79,9 +79,39 @@
             border-color: var(--primary-color);
         }
 
+        /* Yönetici Paneli Ekranı */
+        #admin-screen {
+            text-align: center;
+            display: none;
+        }
+
+        #admin-screen h2 {
+            color: #2f3640;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        #admin-screen textarea {
+            width: 100%;
+            height: 100px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 15px;
+            resize: none;
+            outline: none;
+            margin-bottom: 15px;
+            transition: border-color 0.2s;
+        }
+
+        #admin-screen textarea:focus {
+            border-color: var(--primary-color);
+        }
+
         /* Kategori Seçim Ekranı */
         #category-screen {
             text-align: center;
+            display: none;
         }
 
         #category-screen h2 {
@@ -130,7 +160,6 @@
             border-radius: 8px;
         }
 
-        /* Bildirim İzin Butonu Alanı */
         .notification-box {
             margin-top: 25px;
             padding: 15px;
@@ -289,7 +318,7 @@
             margin-bottom: 25px;
         }
 
-        .main-app, #category-screen {
+        .main-app {
             display: none;
         }
     </style>
@@ -300,9 +329,18 @@
     <!-- ŞİFRE EKRANI -->
     <div id="auth-screen">
         <h2>💖 Aşkımın Çalışma Ekranı</h2>
-        <p style="margin-bottom: 15px; color: #666;">Bu çalışma alanına sadece şifreyi bilenler girebilir aşkım! Şifreyi gir bakalım:</p>
-        <input type="password" id="password-input" placeholder="Gizli Şifre (Örn: aşkım)">
+        <p style="margin-bottom: 15px; color: #666;">Şifreyi gir sevgilim:</p>
+        <input type="password" id="password-input" placeholder="Gizli Şifre">
         <button class="btn" onclick="checkPassword()">Giriş Yap ❤️</button>
+    </div>
+
+    <!-- YÖNETİCİ PANELİ (Sadece senin bildiğin şifreyle açılır) -->
+    <div id="admin-screen">
+        <h2>👑 Yönetici Bildirim Paneli</h2>
+        <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Sevgiline göndermek istediğin mesajı aşağıya yaz kanka:</p>
+        <textarea id="admin-msg" placeholder="Örn: Haydi bakalım, bugün hiç Osmanlı çözmedin masaya! 📚"></textarea>
+        <button class="btn" onclick="sendAdminNotification()">Anında Bildirim Gönder 🚀</button>
+        <button class="btn back-btn" style="margin-top: 10px;" onclick="location.reload()">Çıkış Yap 🔙</button>
     </div>
 
     <!-- KATEGORİ SEÇİM EKRANI -->
@@ -311,9 +349,8 @@
         <p style="color: #666; font-size: 14px; margin-bottom: 10px;">Çalışmak istediğin dönemi seç sevgilim:</p>
         <div class="category-list" id="category-list"></div>
 
-        <!-- BİLDİRİM AÇMA BUTONU -->
         <div class="notification-box">
-            <p>🔔 Siteden anlık bildirimler ve motivasyonlar almak için tıkla!</p>
+            <p>🔔 Siteden anlık bildirimler almak için tıkla!</p>
             <button class="btn" style="padding: 10px; font-size: 14px;" onclick="requestNotificationPermission()">Bildirimleri Aç 💖</button>
         </div>
     </div>
@@ -346,10 +383,10 @@
 </div>
 
 <script>
-    // 🔑 ŞİFRE
-    const SECRET_PASSWORD = "aşkım";
+    // 🔑 ŞİFRELER (İstediğin gibi değiştirebilirsin)
+    const SECRET_PASSWORD = "aşkım";       // Kız arkadaşının şifresi
+    const ADMIN_PASSWORD = "yonetici123";  // Senin yönetici paneli şifren (İstediğini yapabilirsin)
 
-    // 📝 KATEGORİLİ SORU LİSTESİ
     const TOPICS = [
         {
             name: "Osmanlı Yükselme Dönemi (1453-1579)",
@@ -464,17 +501,31 @@
     let selectedOption = null;
     let isAnswered = false;
 
-    // 🔔 BİLDİRİM İZİN İSTEME FONKSİYONU
+    // Şifre Kontrolü (Yönetici mi normal kullanıcı mı?)
+    function checkPassword() {
+        const val = document.getElementById("password-input").value;
+        if (val === ADMIN_PASSWORD) {
+            // Yönetici paneline yönlendir
+            document.getElementById("auth-screen").style.display = "none";
+            document.getElementById("admin-screen").style.display = "block";
+        } else if (val === SECRET_PASSWORD) {
+            // Normal kız arkadaş paneline yönlendir
+            document.getElementById("auth-screen").style.display = "none";
+            showCategories();
+        } else {
+            alert("Şifre yanlış aşkım, bir daha dene! ❤️");
+        }
+    }
+
+    // Bildirim İzni İsteme
     function requestNotificationPermission() {
         if (!("Notification" in window)) {
-            alert("Tarayıcınız bildirimleri desteklemiyor sevgilim.");
+            alert("Tarayıcınız bildirimleri desteklemiyor.");
             return;
         }
-
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
                 alert("Bildirimler başarıyla açıldı aşkım! Artık hazırsın 💖");
-                // Test bildirimi gönder
                 new Notification("Aşkımın Çalışma Ekranı 💖", {
                     body: "Harika! Bildirimler aktif edildi. Haydi ders çalışmaya! ⭐",
                     icon: "myphoto.png"
@@ -485,13 +536,23 @@
         });
     }
 
-    function checkPassword() {
-        const val = document.getElementById("password-input").value;
-        if (val === SECRET_PASSWORD) {
-            document.getElementById("auth-screen").style.display = "none";
-            showCategories();
+    // Senin Yönetici Panelinden Bildirim Gönderme Fonksiyonun
+    function sendAdminNotification() {
+        const msg = document.getElementById("admin-msg").value.trim();
+        if (!msg) {
+            alert("Lütfen bir mesaj yaz kanka!");
+            return;
+        }
+
+        if (Notification.permission === "granted") {
+            new Notification("Aşkından Bildirim Var! 💖", {
+                body: msg,
+                icon: "myphoto.png"
+            });
+            alert("Bildirim başarıyla gönderildi kanka! 🚀");
+            document.getElementById("admin-msg").value = "";
         } else {
-            alert("Şifre yanlış aşkım, bir daha dene! ❤️");
+            alert("Kız arkadaşın henüz siteden 'Bildirimleri Aç' butonuna basmamış veya izin vermemiş kanka!");
         }
     }
 
@@ -545,84 +606,6 @@
         nextBtn.textContent = "Sonraki Soru";
 
         const q = currentQuestions[currentQuestion];
-        questionText.textContent = `${currentQuestion + 1}. ${q.q}`;
-        questionCounter.textContent = `Soru ${currentQuestion + 1} / ${currentQuestions.length}`;
-        progressBar.style.width = `${(currentQuestion / currentQuestions.length) * 100}%`;
-
-        optionsList.innerHTML = "";
-        q.options.forEach((opt, index) => {
-            const li = document.createElement("li");
-            li.className = "option-item";
-            li.textContent = opt;
-            li.onclick = () => selectOption(index, li);
-            optionsList.appendChild(li);
-        });
-    }
-
-    function selectOption(index, element) {
-        if (isAnswered) return;
-        document.querySelectorAll(".option-item").forEach(el => el.classList.remove("selected"));
-        element.classList.add("selected");
-        selectedOption = index;
-        nextBtn.disabled = false;
-    }
-
-    nextBtn.onclick = function() {
-        if (!isAnswered) {
-            if (selectedOption === null) return;
-            isAnswered = true;
-            const q = currentQuestions[currentQuestion];
-            const optionItems = document.querySelectorAll(".option-item");
-
-            feedbackBox.style.display = "block";
-
-            if (selectedOption === q.answer) {
-                optionItems[selectedOption].classList.add("correct");
-                const randomPraise = PRAISE[Math.floor(Math.random() * PRAISE.length)];
-                feedbackBox.className = "feedback-box correct-fb";
-                feedbackBox.innerHTML = `<strong>Tebrikler aşkım çok zekisin ❤️</strong><br>${randomPraise}`;
-                score++;
-                confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
-            } else {
-                optionItems[selectedOption].classList.add("incorrect");
-                optionItems[q.answer].classList.add("correct");
-                const randomComfort = COMFORT[Math.floor(Math.random() * COMFORT.length)];
-                let explanationText = q.note ? `<br><em>Not: ${q.note}</em>` : "";
-                feedbackBox.className = "feedback-box incorrect-fb";
-                feedbackBox.innerHTML = `<strong>Minik bir hata ama süpersin!</strong> ${randomComfort}${explanationText}`;
-            }
-
-            if (currentQuestion < currentQuestions.length - 1) {
-                nextBtn.textContent = "Sonraki Soruya Geç";
-            } else {
-                nextBtn.textContent = "Sonuçları Gör";
-            }
-        } else {
-            currentQuestion++;
-            if (currentQuestion < currentQuestions.length) {
-                loadQuestion();
-            } else {
-                showResults();
-            }
-        }
-    };
-
-    function showResults() {
-        quizScreen.style.display = "none";
-        resultScreen.style.display = "block";
-        progressBar.style.width = "100%";
-        scoreText.innerHTML = `${currentQuestions.length} sorudan <b>${score}</b> doğru yaptın!<br>Seni çok seviyorum, harika hazırlandın! ❤️`;
-        confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
-    }
-
-    function restartQuiz() {
-        currentQuestion = 0;
-        score = 0;
-        resultScreen.style.display = "none";
-        quizScreen.style.display = "block";
-        loadQuestion();
-    }
-</script>
-
-</body>
-</html>
+        questionText.textContent = `${currentQuestion + 1}.${q.q}`;
+        questionCounter.textContent = `Soru ${currentQuestion + 1} /${current
+                                                                    
