@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aşkımın Çalışma Ekranı 💖</title>
     
-    <!-- 💖 İPHONE İÇİN FOTOĞRAF İKONu AYARLARI 💖 -->
+    <!-- 💖 İPHONE İÇİN FOTOĞRAF İKONU AYARLARI 💖 -->
     <link rel="apple-touch-icon" sizes="180x180" href="myphoto.png">
     <link rel="icon" type="image/png" sizes="32x32" href="myphoto.png">
     <link rel="icon" type="image/png" sizes="16x16" href="myphoto.png">
@@ -51,10 +51,16 @@
             position: relative;
         }
 
+        /* Tüm Ekranların Varsayılan Gizli Hali */
+        #auth-screen, #admin-screen, #category-screen, #main-app {
+            display: none;
+        }
+
         /* Şifre Ekranı */
         #auth-screen {
             text-align: center;
             padding: 20px;
+            display: block;
         }
 
         #auth-screen h2 {
@@ -82,7 +88,6 @@
         /* Yönetici Paneli Ekranı */
         #admin-screen {
             text-align: center;
-            display: none;
         }
 
         #admin-screen h2 {
@@ -111,7 +116,6 @@
         /* Kategori Seçim Ekranı */
         #category-screen {
             text-align: center;
-            display: none;
         }
 
         #category-screen h2 {
@@ -317,10 +321,6 @@
             font-size: 18px;
             margin-bottom: 25px;
         }
-
-        .main-app {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -334,7 +334,7 @@
         <button class="btn" onclick="checkPassword()">Giriş Yap ❤️</button>
     </div>
 
-    <!-- YÖNETİCİ PANELİ (Sadece senin bildiğin şifreyle açılır) -->
+    <!-- YÖNETİCİ PANELİ -->
     <div id="admin-screen">
         <h2>👑 Yönetici Bildirim Paneli</h2>
         <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Sevgiline göndermek istediğin mesajı aşağıya yaz kanka:</p>
@@ -356,7 +356,7 @@
     </div>
 
     <!-- ANA TEST UYGULAMASI -->
-    <div class="main-app" id="main-app">
+    <div id="main-app">
         <header>
             <button class="btn back-btn" onclick="goBackToCategories()">⬅️ Konulara Dön</button>
             <h1 id="topic-title">Konu Başlığı</h1>
@@ -383,9 +383,9 @@
 </div>
 
 <script>
-    // 🔑 ŞİFRELER (İstediğin gibi değiştirebilirsin)
-    const SECRET_PASSWORD = "aşkım";       // Kız arkadaşının şifresi
-    const ADMIN_PASSWORD = "yonetici123";  // Senin yönetici paneli şifren (İstediğini yapabilirsin)
+    // 🔑 ŞİFRELER
+    const SECRET_PASSWORD = "aşkım";       
+    const ADMIN_PASSWORD = "yonetici123";  
 
     const TOPICS = [
         {
@@ -484,9 +484,9 @@
                 {q:"Osmanlı tarihinde ilk defa bir şeyhülislamı idam ettiren padişah kimdir?",options:["I. Ahmet","II. Osman","IV. Mehmet","IV. Murat"],answer:3,note:"Lakabı Bağdat Fatihi'dir."},
                 {q:"Koçi Bey ve Kâtip Çelebi hangi padişaha risalelerini (raporlarını) sunmuştur?",options:["II. Osman","I. Ahmet","IV. Murat","III. Mehmet"],answer:2},
                 {q:"IV. Murat'ın gece sokağa çıkma yasağı, içki ve tütün yasağı getirmesinin temel sebebi nedir?",options:["Vergi gelirlerini artırmak","İstanbul'da ortaya çıkan yangınların önüne geçmek","Yeniçerileri disipline etmek","Halkın gelirini artırmak"],answer:1,note:"Kanuni Dönemi'nde açılan kahve ve meyhaneleri de kapattı."},
-                {q:"Ekber ve erşed sistemini getirerek veraset sisteminde son değişikliği yapan padişah kimdir?",options:["III. Mehmet","IV. Murat","II. Osman","I. Ahmet"],answer:3,note:"Bu sisteme göre ailenin en büyük ve en olgun üyesi tahta çıkar."},
+                {q:"Ekber ve erşed sistemini getirerek veraset sisteminde son değişikliği yapan padişah kimdir?",options:["III. Mehmet","IV. Murat","II. Osman","I. Ahmet"],answer:3,note:"Kız kardeşinle ilgili sisteme göre ailenin en büyük üyesi seçilir."},
                 {q:"Şehzadelerin sancağa çıkma uygulamasını kaldıran padişah kimdir?",options:["I. Ahmet","IV. Mehmet","III. Mehmet","II. Selim"],answer:2},
-                {q:"Köprülü Mehmet Paşa, Venedik'in Çanakkale'ye uyguladığı ablukayı kaldırarak hangi devlete karşı başarı kazanmıştır?",options:["Rusya","Lehistan","Avusturya","Venedik"],answer:3,note:"Saraya şartlar öne sürerek sadrazam olan ilk kişidir."},
+                {q:"Köprülü Mehmet Paşa, Venedik'in Çanakkale'ye uyguladığı ablukayı kaldırarak hangi devlete karşı başarı kazanmıştır?",options:["Rusya","Lehistan","Avusturya","Venedik"],answer:3},
                 {q:"Köprülüler Dönemi için aşağıdakilerden hangisi söylenir?",options:["Duraklama Dönemi içinde Yükselme Dönemi yaşatmışlardır","Yükselme Dönemi içinde Duraklama yaşatmışlardır","Kuruluş Dönemi'ni yeniden başlatmışlardır","Gerileme Dönemi'ni başlatmışlardır"],answer:0}
             ]
         }
@@ -501,15 +501,21 @@
     let selectedOption = null;
     let isAnswered = false;
 
-    // Şifre Kontrolü (Yönetici mi normal kullanıcı mı?)
+    // Sayfa açıldığında sadece şifre ekranı görünsün
+    window.onload = function() {
+        document.getElementById("auth-screen").style.display = "block";
+    };
+
+    // Şifre Kontrolü
     function checkPassword() {
-        const val = document.getElementById("password-input").value;
+        const val = document.getElementById("password-input").value.trim();
+        
         if (val === ADMIN_PASSWORD) {
-            // Yönetici paneline yönlendir
+            // Yönetici paneli açılacak
             document.getElementById("auth-screen").style.display = "none";
             document.getElementById("admin-screen").style.display = "block";
         } else if (val === SECRET_PASSWORD) {
-            // Normal kız arkadaş paneline yönlendir
+            // Kız arkadaş paneli açılacak
             document.getElementById("auth-screen").style.display = "none";
             showCategories();
         } else {
@@ -536,7 +542,7 @@
         });
     }
 
-    // Senin Yönetici Panelinden Bildirim Gönderme Fonksiyonun
+    // Senin Yönetici Panelinden Bildirim Göndermen
     function sendAdminNotification() {
         const msg = document.getElementById("admin-msg").value.trim();
         if (!msg) {
@@ -552,7 +558,7 @@
             alert("Bildirim başarıyla gönderildi kanka! 🚀");
             document.getElementById("admin-msg").value = "";
         } else {
-            alert("Kız arkadaşın henüz siteden 'Bildirimleri Aç' butonuna basmamış veya izin vermemiş kanka!");
+            alert("Kız arkadaşın henüz siteden 'Bildirimleri Aç' butonuna basmamış veya izin vermemiş!");
         }
     }
 
@@ -569,6 +575,7 @@
         });
 
         document.getElementById("category-screen").style.display = "block";
+        document.getElementById("admin-screen").style.display = "none";
         document.getElementById("main-app").style.display = "none";
     }
 
@@ -606,6 +613,84 @@
         nextBtn.textContent = "Sonraki Soru";
 
         const q = currentQuestions[currentQuestion];
-        questionText.textContent = `${currentQuestion + 1}.${q.q}`;
-        questionCounter.textContent = `Soru ${currentQuestion + 1} /${current
-                                                                    
+        questionText.textContent = `${currentQuestion + 1}. ${q.q}`;
+        questionCounter.textContent = `Soru ${currentQuestion + 1} / ${currentQuestions.length}`;
+        progressBar.style.width = `${(currentQuestion / currentQuestions.length) * 100}%`;
+
+        optionsList.innerHTML = "";
+        q.options.forEach((opt, index) => {
+            const li = document.createElement("li");
+            li.className = "option-item";
+            li.textContent = opt;
+            li.onclick = () => selectOption(index, li);
+            optionsList.appendChild(li);
+        });
+    }
+
+    function selectOption(index, element) {
+        if (isAnswered) return;
+        document.querySelectorAll(".option-item").forEach(el => el.classList.remove("selected"));
+        element.classList.add("selected");
+        selectedOption = index;
+        nextBtn.disabled = false;
+    }
+
+    nextBtn.onclick = function() {
+        if (!isAnswered) {
+            if (selectedOption === null) return;
+            isAnswered = true;
+            const q = currentQuestions[currentQuestion];
+            const optionItems = document.querySelectorAll(".option-item");
+
+            feedbackBox.style.display = "block";
+
+            if (selectedOption === q.answer) {
+                optionItems[selectedOption].classList.add("correct");
+                const randomPraise = PRAISE[Math.floor(Math.random() * PRAISE.length)];
+                feedbackBox.className = "feedback-box correct-fb";
+                feedbackBox.innerHTML = `<strong>Tebrikler aşkım çok zekisin ❤️</strong><br>${randomPraise}`;
+                score++;
+                confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+            } else {
+                optionItems[selectedOption].classList.add("incorrect");
+                optionItems[q.answer].classList.add("correct");
+                const randomComfort = COMFORT[Math.floor(Math.random() * COMFORT.length)];
+                let explanationText = q.note ? `<br><em>Not: ${q.note}</em>` : "";
+                feedbackBox.className = "feedback-box incorrect-fb";
+                feedbackBox.innerHTML = `<strong>Minik bir hata ama süpersin!</strong> ${randomComfort}${explanationText}`;
+            }
+
+            if (currentQuestion < currentQuestions.length - 1) {
+                nextBtn.textContent = "Sonraki Soruya Geç";
+            } else {
+                nextBtn.textContent = "Sonuçları Gör";
+            }
+        } else {
+            currentQuestion++;
+            if (currentQuestion < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+    };
+
+    function showResults() {
+        quizScreen.style.display = "none";
+        resultScreen.style.display = "block";
+        progressBar.style.width = "100%";
+        scoreText.innerHTML = `${currentQuestions.length} sorudan <b>${score}</b> doğru yaptın!<br>Seni çok seviyorum, harika hazırlandın! ❤️`;
+        confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
+    }
+
+    function restartQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        resultScreen.style.display = "none";
+        quizScreen.style.display = "block";
+        loadQuestion();
+    }
+</script>
+
+</body>
+</html>
