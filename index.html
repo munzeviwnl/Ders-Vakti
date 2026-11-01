@@ -113,7 +113,7 @@
         .category-card h3, .topic-card h3, .part-card h3 { font-size: 16px; color: #2f3640; }
         .part-score { font-size: 12px; font-weight: 600; background: #e8f8f5; color: #27ae60; padding: 5px 8px; border-radius: 8px; }
 
-        /* 🌟 4'LÜ KUSURSUZ ÜST ROZETLER */
+        /* ÜST ROZETLER */
         .top-badges {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -135,30 +135,12 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .timer-badge {
-            background: #f0f3f4;
-            border-color: #7f8c8d;
-            color: #2c3e50;
-        }
-        .streak-badge {
-            background: #fffaf0;
-            border-color: #f39c12;
-            color: #d35400;
-        }
-        .coin-badge {
-            background: #f4ecf7;
-            border-color: #8e44ad;
-            color: #8e44ad;
-            cursor: pointer;
-        }
-        .level-badge {
-            background: #ebf5fb;
-            border-color: #3498db;
-            color: #2980b9;
-            cursor: pointer;
-        }
+        .timer-badge { background: #f0f3f4; border-color: #7f8c8d; color: #2c3e50; }
+        .streak-badge { background: #fffaf0; border-color: #f39c12; color: #d35400; }
+        .coin-badge { background: #f4ecf7; border-color: #8e44ad; color: #8e44ad; cursor: pointer; }
+        .level-badge { background: #ebf5fb; border-color: #3498db; color: #2980b9; cursor: pointer; }
 
-        /* 📊 GÜNLÜK HEDEF VE İSTATİSTİK KUTUSU */
+        /* GÜNLÜK HEDEF KUTUSU */
         .daily-stats-card {
             background: #fdf2f4;
             border: 1.5px solid #ffb6c1;
@@ -203,7 +185,7 @@
             transition: width 0.4s ease;
         }
 
-        /* ⚔️ DÜELLO EKRANI KARTLARI */
+        /* DÜELLO EKRANI KARTLARI */
         .duel-arena {
             display: flex;
             flex-direction: column;
@@ -284,63 +266,11 @@
             margin-top: 8px;
             box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
         }
-        .wheel-btn {
-            background: linear-gradient(135deg, #f7b733, #fc4a1a);
-            margin-bottom: 10px;
-            box-shadow: 0 5px 15px rgba(252, 74, 26, 0.3);
-        }
         .back-btn { background: #f1f2f6; color: #4a4a4a; margin-top: 10px; box-shadow: none; }
 
         .result-container { text-align: center; display: none; }
         .result-container h2 { color: var(--primary-color); font-size: 26px; margin-bottom: 15px; }
         .result-container p { font-size: 17px; margin-bottom: 20px; line-height: 1.6; }
-
-        .wheel-box {
-            background: #fff0f5;
-            border: 2px dashed var(--primary-color);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: none;
-            text-align: center;
-        }
-        .wheel-box h3 { color: var(--primary-color); font-size: 16px; margin-bottom: 15px; }
-        
-        .visual-wheel {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 15px auto;
-            border-radius: 50%;
-            background: conic-gradient(#ff6584 0deg 60deg, #f7b733 60deg 120deg, #4cd137 120deg 180deg, #a1c4fd 180deg 240deg, #ff9966 240deg 300deg, #9b59b6 300deg 360deg);
-            border: 4px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .visual-wheel::after {
-            content: '▼';
-            position: absolute;
-            top: -14px;
-            color: #2f3640;
-            font-size: 16px;
-        }
-        .visual-wheel.spinning {
-            animation: spinWheelAnim 1.5s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
-        }
-        @keyframes spinWheelAnim {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(1800deg); }
-        }
-
-        .wheel-result {
-            font-size: 16px;
-            font-weight: 700;
-            color: #27ae60;
-            margin-top: 10px;
-            min-height: 30px;
-        }
     </style>
 </head>
 <body>
@@ -349,15 +279,15 @@
     <!-- GİRİŞ EKRANI -->
     <div id="auth-screen" class="screen" style="display: block;">
         <h2>💖 QuizAşk</h2>
-        <p style="margin-bottom: 15px; color: #666;">Şifreyi gir sevgilim / kanka / yönetici:</p>
+        <p style="margin-bottom: 15px; color: #666;">Şifreyi giriniz:</p>
         <input type="password" id="password-input" placeholder="Şifre Giriniz">
-        <button class="btn" onclick="checkPassword()">Giriş Yap ❤️</button>
+        <button class="btn" onclick="checkPassword()">Giriş Yap</button>
     </div>
 
     <!-- YÖNETİCİ PANELİ -->
     <div id="admin-screen" class="screen">
         <h2>👑 Yönetici & Takip Paneli</h2>
-        <textarea id="admin-msg" placeholder="Sevgiline anlık bildirim gönder..."></textarea>
+        <textarea id="admin-msg" placeholder="Bildirim gönder..."></textarea>
         <button class="btn" onclick="sendAdminNotification()">Bildirim Gönder 🚀</button>
         
         <div class="admin-report-box">
@@ -412,10 +342,10 @@
         <div class="category-list" id="category-list"></div>
         
         <button class="btn mistake-btn" onclick="startMistakeQuiz()">🚨 Tekrar Etmem Gerekenler (Yanlışlarım)</button>
-        <button class="btn duel-main-btn" onclick="openDuelScreen()">⚔️ Günlük Düello & Kapışma Ligi</button>
+        <button class="btn duel-main-btn" id="duel-menu-btn" onclick="openDuelScreen()">⚔️ Günlük Düello & Kapışma Ligi</button>
         <button class="btn rescue-btn" id="rescue-btn" style="display: none;" onclick="rescueStreakWithCoins()">🛡️ 5 Coin ile Seriyi Kurtar!</button>
 
-        <div class="notification-box">
+        <div class="notification-box" id="notification-box-area">
             <p style="font-size: 12px;">🔔 Siteden anlık bildirimler almak için tıkla!</p>
             <button class="btn" style="padding: 8px; font-size: 13px; margin-top: 5px;" onclick="requestNotificationPermission()">Bildirimleri Aç 💖</button>
         </div>
@@ -484,16 +414,8 @@
         <div class="result-container" id="result-screen">
             <h2>Test Tamamlandı! 🎉</h2>
             <p id="score-text"></p>
-            
-            <!-- 🎡 GÖRSEL ÇARK ALANI -->
-            <div class="wheel-box" id="wheel-box">
-                <h3>🎁 Harika Başarı! Hediye Çarkını Çevir!</h3>
-                <div class="visual-wheel" id="visual-wheel">🎁</div>
-                <button class="btn wheel-btn" id="wheel-spin-btn" onclick="spinWheel()">Çarkı Çevir 🎰</button>
-                <div class="wheel-result" id="wheel-result"></div>
-            </div>
 
-            <button class="btn" id="result-primary-btn" onclick="restartCurrentPart()">Bu Testi Yeniden Çöz ❤️</button>
+            <button class="btn" id="result-primary-btn" onclick="restartCurrentPart()">Bu Testi Yeniden Çöz</button>
             <button class="btn back-btn" style="margin-top: 10px;" onclick="showCategories()">Ders Seçimine Dön 📖</button>
         </div>
     </div>
@@ -502,10 +424,12 @@
 <script>
     const PASS_ASKIM = "aşkım";       
     const PASS_KANKA = "aşkım1";       
+    const PASS_KARDES = "kardes123";
     const PASS_ADMIN = "yonetici123";  
 
     let currentUser = "askim"; 
     let currentUserName = "Özge Bakır";
+    let isBrotherMode = false;
     let isMistakeMode = false;
     const DAILY_GOAL_QUESTIONS = 50; 
 
@@ -549,15 +473,6 @@
             }
         } catch (e) {}
     })();
-
-    const GIFTS = [
-        "☕ 1 Adet Leziz Kahve Ismarla Hakkı!",
-        "🍕 Akşam Yemek Menüsünü Seçme Hakkı!",
-        "💆‍♀️ 15 Dakika Sırt Masajı Hakkı!",
-        "🍫 İstediği Çikolatayı Alma Hakkı!",
-        "🎬 Film / Dizi Gecesi Seçim Hakkı!",
-        "💖 Günün Sözünü Dinletme / İtiraf Hakkı!"
-    ];
 
     const CATEGORIES = [
         {
@@ -678,7 +593,7 @@
     let selectedOption = null;
     let isAnswered = false;
 
-    // ⏱️ KRONOMETRE (Her yerde güncellenir)
+    // ⏱️ KRONOMETRE
     let totalSeconds = 0;
     setInterval(() => {
         totalSeconds++;
@@ -688,13 +603,14 @@
         document.querySelectorAll('.timer-badge').forEach(badge => badge.textContent = timeFormatted);
     }, 1000);
 
-    // 🛡️ XP VE SEVİYE SİSTEMİ MANTIĞI
+    // XP VE SEVİYE SİSTEMİ
     function getXPData(userKey = currentUser) {
         const xpKey = `${userKey}_xp_data`;
         return getSafeStorage(xpKey, { xp: 0 });
     }
 
     function addXP(amount) {
+        if (isBrotherMode) return; // Kardeş modunda XP/Seviye yok
         let data = getXPData(currentUser);
         data.xp += amount;
         setSafeStorage(`${currentUser}_xp_data`, data);
@@ -702,29 +618,29 @@
     }
 
     function calculateLevel(xp) {
-        if (xp < 200) return { level: 1, title: "🌱 Acemi Âşık" };
-        if (xp < 500) return { level: 2, title: "📖 Çalışkan Kalp" };
-        if (xp < 1000) return { level: 3, title: "⚡ Bilgi Bombardımanı" };
-        if (xp < 2000) return { level: 4, title: "👑 Tarih Kurdu" };
-        return { level: 5, title: "💖 Quiz Sultanı/Kralı" };
+        if (xp < 200) return { level: 1, title: "Acemi" };
+        if (xp < 500) return { level: 2, title: "Çalışkan" };
+        if (xp < 1000) return { level: 3, title: "İyi Durumda" };
+        if (xp < 2000) return { level: 4, title: "Uzman" };
+        return { level: 5, title: "Şampiyon" };
     }
 
     function updateLevelDisplay() {
+        if (isBrotherMode) return;
         const data = getXPData(currentUser);
         const lvlInfo = calculateLevel(data.xp);
-        const badgeText = `⭐ Lv.${lvlInfo.level}`;
-
-        document.querySelectorAll('.level-badge').forEach(b => b.textContent = badgeText);
+        document.querySelectorAll('.level-badge').forEach(b => b.textContent = `⭐ Lv.${lvlInfo.level}`);
     }
 
     function showLevelInfo() {
+        if (isBrotherMode) return;
         const data = getXPData(currentUser);
         const lvlInfo = calculateLevel(data.xp);
-        alert(`Seviye Durumun: ${lvlInfo.title}\nSeviye: ${lvlInfo.level} ⭐\nToplam XP: ${data.xp} XP\n\nTest çözerek XP kazan ve level atla! 🚀`);
+        alert(`Seviye: ${lvlInfo.level} (${lvlInfo.title})\nToplam XP: ${data.xp}`);
     }
 
-    // ⚔️ DÜELLO EKRANI MANTIĞI (Gerçek İsimlerle)
     function openDuelScreen() {
+        if (isBrotherMode) return;
         showScreen('duel-screen');
         const arenaDiv = document.getElementById("duel-arena-content");
         arenaDiv.innerHTML = "";
@@ -767,47 +683,6 @@
             arenaDiv.appendChild(card);
         });
     }
-
-    // 🛡️ OTOMATİK YEDEKLEME VE GÜVENLİ VERİ YÖNETİMİ
-    function getSafeStorage(key, defaultValue) {
-        try {
-            const item = localStorage.getItem(key);
-            if (item !== null) return JSON.parse(item);
-            
-            const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
-            if (globalBackup[key] !== undefined) {
-                localStorage.setItem(key, JSON.stringify(globalBackup[key]));
-                return globalBackup[key];
-            }
-        } catch (e) {
-            console.error("Yedekleme okuma hatası:", e);
-        }
-        return defaultValue;
-    }
-
-    function setSafeStorage(key, value) {
-        try {
-            localStorage.setItem(key, JSON.stringify(value));
-            let globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
-            globalBackup[key] = value;
-            localStorage.setItem("quizask_global_backup", JSON.stringify(globalBackup));
-        } catch (e) {
-            console.error("Yedekleme yazma hatası:", e);
-        }
-    }
-
-    (function restoreAllData() {
-        try {
-            const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup"));
-            if (globalBackup) {
-                for (let k in globalBackup) {
-                    if (localStorage.getItem(k) === null) {
-                        localStorage.setItem(k, JSON.stringify(globalBackup[k]));
-                    }
-                }
-            }
-        } catch (e) {}
-    })();
 
     function getDailyStatsData() {
         const statsKey = `${currentUser}_daily_stats`;
@@ -855,7 +730,7 @@
         const data = getStreakData();
         const todayStr = new Date().toISOString().split('T')[0];
 
-        if (data.lastDate && data.lastDate !== todayStr) {
+        if (!isBrotherMode && data.lastDate && data.lastDate !== todayStr) {
             const lastD = new Date(data.lastDate);
             const todayD = new Date(todayStr);
             const diffDays = Math.floor((todayD - lastD) / (1000 * 60 * 60 * 24));
@@ -867,14 +742,11 @@
             }
         }
 
-        const streakText = `🔥 ${data.streak}`;
-        const coinText = `🪙 ${data.coins}`;
-
-        document.querySelectorAll('.streak-badge').forEach(b => b.textContent = streakText);
-        document.querySelectorAll('.coin-badge').forEach(b => b.textContent = coinText);
+        document.querySelectorAll('.streak-badge').forEach(b => b.textContent = `🔥 ${data.streak}`);
+        document.querySelectorAll('.coin-badge').forEach(b => b.textContent = `🪙 ${data.coins}`);
 
         const rescueBtn = document.getElementById("rescue-btn");
-        if (rescueBtn) {
+        if (rescueBtn && !isBrotherMode) {
             if (data.broken && data.coins >= 5) {
                 rescueBtn.style.display = "block";
             } else {
@@ -882,76 +754,64 @@
             }
         }
         updateDailyStatsDisplay();
-        updateLevelDisplay();
+        if (!isBrotherMode) updateLevelDisplay();
     }
 
     function recordTestCompletion(testCorrect, testWrong) {
         let stats = getDailyStatsData();
-        const oldTotal = stats.totalQuestions;
         stats.totalQuestions += (testCorrect + testWrong);
         stats.correct += testCorrect;
         stats.wrong += testWrong;
         setSafeStorage(`${currentUser}_daily_stats`, stats);
 
-        if (oldTotal < DAILY_GOAL_QUESTIONS && stats.totalQuestions >= DAILY_GOAL_QUESTIONS) {
-            confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 } });
-            alert("Tebrikler kanka! Bugünün günlük 50 soru hedefini başarıyla tamamladın! 🎯🏆");
-        }
+        if (!isBrotherMode) {
+            addXP(50);
+            let data = getStreakData();
+            const todayStr = new Date().toISOString().split('T')[0];
+            data.coins += 1;
 
-        addXP(50); 
+            if (data.lastDate === todayStr) {
+                data.testsToday++;
+            } else {
+                const lastD = data.lastDate ? new Date(data.lastDate) : null;
+                const todayD = new Date(todayStr);
+                const diffDays = lastD ? Math.floor((todayD - lastD) / (1000 * 60 * 60 * 24)) : 0;
 
-        let data = getStreakData();
-        const todayStr = new Date().toISOString().split('T')[0];
+                if (diffDays === 1) data.streak++;
+                else if (diffDays > 1 || !data.lastDate) data.streak = 1;
 
-        data.coins += 1;
-
-        if (data.lastDate === todayStr) {
-            data.testsToday++;
-        } else {
-            const lastD = data.lastDate ? new Date(data.lastDate) : null;
-            const todayD = new Date(todayStr);
-            const diffDays = lastD ? Math.floor((todayD - lastD) / (1000 * 60 * 60 * 24)) : 0;
-
-            if (diffDays === 1) {
-                data.streak++;
-            } else if (diffDays > 1) {
-                data.streak = 1;
-            } else if (!data.lastDate) {
-                data.streak = 1;
+                data.testsToday = 1;
+                data.lastDate = todayStr;
+                data.broken = false;
             }
-
-            data.testsToday = 1;
-            data.lastDate = todayStr;
-            data.broken = false;
+            saveStreakData(data);
         }
-
-        saveStreakData(data);
     }
 
     function rescueStreakWithCoins() {
+        if (isBrotherMode) return;
         let data = getStreakData();
         if (data.coins >= 5) {
             data.coins -= 5;
             data.streak = 1; 
             data.broken = false;
             saveStreakData(data);
-            alert("Harika! 5 Coin harcayarak serini başarıyla kurtardın! 🛡️🔥");
+            alert("Seri kurtarıldı! 🛡️");
         } else {
-            alert("Yeterli coin'in yok kanka! Test çözerek coin kazanmalısın. 🪙");
+            alert("Yeterli coin'in yok.");
         }
     }
 
     function showCoinInfo() {
+        if (isBrotherMode) return;
         const data = getStreakData();
-        alert(`Cüzdanın: ${data.coins} Coin 🪙\nHer tamamladığın test sana 1 Coin kazandırır.\nEğer serin bozulursa 5 Coin ödeyerek serini kurtarabilirsin!`);
+        alert(`Coin: ${data.coins}`);
     }
 
     function showScreen(screenId) {
         document.querySelectorAll('.screen').forEach(el => el.style.display = 'none');
         const targetScreen = document.getElementById(screenId);
-        if (targetScreen) {
-            targetScreen.style.display = 'block';
-        }
+        if (targetScreen) targetScreen.style.display = 'block';
         updateStreakDisplay();
     }
 
@@ -961,33 +821,61 @@
         const val = inputEl.value.trim();
 
         if (val === PASS_ADMIN) {
+            isBrotherMode = false;
             showScreen('admin-screen');
             loadAdminReport(); 
         } else if (val === PASS_ASKIM) {
             currentUser = "askim";
             currentUserName = "Özge Bakır";
-            const welcomeSub = document.getElementById("user-welcome-sub");
-            if (welcomeSub) welcomeSub.textContent = "Hoş geldin Özge Bakır, çalışmak istediğin dersi seç:";
+            isBrotherMode = false;
+            setupNormalMode();
             showCategories();
         } else if (val === PASS_KANKA) {
             currentUser = "askim1";
             currentUserName = "Enes Furkan Arslan";
-            const welcomeSub = document.getElementById("user-welcome-sub");
-            if (welcomeSub) welcomeSub.textContent = "Hoş geldin Enes Furkan Arslan, çözmek istediğin dersi seç:";
+            isBrotherMode = false;
+            setupNormalMode();
+            showCategories();
+        } else if (val === PASS_KARDES) {
+            currentUser = "kardes";
+            currentUserName = "Kardeş";
+            isBrotherMode = true;
+            setupBrotherMode();
             showCategories();
         } else {
-            alert("Şifre yanlış kanka! ❌");
+            alert("Şifre yanlış! ❌");
             inputEl.value = "";
         }
+    }
+
+    function setupBrotherMode() {
+        const welcomeSub = document.getElementById("user-welcome-sub");
+        if (welcomeSub) welcomeSub.textContent = "Hoş geldin, çözmek istediğin dersi seç:";
+        
+        // Kardeş modunda düello butonu ve bildirim alanı gizlenir
+        const duelBtn = document.getElementById("duel-menu-btn");
+        if (duelBtn) duelBtn.style.display = "none";
+
+        const notifBox = document.getElementById("notification-box-area");
+        if (notifBox) notifBox.style.display = "none";
+    }
+
+    function setupNormalMode() {
+        const welcomeSub = document.getElementById("user-welcome-sub");
+        if (welcomeSub) welcomeSub.textContent = `Hoş geldin ${currentUserName}, çalışmak istediğin dersi seç:`;
+        
+        const duelBtn = document.getElementById("duel-menu-btn");
+        if (duelBtn) duelBtn.style.display = "block";
+
+        const notifBox = document.getElementById("notification-box-area");
+        if (notifBox) notifBox.style.display = "block";
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         const passwordInput = document.getElementById("password-input");
         if (passwordInput) {
             passwordInput.addEventListener("keypress", function(event) {
-                if (event.key === "Enter") {
-                    checkPassword();
-                }
+                if (event.key === "Enter") checkPassword();
             });
         }
     });
@@ -998,8 +886,9 @@
         reportListDiv.innerHTML = "";
 
         const users = [
-            { id: "askim", title: "💖 Özge Bakır'ın Karnesi (aşkım)" },
-            { id: "askim1", title: "👑 Enes Furkan Arslan'ın Karnesi (aşkım1)" }
+            { id: "askim", title: "💖 Özge Bakır'ın Karnesi" },
+            { id: "askim1", title: "👑 Enes Furkan Arslan'ın Karnesi" },
+            { id: "kardes", title: "📚 Kardeşin Karnesi" }
         ];
 
         let totalRecordsFound = false;
@@ -1021,9 +910,6 @@
                             userHasRecord = true;
                             totalRecordsFound = true;
                             const parsed = savedData;
-                            const start = pIndex * 10 + 1;
-                            const end = Math.min((pIndex + 1) * 10, totalQuestions);
-
                             userHtml += `
                                 <div class="report-item">
                                     <span><b>${topic.name.substring(0, 18)}... (Test ${pIndex + 1})</b></span>
@@ -1043,31 +929,24 @@
         });
 
         if (!totalRecordsFound) {
-            reportListDiv.innerHTML = `<p style="text-align: center; color: #888; font-size: 12px;">Henüz hiçbir kullanıcı test tamamlamamış kanka! 🕵️‍♂️</p>`;
+            reportListDiv.innerHTML = `<p style="text-align: center; color: #888; font-size: 12px;">Henüz hiçbir kullanıcı test tamamlamamış!</p>`;
         }
     }
 
     function requestNotificationPermission() {
-        if (!("Notification" in window)) { alert("Tarayıcınız bildirimleri desteklemiyor."); return; }
+        if (!("Notification" in window)) return;
         Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                alert("Bildirimler başarıyla açıldı! 💖");
-                new Notification("QuizAşk 💖", { body: "Bildirimler aktif!", icon: "myphoto.png" });
-            } else {
-                alert("Bildirim iznini kapattın. ❤️");
-            }
+            if (permission === "granted") alert("Bildirimler aktif! 💖");
         });
     }
 
     function sendAdminNotification() {
         const msg = document.getElementById("admin-msg").value.trim();
-        if (!msg) { alert("Lütfen bir mesaj yaz kanka!"); return; }
+        if (!msg) { alert("Mesaj yazın."); return; }
         if (Notification.permission === "granted") {
-            new Notification("Aşkından Bildirim Var! 💖", { body: msg, icon: "myphoto.png" });
-            alert("Bildirim başarıyla gönderildi kanka! 🚀");
+            new Notification("Bildirim", { body: msg, icon: "myphoto.png" });
+            alert("Gönderildi.");
             document.getElementById("admin-msg").value = "";
-        } else {
-            alert("Bildirim izni verilmemiş!");
         }
     }
 
@@ -1167,7 +1046,7 @@
         const savedMistakes = getSafeStorage(mistakeKey, []);
         
         if (!savedMistakes || savedMistakes.length === 0) {
-            alert("Harika! Tekrar etmen gereken yanlış soru bulunmuyor kanka! 🎉");
+            alert("Tekrar etmen gereken yanlış soru bulunmuyor!");
             return;
         }
 
@@ -1176,7 +1055,7 @@
         currentQuestion = 0;
         score = 0;
 
-        document.getElementById("topic-title").textContent = `🚨 Tekrar Etmem Gerekenler (${currentQuestions.length} Soru)`;
+        document.getElementById("topic-title").textContent = `🚨 Yanlışlarım (${currentQuestions.length} Soru)`;
         showScreen('main-app');
         document.getElementById("quiz-screen").style.display = "block";
         document.getElementById("result-screen").style.display = "none";
@@ -1184,11 +1063,8 @@
     }
 
     function backToPartsOrCategory() {
-        if (isMistakeMode) {
-            showCategories();
-        } else {
-            showParts(currentTopicIndex);
-        }
+        if (isMistakeMode) showCategories();
+        else showParts(currentTopicIndex);
     }
 
     const questionText = document.getElementById("question-text");
@@ -1239,18 +1115,15 @@
             const optionItems = document.querySelectorAll(".option-item");
 
             feedbackBox.style.display = "block";
-
             const mistakeKey = `${currentUser}_mistakes`;
             let existingMistakes = getSafeStorage(mistakeKey, []);
 
             if (selectedOption === q.answer) {
                 optionItems[selectedOption].classList.add("correct");
-                const randomPraise = ["Harikasın! 🎉", "Aynen böyle devam! 💪", "Çok iyisin! 💖"][Math.floor(Math.random() * 3)];
                 feedbackBox.className = "feedback-box correct-fb";
-                feedbackBox.innerHTML = `<strong>Tebrikler ${currentUserName} ❤️</strong><br>${randomPraise}`;
+                feedbackBox.innerHTML = `<strong>Doğru!</strong>`;
                 score++;
-                addXP(10); 
-                confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+                if (!isBrotherMode) addXP(10);
 
                 if (isMistakeMode) {
                     existingMistakes = existingMistakes.filter(m => m.q !== q.q);
@@ -1261,8 +1134,8 @@
                 optionItems[q.answer].classList.add("correct");
                 let explanationText = q.note ? `<br><em>Not: ${q.note}</em>` : "";
                 feedbackBox.className = "feedback-box incorrect-fb";
-                feedbackBox.innerHTML = `<strong>Minik bir hata!</strong> Öğrendin, harikasın. ✨${explanationText}`;
-                addXP(5); 
+                feedbackBox.innerHTML = `<strong>Yanlış!</strong>${explanationText}`;
+                if (!isBrotherMode) addXP(5);
 
                 if (!isMistakeMode) {
                     const alreadyExists = existingMistakes.some(m => m.q === q.q);
@@ -1280,11 +1153,8 @@
             }
         } else {
             currentQuestion++;
-            if (currentQuestion < currentQuestions.length) {
-                loadQuestion();
-            } else {
-                showResults();
-            }
+            if (currentQuestion < currentQuestions.length) loadQuestion();
+            else showResults();
         }
     };
 
@@ -1294,63 +1164,23 @@
         progressBar.style.width = "100%";
         
         const wrong = currentQuestions.length - score;
-        const totalQ = currentQuestions.length;
         
         if (!isMistakeMode) {
             const scoreKey = `${currentUser}_score_c${currentCategoryIndex}_t${currentTopicIndex}_p${currentPartIndex}`;
             setSafeStorage(scoreKey, { correct: score, wrong: wrong });
-            
             recordTestCompletion(score, wrong);
-
-            document.getElementById("result-primary-btn").textContent = "Bu Testi Yeniden Çöz ❤️";
+            document.getElementById("result-primary-btn").textContent = "Bu Testi Yeniden Çöz";
         } else {
             document.getElementById("result-primary-btn").textContent = "Ders Seçimine Dön 📖";
             document.getElementById("result-primary-btn").onclick = showCategories;
         }
 
-        scoreText.innerHTML = `Testi tamamladın ${currentUserName}! 🌟<br><br>✅ Doğru: <b>${score}</b><br>❌ Yanlış: <b>${wrong}</b><br>🪙 <b>+1 Coin ve +50 XP Kazandın!</b><br><br>${isMistakeMode ? "Yanlışlar tekrarı tamamlandı! 🎯" : "Skorun profiline kaydedildi! ❤️"}`;
-        
-        const wheelBox = document.getElementById("wheel-box");
-        const wheelSpinBtn = document.getElementById("wheel-spin-btn");
-        const wheelResult = document.getElementById("wheel-result");
-        const visualWheel = document.getElementById("visual-wheel");
-        
-        if (wheelResult) wheelResult.textContent = "";
-        if (wheelSpinBtn) wheelSpinBtn.style.display = "block";
-        if (visualWheel) visualWheel.classList.remove("spinning");
-
-        if (score >= 8 || (totalQ >= 10 && (score / totalQ) >= 0.8)) {
-            if (wheelBox) wheelBox.style.display = "block";
-            confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
-        } else {
-            if (wheelBox) wheelBox.style.display = "none";
-        }
-    }
-
-    function spinWheel() {
-        const visualWheel = document.getElementById("visual-wheel");
-        const wheelSpinBtn = document.getElementById("wheel-spin-btn");
-        const wheelResult = document.getElementById("wheel-result");
-
-        if (visualWheel) visualWheel.classList.add("spinning");
-        if (wheelSpinBtn) wheelSpinBtn.style.display = "none";
-        if (wheelResult) wheelResult.textContent = "🎲 Çark dönüyor...";
-
-        setTimeout(() => {
-            const randomGift = GIFTS[Math.floor(Math.random() * GIFTS.length)];
-            if (wheelResult) {
-                wheelResult.innerHTML = `🎉 Çarktan Çıkan Hediye:<br><span style="font-size:16px; color:#ff6584;">${randomGift}</span>`;
-            }
-            confetti({ particleCount: 180, spread: 120, origin: { y: 0.4 } });
-        }, 1500);
+        scoreText.innerHTML = `Test Tamamlandı!<br><br>✅ Doğru: <b>${score}</b><br>❌ Yanlış: <b>${wrong}</b>`;
     }
 
     function restartCurrentPart() {
-        if (isMistakeMode) {
-            showCategories();
-        } else {
-            startPart(currentPartIndex);
-        }
+        if (isMistakeMode) showCategories();
+        else startPart(currentPartIndex);
     }
 </script>
 
