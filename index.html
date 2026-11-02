@@ -689,7 +689,7 @@
                         {q:"Osmanlı Devleti'nin XVII. yüzyılda en çok mücadele ettiği iki ana devlet hangisidir?",options:["Avusturya ve İran","İngiltere ve Fransa","Rusya ve Çin","İspanya ve Portekiz"],answer:0},
                         {q:"Osmanlı'da saray masraflarını kısmak ve bütçeyi dengelemek için ilk kez saray kadrolarında kısıntıya giden ıslahatçı kimdir?",options:["Tarhuncu Ahmet Paşa","Kuyucu Murat Paşa","Sokullu Mehmet Paşa","Merzifonlu Kara Mustafa Paşa"],answer:0},
                         {q:"II. Viyana Kuşatması'nda Osmanlı ordusunun bozguna uğraması üzerine idam edilen sadrazam kimdir?",options:["Merzifonlu Kara Mustafa Paşa","Köprülü Fazıl Ahmed Paşa","Pargalı İbrahim Paşa","Sokullu Mehmet Paşa"],answer:0},
-                        {q:"XVII. yüzyılda Lehistan ile imzalanan ve Osmanlı'nın lehte son kazançlı antlaşma olan antlaşma hangisidir?",options:["Bucaş Antlaşması (1672)","Karlofça Antlaşması","Hotin Antlaşması","Zitvatorok Antlaşması"],answer:0},
+                        {q:"XVII. yüzyılda Lehistan ile imzalanan ve Osmanlı'nın lehte son kazançlı antlaşması olan antlaşma hangisidir?",options:["Bucaş Antlaşması (1672)","Karlofça Antlaşması","Hotin Antlaşması","Zitvatorok Antlaşması"],answer:0},
                         {q:"XVII. yüzyılda saray kadınlarının devlet yönetimindeki etkisine son veren ve denetimi sağlayan güçlü sadrazam kimdir?",options:["Köprülü Mehmet Paşa","Tarhuncu Ahmet Paşa","Kuyucu Murat Paşa","Nevşehirli Damat İbrahim Paşa"],answer:0},
                         {q:"IV. Murad'ın ölümünden sonra çocuk yaşta tahta çıkan ve halk arasında «Deli İbrahim» olarak anılan padişah kimdir?",options:["Sultan İbrahim","II. Osman","IV. Mehmet","II. Mustafa"],answer:0},
                         {q:"Osmanlı Devleti'nin Duraklama Dönemi'nde imzaladığı ilk siyasi antlaşma olan ve Avusturya ile yapılan antlaşma hangisidir?",options:["Zitvatorok Antlaşması","İstanbul Antlaşması","Karlofça Antlaşması","Vasvar Antlaşması"],answer:0},
@@ -1302,11 +1302,15 @@
                 });
             });
 
-            if (!userHasRecord) userHtml += `<div style="font-size: 11px; color: #888; margin-bottom: 5px; padding-left: 5px;">Henüz test çözülmemiş.</div>`;
+            if (!userHasRecord) {
+                userHtml += `<div style="font-size: 11px; color: #888; margin-bottom: 5px; padding-left: 5px;">Henüz test çözülmemiş.</div>`;
+            }
             reportListDiv.innerHTML += userHtml;
         });
 
-        if (!totalRecordsFound) reportListDiv.innerHTML = `<p style="text-align: center; color: #888; font-size: 12px;">Henüz hiçbir kullanıcı test tamamlamamış!</p>`;
+        if (!totalRecordsFound) {
+            reportListDiv.innerHTML = `<p style="text-align: center; color: #888; font-size: 12px;">Henüz hiçbir kullanıcı test tamamlamamış!</p>`;
+        }
     }
 
     function requestNotificationPermission() {
