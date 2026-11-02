@@ -505,9 +505,9 @@
             <p id="question-counter">Soru 1 / 10</p>
             
             <div class="jokers-bar" id="jokers-bar">
-                <button class="joker-btn" id="joker-5050" onclick="useJoker('5050')">❌ 50/50 (<span id="count-5050">0</span>)</button>
-                <button class="joker-btn" id="joker-double" onclick="useJoker('double')">✌️ Çift Cevap (<span id="count-double">0</span>)</button>
-                <button class="joker-btn" id="joker-skip" onclick="useJoker('skip')">⏭️ Soruyu Geç (<span id="count-skip">0</span>)</button>
+                <button class="joker-btn" id="joker-5050" onclick="useJoker('5050')">❌ 50/50 (<span id="count-5050">3</span>)</button>
+                <button class="joker-btn" id="joker-double" onclick="useJoker('double')">✌️ Çift Cevap (<span id="count-double">3</span>)</button>
+                <button class="joker-btn" id="joker-skip" onclick="useJoker('skip')">⏭️ Soruyu Geç (<span id="count-skip">3</span>)</button>
             </div>
 
             <div class="progress-bar"><div class="progress" id="progress"></div></div>
@@ -761,8 +761,13 @@
     ];
 
     function getJokersData() {
-        // Her kullanıcıya başlangıçta 3'er adet joker hakkı verilir, test geçişlerinde sıfırlanmaz (kalıcıdır).
-        return getSafeStorage(`${currentUser}_jokers`, { "5050": 3, "double": 3, "skip": 3 });
+        let jokers = getSafeStorage(`${currentUser}_jokers`, null);
+        // Eğer kayıt yoksa veya haklar 3'ten az/bozuksa sıfırdan 3'e sabitle!
+        if (!jokers || jokers["5050"] === undefined || jokers["double"] === undefined || jokers["skip"] === undefined) {
+            jokers = { "5050": 3, "double": 3, "skip": 3 };
+            setSafeStorage(`${currentUser}_jokers`, jokers);
+        }
+        return jokers;
     }
 
     function updateJokersDisplay() {
@@ -879,6 +884,7 @@
             jokers[item.jokerType] += item.count;
             setSafeStorage(`${currentUser}_jokers`, jokers);
             alert(`Tebrikler! ${item.count} adet joker hesabına eklendi! 🎉`);
+            updateJokersDisplay();
         } else {
             let inventory = getSafeStorage(`${currentUser}_inventory`, []);
             if (!inventory.includes(itemId)) inventory.push(itemId);
@@ -1070,6 +1076,12 @@
     }
 
     function triggerWelcomeModal() {
+        // Her girişte joker haklarının 3'er tane olduğundan emin olalım
+        let jokers = getSafeStorage(`${currentUser}_jokers`, null);
+        if (!jokers || jokers["5050"] === undefined) {
+            setSafeStorage(`${currentUser}_jokers`, { "5050": 3, "double": 3, "skip": 3 });
+        }
+
         const modal = document.getElementById("welcome-modal");
         const titleEl = document.getElementById("modal-welcome-title");
         const subEl = document.getElementById("modal-welcome-sub");
@@ -1263,9 +1275,10 @@
         document.getElementById("quiz-screen").style.display = "block";
         document.getElementById("result-screen").style.display = "none";
         
-        document.getElementById("joker-5050").disabled = false;
-        document.getElementById("joker-double").disabled = false;
-        document.getElementById("joker-skip").disabled = false;
+        let jokers = getJokersData();
+        document.getElementById("joker-5050").disabled = jokers["5050"] <= 0;
+        document.getElementById("joker-double").disabled = jokers["double"] <= 0;
+        document.getElementById("joker-skip").disabled = jokers["skip"] <= 0;
         updateJokersDisplay();
 
         loadQuestion();
@@ -1298,9 +1311,10 @@
         document.getElementById("quiz-screen").style.display = "block";
         document.getElementById("result-screen").style.display = "none";
 
-        document.getElementById("joker-5050").disabled = false;
-        document.getElementById("joker-double").disabled = false;
-        document.getElementById("joker-skip").disabled = false;
+        let jokers = getJokersData();
+        document.getElementById("joker-5050").disabled = jokers["5050"] <= 0;
+        document.getElementById("joker-double").disabled = jokers["double"] <= 0;
+        document.getElementById("joker-skip").disabled = jokers["skip"] <= 0;
         updateJokersDisplay();
 
         loadQuestion();
@@ -1325,9 +1339,10 @@
         document.getElementById("quiz-screen").style.display = "block";
         document.getElementById("result-screen").style.display = "none";
 
-        document.getElementById("joker-5050").disabled = false;
-        document.getElementById("joker-double").disabled = false;
-        document.getElementById("joker-skip").disabled = false;
+        let jokers = getJokersData();
+        document.getElementById("joker-5050").disabled = jokers["5050"] <= 0;
+        document.getElementById("joker-double").disabled = jokers["double"] <= 0;
+        document.getElementById("joker-skip").disabled = jokers["skip"] <= 0;
         updateJokersDisplay();
 
         loadQuestion();
