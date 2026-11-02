@@ -761,8 +761,8 @@
     ];
 
     function getJokersData() {
-        // Varsayılan olarak ilk girişte 2'şer joker hakkı verilir, test içinde sıfırlanmaz!
-        return getSafeStorage(`${currentUser}_jokers`, { "5050": 2, "double": 2, "skip": 2 });
+        // Her kullanıcıya başlangıçta 3'er adet joker hakkı verilir, test geçişlerinde sıfırlanmaz (kalıcıdır).
+        return getSafeStorage(`${currentUser}_jokers`, { "5050": 3, "double": 3, "skip": 3 });
     }
 
     function updateJokersDisplay() {
