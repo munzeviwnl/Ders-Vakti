@@ -454,7 +454,7 @@
         <button class="btn back-btn" onclick="showCategories()">⬅️ Derslere Dön</button>
         <h2 id="selected-category-title">Konu Seçimi</h2>
         
-        <!-- 🎲 DERS BAZLI RASTGELE SORU MEYDAN OKUMASI BUTONU -->
+        <!-- 🎲 DERS BAZLI RASTGELE SORU MEYDAN OKUMASI -->
         <button class="btn random-quiz-btn" onclick="startCategoryRandomQuiz()" style="margin-top: 15px;">🎲 Bu Dersten Rastgele Meydan Oku (10 Soru)</button>
 
         <div class="topic-list" id="topic-list"></div>
@@ -588,9 +588,47 @@
                         {q:"Fetihten sonra Rum patriği olarak kim atandı?",options:["Ovakim","Notaras","Amirutzes","Gennadios"],answer:3,note:"Ermeni patriği ise Ovakim oldu."},
                         {q:"Fatih'in aldığı «Kayser-i Rum» unvanı ne anlama gelir?",options:["Roma Kayseri","İki karanın hükümdarı","Fetihlerin sultanı","Denizlerin hâkimi"],answer:0},
                         {q:"İstanbul'un fethiyle hangi çağ kapanmış, hangi çağ başlamıştır?",options:["Yeni Çağ kapanmış, Yakın Çağ başlamıştır","İlk Çağ kapanmış, Orta Çağ başlamıştır","Orta Çağ kapanmış, Yeni Çağ başlamıştır","Orta Çağ kapanmış, Yakın Çağ başlamıştır"],answer:2},
-                        {q:"Aşağıdakilerden hangisi İstanbul'un fethinin sonuçlarından DEĞİLDİR?",options:["Kuruluş Dönemi bitip Yükselme Dönemi başlamıştır","Anadolu ile Rumeli arasındaki toprak bütünlüğü sağlanmıştır","Boğazlar ve İpek Yolu Osmanlı'nın eline geçmiştir","Halifelik Osmanlı'ya geçmiştir"],answer:3,note:"Halifelik Yavuz Sultan Selim dönem dönem Osmanlı'ya geçti."},
+                        {q:"Aşağıdakilerden hangisi İstanbul'un fethinin sonuçlarından DEĞİLDİR?",options:["Kuruluş Dönemi bitip Yükselme Dönemi başlamıştır","Anadolu ile Rumeli arasındaki toprak bütünlüğü sağlanmıştır","Boğazlar ve İpek Yolu Osmanlı'nın eline geçmiştir","Halifelik Osmanlı'ya geçmiştir"],answer:3,note:"Halifelik Yavuz Sultan Selim döneminde Osmanlı'ya geçti."},
                         {q:"Topların surları yıkabileceğinin anlaşılması hangi sistemin zayıflamasına yol açmıştır?",options:["Tımar sistemi","Feodalite","Divan sistemi","Medrese sistemi"],answer:1},
-                        {q:"İstanbul'dan kaçan bilim insanlarının İtalya'ya gitmesi hangi gelişmenin başlamasına neden olmuştur?",options:["Reform","Coğrafi Keşifler","Sanayi Devrimi","Rönesans"],answer:3}
+                        {q:"İstanbul'dan kaçan bilim insanlarının İtalya'ya gitmesi hangi gelişmenin başlamasına neden olmuştur?",options:["Reform","Coğrafi Keşifler","Sanayi Devrimi","Rönesans"],answer:3},
+                        {q:"İstanbul'un fethi İslam dünyasında sevinçle karşılanmış ve «Feth-i Mübin» olarak adlandırılmıştır. Bu söz ne anlama gelir?",options:["Parlak Fetih","Kutsal Fetih","Hızlı Fetih","Büyük Fetih"],answer:0},
+                        {q:"Fatih Dönemi'nde Konya ve Karaman hangi beylikten alınmıştır?",options:["Candaroğulları","Dulkadiroğulları","Karamanoğulları","Akkoyunlular"],answer:2,note:"Candaroğullarından ise Sinop ve Samsun alındı."},
+                        {q:"Kırım'ın alınmasıyla Karadeniz için ne sonuç doğmuştur?",options:["Bir Venedik gölü hâline gelmiştir","Bir Türk gölü hâline gelmiştir","Bir Rus gölü hâline gelmiştir","Savaş bölgesi olmuştur"],answer:1},
+                        {q:"«Sultanü'l-Bahreyn ve Hakanü'l-Berreyn» unvanı ne anlama gelir?",options:["Doğu ve Batı'nın hükümdarı","İki denizin ve iki karanın hükümdarı","Üç kıtanın hükümdarı","Fetihlerin hükümdarı"],answer:1},
+                        {q:"Fatih Dönemi'nde Hicaz su yolları sorunu yüzünden aşağıdakilerden hangisiyle ilişkiler gerilmiştir?",options:["Memlükler","Akkoyunlular","Safeviler","Venedik"],answer:0,note:"Karamanoğulları ve Dulkadiroğulları ile de ilişkiler gerildi."},
+                        {q:"Fatih Dönemi'nde vergi toplama yöntemi olarak ilk defa uygulanan sistem hangisidir?",options:["Müsadere","İltizam","Cizye","Cülus"],answer:1,note:"Mala el koyma anlamına gelen sistem ise müsaderedir."},
+                        {q:"Fatih Dönemi'nde basılan ilk altın paranın adı nedir?",options:["Akçe","Kuruş","Sikke-i Hasene","Mangır"],answer:2},
+                        {q:"Fatih Dönemi'nde Divan'a başkanlık etmeye başlayan görevli kimdir?",options:["Padişah","Nişancı","Kazasker","Sadrazam"],answer:3},
+                        {q:"Fatih Dönemi'nde yazılı hâle getirilen kanunname hangisidir?",options:["Kanunname-i Âli Osman","Mecelle","Tanzimat Fermanı","Düstur"],answer:0,note:"Örfi hukuk kuralları yazılı hâle getirildi."},
+                        {q:"Fatih, Akkoyunluları Otlukbeli Savaşı'nda yenerek hangi bölgeyi egemenliği altına almıştır?",options:["Balkanlar","Doğu Anadolu","Kuzey Afrika","Karadeniz kıyıları"],answer:1},
+                        {q:"Osmanlı'da ilk elçiliği hangi devlet açmıştır?",options:["Ceneviz","Fransa","Venedik","İngiltere"],answer:2,note:"İstanbul'daki Venedik elçisine «Baylos» (Balyos) denilirdi."},
+                        {q:"Osmanlı'da ilk defa bir iç sorunun (taht mücadelesi) devletler arası soruna dönüşmesine neden olan olay hangisidir?",options:["Şah Kulu İsyanı","Celali İsyanları","Cem Sultan Olayı","Kalender Çelebi İsyanı"],answer:2,note:"Cem Sultan Olayı II. Bayezid Dönemi'ne damgasını vurdu."},
+                        {q:"Antalya ve çevresinde 1511'de çıkan isyan hangisidir?",options:["Şah Kulu İsyanı","Celali İsyanı","Baba Zünnûn İsyanı","Canberdi Gazali İsyanı"],answer:0},
+                        {q:"İspanya'da zulüm gören Yahudi ve Müslümanları İstanbul'a getiren denizci kimdir?",options:["Barbaros Hayrettin Paşa","Turgut Reis","Kemal Reis","Piyale Paşa"],answer:2},
+                        {q:"II. Bayezid Dönemi, yaşanan sorunlar nedeniyle Yükselme Dönemi içinde hangi dönem olarak tarihe geçmiştir?",options:["Gerileme","Duraklama","Kuruluş","Dağılma"],answer:1},
+                        {q:"Tarihçilerce «8 yıla 80 yıllık iş sığdıran padişah» olarak nitelendirilen hükümdar kimdir?",options:["Kanuni Sultan Süleyman","II. Selim","Yavuz Sultan Selim","Fatih Sultan Mehmet"],answer:2},
+                        {q:"1514 Çaldıran Savaşı'nın kazanılmasında en çok hangi unsurun etkisi olmuştur?",options:["Donanmanın üstünlüğü","Mancınık ve kuleler","Süvari birliklerinin sayısı","Tüfekli askerler"],answer:3,note:"Savaş, Yavuz Selim ile İran'ın Safevi hükümdarı arasında yapıldı."},
+                        {q:"1515 Turnadağ Savaşı'yla hangi beyliğe son verilmiştir?",options:["Karamanoğulları","Dulkadiroğulları","Candaroğulları","Akkoyunlular"],answer:1},
+                        {q:"Memlük Devleti hangi savaşın sonucunda yıkılmıştır?",options:["Mercidabık Savaşı","Çaldıran Savaşı","Ridaniye Savaşı","Turnadağ Savaşı"],answer:2,note:"Mercidabık 1516'da, Ridaniye 1517'de yapıldı."},
+                        {q:"Mısır'ın alınmasıyla Osmanlı Devleti'nin eline geçen ticaret yolu hangisidir?",options:["İpek Yolu","Kral Yolu","Hicaz Yolu","Baharat Yolu"],answer:3,note:"İpek Yolu ise Fatih Dönemi'nde ele geçmişti."},
+                        {q:"Ridaniye Savaşı sürerken Avrupa'da yaşanan gelişme hangisidir?",options:["Reform","Rönesans","Coğrafi Keşifler","Fransız İhtilali"],answer:0},
+                        {q:"Osmanlı tarihinin en uzun süre tahta kalan padişah kimdir?",options:["Fatih Sultan Mehmet","Kanuni Sultan Süleyman","Yavuz Sultan Selim","II. Selim"],answer:1,note:"Kanuni 46 yıl tahtta kaldı."},
+                        {q:"I. Süleyman için kullanılan «Kanuni» sıfatını ilk defa kim kullanmıştır?",options:["Matrakçı Nasuh","İdris-i Bitlisi","Cervantes","Dimitrie Cantemir"],answer:3,note:"Bu sıfat XVIII. yüzyılda kullanılmaya başlandı."},
+                        {q:"Dünyanın en kısa süren ova savaşı olan ve Macaristan'ın yenildiği savaş hangisidir?",options:["Çaldıran Savaşı","Otlukbeli Savaşı","Mohaç Meydan Muharebesi","Ridaniye Savaşı"],answer:2,note:"Savaş 1526'da yapıldı."},
+                        {q:"Viyana ilk defa hangi yılda kuşatılmıştır?",options:["1521","1526","1529","1538"],answer:2},
+                        {q:"Osmanlı Devleti ile Avusturya arasındaki ilk resmî antlaşma hangisidir?",options:["İstanbul Antlaşması","Amasya Antlaşması","Zitvatorok Antlaşması","Edirne Antlaşması"],answer:0},
+                        {q:"1538 Preveze Deniz Savaşı'nda Osmanlı donanmasının komutanı kimdir?",options:["Turgut Reis","Kemal Reis","Barbaros Hayrettin Paşa","Piyale Paşa"],answer:2,note:"Bu zaferle Akdeniz bir Türk gölü hâline geldi."},
+                        {q:"Osmanlı Devleti'nin İran ile imzaladığı ilk antlaşma hangisidir?",options:["Kasr-ı Şirin","Amasya Antlaşması","Zühab Antlaşması","Nasuh Paşa Antlaşması"],answer:1,note:"Antlaşma 1555'te imzalandı."},
+                        {q:"Haçlılara karşı Kuzey Afrika'daki egemenliği pekiştiren deniz savaşı hangisidir?",options:["İnebahtı","Preveze","Cerbe","Sinop"],answer:2,note:"Savaş 1560'ta yapıldı."},
+                        {q:"Kanuni'nin son seferi ve ölüm yeri olan sefer hangisidir?",options:["Alman Seferi","Zigetvar Seferi","Irakeyn Seferi","Mohaç Seferi"],answer:1},
+                        {q:"Kanuni'nin seferlerini anlatan «Süleymanname» ve «Beyan-ı Menazil-i Sefer-i Irakeyn» adlı minyatürlü eserler kime aittir?",options:["Matrakçı Nasuh","Kemal Reis","İdris-i Bitlisi","Piri Reis"],answer:0},
+                        {q:"Ordunun başında sefere çıkma geleneğini terk eden ve İstanbul'da ölen ilk Osmanlı padişahı kimdir?",options:["III. Murat","II. Bayezid","Kanuni Sultan Süleyman","II. Selim"],answer:3},
+                        {q:"Sokullu Mehmet Paşa hangi padişahlar zamanında devlet işlerini yürütmüştür?",options:["II. Selim ve III. Murat","Fatih ve II. Bayezid","Yavuz ve Kanuni","I. Ahmed ve II. Osman"],answer:0,note:"Bu yüzden dönem «Sokullu Mehmet Paşa Dönemi» diye anılır."},
+                        {q:"1571'de Kıbrıs'ın alınmasına tepki gösteren Haçlılar, Osmanlı donanmasını hangi savaşta yakmıştır?",options:["Preveze","İnebahtı","Cerbe","Malta"],answer:1,note:"Sokullu: «Siz İnebahtı'nda sakalımızı tıraş ettiniz, kesilen sakal daha gür çıkar.»"},
+                        {q:"Aşağıdakilerden hangisi Osmanlı donanmasının yıkıldığı olaylardan biri DEĞİLDİR?",options:["İnebahtı (1571)","Çeşme (1770)","Navarin (1827)","Preveze (1538)"],answer:3,note:"Dördüncüsü 1853 Sinop Baskınıdır."},
+                        {q:"Aşağıdakilerden hangisi Don ve Volga Nehirlerini Birleştirme Projesi'nin amaçlarından biri DEĞİLDİR?",options:["Rusların güneye inmesini engellemek","Kırım'ı korumak","İran'ı kuzeyden kontrol etmek","Hindistan'a ulaşmak"],answer:3,note:"Hindistan'a ulaşma amacı Süveyş Kanalı Projesi'ne aittir."},
+                        {q:"Süveyş Kanalı Projesi hangi iki denizi birleştirmeyi amaçlıyordu?",options:["Karadeniz ile Akdeniz","Kızıldeniz ile Akdeniz","Hazar ile Karadeniz","Marmara ile Ege"],answer:1,note:"Kanal 1869'da Fransa ve İngiltere'nin iş birliğiyle açıldı."},
+                        {q:"Marmara-Karadeniz Projesi'nin amaçlarından biri aşağıdakilerden hangisidir?",options:["Hindistan'a ulaşmak","İpek Yolu'nu canlandırmak","Gemi yapımı için gereken kereste ihtiyacını karşılamak","Rusya'yı kontrol etmek"],answer:2}
                     ]
                 },
                 {
@@ -603,9 +641,43 @@
                         {q:"Avrupa'da feodalitenin sona ermesi, Osmanlı'nın karşısında hangi gelişmeye yol açmıştır?",options:["Merkezî krallıkların kurulmasına","Ticaret yollarının kapanmasına","Haçlı Seferlerinin başlamasına","Osmanlı'nın doğal sınırlara ulaşmasına"],answer:0},
                         {q:"Aşağıdakilerden hangisi tımar sisteminin bozulma nedenlerinden biri DEĞİLDİR?",options:["Tımarların rüşvet karşılığı verilmesi","Tımarların saray görevlilerinin eline geçerek özel mülke dönüşmesi","Sipahilerin ateşli silah eğitimine ayak uyduramaması","Devşirme sisteminin yeniden canlandırılması"],answer:3},
                         {q:"IV. Mehmet Dönemi'nde otuza yakın devlet adamının öldürüldüğü olay hangisidir?",options:["Vaka-i Hayriye","Kabakçı Mustafa İsyanı","Vaka-i Vakvakiye (Çınar Vakası)","Hotin Olayı"],answer:2},
-                        {q:"Merkez (Yeniçeri) isyanlarının temel nedeni aşağıdakilerden hangisidir?",options:["Cülus ve ulufelerin geç ödenmesi","Merkezî otoritenin bozulması","Devşirme Kanunu'na aykırı asker alınması","Enflasyon"],answer:1},
+                        {q:"Merkez (Yeniçeri) isyanlarının temel nedeni aşağıdakilerden hangisidir?",options:["Cülus ve ulufelerin geç ödenmesi","Merkezî otoritenin bozulması","Devşirme Kanunu'na aykırı asker alınması","Enflasyon"],answer:1,note:"Diğer şıklar da nedenlerdendir ama temel neden merkezî otoritenin bozulmasıdır."},
                         {q:"II. Osman'ı (Genç Osman) Yedikule zindanlarında idam eden kesim hangisidir?",options:["Yeniçeriler","Sipahiler","Suhteler","Celaliler"],answer:0},
-                        {q:"Celali isyanları ilk defa hangi padişah zamanında çıkmıştır?",options:["Fatih Sultan Mehmet","Kanuni Sultan Süleyman","III. Mehmet","Yavuz Sultan Selim"],answer:3}
+                        {q:"Celali isyanları ilk defa hangi padişah zamanında çıkmıştır?",options:["Fatih Sultan Mehmet","Kanuni Sultan Süleyman","III. Mehmet","Yavuz Sultan Selim"],answer:3},
+                        {q:"Celali isyanlarında halkı devlete karşı kışkırtan ve eşkıyalık yapan kesim hangisidir?",options:["Medrese öğrencileri","Yeniçeriler","Haçova Meydan Muharebesi'nden kaçan askerler","Tımarlı sipahiler"],answer:2},
+                        {q:"Celali isyanları sonucunda köylerden kentlere büyük göç yaşanmıştır. Bu duruma ne ad verilir?",options:["Sürgün","Büyük Kaçgun","İskân","Büyük Göç"],answer:1},
+                        {q:"Aşağıdakilerden hangisi Celali isyancılarından biri DEĞİLDİR?",options:["Karayazıcı","Deli Hasan","Canbulatoğlu","Koçi Bey"],answer:3},
+                        {q:"Aşağıdakilerden hangisi Celali isyanlarının sonuçlarından biri DEĞİLDİR?",options:["Üretimin düşmesi","Vergi gelirlerinin azalması","Boşalan köylere eşkıyaların yerleşmesi","Tarımsal üretimin artması"],answer:3},
+                        {q:"Osmanlı'da medrese öğrencilerine verilen «suhte» ya da «softa» adı hangi ayaklanmaların adıdır?",options:["Eyalet isyanları","Celali isyanları","Suhte ayaklanmaları","Merkez isyanları"],answer:2},
+                        {q:"Suhte ayaklanmalarının nedenlerinden biri aşağıdakilerden hangisidir?",options:["Medrese gelirlerinin artması","Nüfus artışı ve enflasyon yüzünden gençlerin burslu medreselere sığınması","Medreselerin kapatılması","Öğrencilerin askere alınması"],answer:1},
+                        {q:"17. yüzyılda gayrimüslimlerin çıkardığı ayaklanmalar hakkında aşağıdakilerden hangisidir?",options:["XIX. yüzyıldaki ulusçuluk isyanlarının bir devamıdır","Fransız İhtilali'nin etkisiyle çıkmıştır","XIX. yüzyıl ulusçuluk isyanlarıyla bir ilgisi yoktur","Bağımsız devlet kurmayı amaçlamıştır"],answer:2},
+                        {q:"1596 Haçova Meydan Muharebesi'nden sonra «Eğri Fatihi» unvanı kime verilmiştir?",options:["III. Mehmet","Tirkayi Hasan Paşa","Kuyucu Murat Paşa","IV. Murat"],answer:0,note:"Kanije Fatihi unvanı ise Tirkayi Hasan Paşa'ya verildi."},
+                        {q:"Avusturya kralını Osmanlı padişahına tekrar denk sayan ve Orta Avrupa'daki siyasi üstünlüğü sona erdiren antlaşma hangisidir?",options:["Vasvar Antlaşması","Karlofça Antlaşması","Zitvatorok Antlaşması","İstanbul Antlaşması"],answer:2,note:"Antlaşma 1606'da imzalandı."},
+                        {q:"Osmanlı'nın bu yüzyılda Avusturya'ya karşı son kazançlı antlaşması hangisidir?",options:["Vasvar Antlaşması","Zitvatorok Antlaşması","Karlofça Antlaşması","Bucaş Antlaşması"],answer:0,note:"1664'te imzalandı ve Uyvar Kalesi alındı."},
+                        {q:"1683'te II. Viyana kuşatmasını yöneten sadrazam kimdir?",options:["Köprülü Mehmet Paşa","Merzifonlu Kara Mustafa Paşa","Amcazade Hüseyin Paşa","Tarhuncu Ahmet Paşa"],answer:1,note:"Kuşatmadaki başarısızlığı nedeniyle idam edildi."},
+                        {q:"1699'a kadar süren savaşta Osmanlı'ya karşı oluşan Kutsal İttifak'ta aşağıdaki devletlerden hangisi yer ALMAMIŞTIR?",options:["Venedik","Malta","Rusya","İngiltere"],answer:3},
+                        {q:"Osmanlı Devleti'nin Batı'da ilk defa geniş anlamda toprak kaybettiği antlaşma hangisidir?",options:["Zitvatorok","Karlofça","Vasvar","Bucaş"],answer:1,note:"1699'da Avusturya, Venedik ve Lehistan ile imzalandı."},
+                        {q:"Karlofça Antlaşması'nda Osmanlı Devleti ilk defa hangi devletlerin arabuluculuğunu kabul etmek zorunda kalmıştır?",options:["Fransa ve İspanya","Rusya ve Prusya","Venedik ve Ceneviz","İngiltere ve Hollanda"],answer:3,note:"Osmanlı ayrıca ilk kez müzakere yoluyla bir antlaşma imzalamak zorunda kaldı."},
+                        {q:"Azak Kalesi'nin Rusya'ya verilmesiyle Rusya'ya Karadeniz'e inmek için ilk fırsatı veren antlaşma hangisidir?",options:["Bahçesaray (Çehrin) Antlaşması","Karlofça Antlaşması","Hotin Antlaşması","İstanbul Antlaşması (1700)"],answer:3,note:"Bu antlaşma Karlofça'nın devamı sayılır."},
+                        {q:"Osmanlı ile Rusya arasında imzalanan ilk antlaşma hangisidir?",options:["Bahçesaray (Çehrin) Antlaşması","İstanbul Antlaşması","Bucaş Antlaşması","Hotin Antlaşması"],answer:0,note:"1681'de imzalandı."},
+                        {q:"Osmanlı Devleti'nin Doğu'da en geniş sınırlara ulaştığı antlaşma hangisidir?",options:["Nasuh Paşa Antlaşması","Serav Antlaşması","Kasr-ı Şirin Antlaşması","Ferhat Paşa Antlaşması"],answer:3,note:"1590'da İran'la yapıldı."},
+                        {q:"Günümüz Türkiye-İran sınırını hemen hemen belirleyen antlaşma hangisidir?",options:["Kasr-ı Şirin Antlaşması","Amasya Antlaşması","Ferhat Paşa Antlaşması","Serav Antlaşması"],answer:0,note:"1639'da IV. Murat Dönemi'nde imzalandı."},
+                        {q:"Osmanlı'nın Batı'da en geniş sınırlara ulaştığı antlaşma hangisidir?",options:["Karlofça","Vasvar","Bucaş","Zitvatorok"],answer:2,note:"1672'de Lehistan ile imzalandı, Podolya Osmanlı'ya bırakıldı."},
+                        {q:"1621 Hotin Seferi'nde Hotin Kalesi'nin alınamamasının nedeni aşağıdakilerden hangisidir?",options:["Donanmanın yetersizliği","Hava koşulları","Yeniçerilerin isteksizliği","Cephane eksikliği"],answer:2},
+                        {q:"Köprülü Fazıl Ahmet Paşa 24 yıllık kuşatmanın ardından hangi adayı almıştır?",options:["Rodos","Kıbrıs","Sakız","Girit"],answer:3,note:"Girit 1645'te kuşatıldı, 1669'da Venedik'ten alındı."},
+                        {q:"Aşağıdakilerden hangisi 17. yüzyıl ıslahatçılarından biri DEĞİLDİR?",options:["Tarhuncu Ahmet Paşa","Kuyucu Murat Paşa","Köprülü Mehmet Paşa","Sokullu Mehmet Paşa"],answer:3,note:"Sokullu 16. yüzyıl sadrazamıdır. Islahatçılar için şifre: TOKMAK."},
+                        {q:"Aşağıdakilerden hangisi 17. yüzyıl ıslahatlarının ortak özelliklerinden biri DEĞİLDİR?",options:["Avrupa örnek alınmadı","Kişilere bağlı kaldı","Halk desteği alındı","Baskı ve şiddet yoluyla benimsetilmek istendi"],answer:2},
+                        {q:"«Tarhuncu Bütçesi» adında modern ve denk bir bütçe hazırlayan sadrazam kimdir?",options:["Köprülü Fazıl Ahmet Paşa","Kuyucu Murat Paşa","Merzifonlu Kara Mustafa Paşa","Tarhuncu Ahmet Paşa"],answer:3,note:"IV. Mehmet'in sadrazamıdır."},
+                        {q:"Osmanlı tarihinde ilk ıslahat yapan padişah kimdir?",options:["I. Ahmet","IV. Murat","II. Osman","IV. Mehmet"],answer:2},
+                        {q:"Aşağıdakilerden hangisi II. Osman'ın yaptığı ya da düşündüğü ıslahatlardan biri DEĞİLDİR?",options:["Yeniçeriye ödenen fazla maaşları kesmek","Şeyhülislamın yetkilerini kısıtlamak","Yeniçeri Ocağı'nı kaldırmayı düşünmek","Gece sokağa çıkma yasağı getirmek"],answer:3,note:"Gece sokağa çıkma yasağı IV. Murat'a aittir."},
+                        {q:"I. Ahmet'in sadrazamı olan ve Celali isyanlarını şiddetle bastıran ıslahatçı kimdir?",options:["Kuyucu Murat Paşa","Tarhuncu Ahmet Paşa","Köprülü Mehmet Paşa","Amcazade Hüseyin Paşa"],answer:0},
+                        {q:"Osmanlı tarihinde ilk defa bir şeyhülislamı idam ettiren padişah kimdir?",options:["I. Ahmet","II. Osman","IV. Mehmet","IV. Murat"],answer:3,note:"Lakabı Bağdat Fatihi'dir."},
+                        {q:"Koçi Bey ve Kâtip Çelebi hangi padişaha risalelerini (raporlarını) sunmuştur?",options:["II. Osman","I. Ahmet","IV. Murat","III. Mehmet"],answer:2},
+                        {q:"IV. Murat'ın gece sokağa çıkma yasağı, içki ve tütün yasağı getirmesinin temel sebebi nedir?",options:["Vergi gelirlerini artırmak","İstanbul'da ortaya çıkan yangınların önüne geçmek","Yeniçerileri disipline etmek","Halkın gelirini artırmak"],answer:1,note:"Kanuni Dönemi'nde açılan kahve ve meyhaneleri de kapattı."},
+                        {q:"Ekber ve erşed sistemini getirerek veraset sisteminde son değişikliği yapan padişah kimdir?",options:["III. Mehmet","IV. Murat","II. Osman","I. Ahmet"],answer:3},
+                        {q:"Şehzadelerin sancağa çıkma uygulamasını kaldıran padişah kimdir?",options:["I. Ahmet","IV. Mehmet","III. Mehmet","II. Selim"],answer:2},
+                        {q:"Köprülü Mehmet Paşa, Venedik'in Çanakkale'ye uyguladığı ablukayı kaldırarak hangi devlete karşı başarı kazanmıştır?",options:["Rusya","Lehistan","Avusturya","Venedik"],answer:3},
+                        {q:"Köprülüler Dönemi için aşağıdakilerden hangisi söylenir?",options:["Duraklama Dönemi içinde Yükselme Dönemi yaşatmışlardır","Yükselme Dönemi içinde Duraklama yaşatmışlardır","Kuruluş Dönemi'ni yeniden başlatmışlardır","Gerileme Dönemi'ni başlatmışlardır"],answer:0}
                     ]
                 }
             ]
@@ -1027,7 +1099,6 @@
             return;
         }
 
-        // Soruları karıştır ve rastgele 10 tane seç (Eğer 10'dan azsa hepsini al)
         allCategoryQuestions.sort(() => Math.random() - 0.5);
         const selectedCount = Math.min(10, allCategoryQuestions.length);
 
@@ -1122,7 +1193,19 @@
             if (selectedOption === q.answer) {
                 optionItems[selectedOption].classList.add("correct");
                 feedbackBox.className = "feedback-box correct-fb";
-                feedbackBox.innerHTML = `<strong>Doğru!</strong>`;
+                
+                // 💖 MOTİVASYONEL / SEVGİ DOLU SÖZLER
+                const motivationalPhrases = [
+                    "Helal olsun sevgilime, harika gidiyorsun! 💖",
+                    "Zekâsına bir kez daha aşık oldum! 😍",
+                    "Harikasın kanka, bu işi biliyorsun! 🚀",
+                    "Maşallah, sırtımız yere gelmez! ✨",
+                    "Sen bu işin profesörüsün sevgilim! 👑",
+                    "Doğru cevap! Başarılarına doyamıyoruz! 🌟"
+                ];
+                const randomPraise = motivationalPhrases[Math.floor(Math.random() * motivationalPhrases.length)];
+                feedbackBox.innerHTML = `<strong>Doğru!</strong> ${randomPraise}`;
+                
                 score++;
                 addXP(10);
 
@@ -1135,7 +1218,7 @@
                 optionItems[q.answer].classList.add("correct");
                 let explanationText = q.note ? `<br><em>Not: ${q.note}</em>` : "";
                 feedbackBox.className = "feedback-box incorrect-fb";
-                feedbackBox.innerHTML = `<strong>Yanlış!</strong>${explanationText}`;
+                feedbackBox.innerHTML = `<strong>Yanlış! Üzülme, birlikte öğreniyoruz! 💕</strong>${explanationText}`;
                 addXP(5);
 
                 if (!isMistakeMode) {
