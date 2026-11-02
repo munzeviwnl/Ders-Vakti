@@ -762,7 +762,6 @@
 
     function getJokersData() {
         let jokers = getSafeStorage(`${currentUser}_jokers`, null);
-        // Eğer kayıt yoksa veya haklar 3'ten az/bozuksa sıfırdan 3'e sabitle!
         if (!jokers || jokers["5050"] === undefined || jokers["double"] === undefined || jokers["skip"] === undefined) {
             jokers = { "5050": 3, "double": 3, "skip": 3 };
             setSafeStorage(`${currentUser}_jokers`, jokers);
@@ -1076,7 +1075,6 @@
     }
 
     function triggerWelcomeModal() {
-        // Her girişte joker haklarının 3'er tane olduğundan emin olalım
         let jokers = getSafeStorage(`${currentUser}_jokers`, null);
         if (!jokers || jokers["5050"] === undefined) {
             setSafeStorage(`${currentUser}_jokers`, { "5050": 3, "double": 3, "skip": 3 });
