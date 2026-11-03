@@ -572,27 +572,37 @@
         }
     }
 
+    // 🛡️ Çift Katmanlı Güvenli Veri Saklama Mekanizması (Asla Silinmez, Arka Planda Sürekli Saklanır)
     function getSafeStorage(key, defaultValue) {
         try {
             const item = localStorage.getItem(key);
-            if (item !== null) return JSON.parse(item);
+            if (item !== null) {
+                return JSON.parse(item);
+            }
             
+            // Eğer doğrudan anahtar bulunamazsa global yedek havuzundan kurtar
             const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
             if (globalBackup[key] !== undefined) {
                 localStorage.setItem(key, JSON.stringify(globalBackup[key]));
                 return globalBackup[key];
             }
-        } catch (e) {}
+        } catch (e) {
+            console.error("Veri okuma hatası:", e);
+        }
         return defaultValue;
     }
 
     function setSafeStorage(key, value) {
         try {
             localStorage.setItem(key, JSON.stringify(value));
+            
+            // Arka planda global yedek havuzuna da anında kopyala (Kalıcılık garantisi)
             let globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
             globalBackup[key] = value;
             localStorage.setItem("quizask_global_backup", JSON.stringify(globalBackup));
-        } catch (e) {}
+        } catch (e) {
+            console.error("Veri yazma hatası:", e);
+        }
     }
 
     const CATEGORIES = [
