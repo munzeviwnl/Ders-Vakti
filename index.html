@@ -531,8 +531,8 @@
 </div>
 
 <script>
-    const PASS_ASKIM = "aşkım";       
-    const PASS_KANKA = "aşkım1";       
+    const PASS_ASKIM = "aşkım";        
+    const PASS_KANKA = "aşkım1";        
     const PASS_KARDES = "kardes123";
     const PASS_ADMIN = "yonetici123";  
 
@@ -580,7 +580,6 @@
                 return JSON.parse(item);
             }
             
-            // Eğer doğrudan anahtar bulunamazsa global yedek havuzundan kurtar
             const globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
             if (globalBackup[key] !== undefined) {
                 localStorage.setItem(key, JSON.stringify(globalBackup[key]));
@@ -596,7 +595,6 @@
         try {
             localStorage.setItem(key, JSON.stringify(value));
             
-            // Arka planda global yedek havuzuna da anında kopyala (Kalıcılık garantisi)
             let globalBackup = JSON.parse(localStorage.getItem("quizask_global_backup")) || {};
             globalBackup[key] = value;
             localStorage.setItem("quizask_global_backup", JSON.stringify(globalBackup));
@@ -605,6 +603,7 @@
         }
     }
 
+    // 📚 TÜM KATEGORİLER (Eski Tarih Soruları + Yeni 60 Soruluk Gelişim Psikolojisi Soru Bankası Eksiksiz Bir Arada)
     const CATEGORIES = [
         {
             categoryName: "🏛️ Tarih",
@@ -710,46 +709,46 @@
                 {
                     name: "Osmanlı Devleti Kuruluş ve Yükselme Dönemi (Notlar ve Soru Havuzu)",
                     questions: [
-                        {q:"14. yüzyıl başlarında yakın doğuda yer alan İlhanlılar nerede kurulmuştur?",options:["İran'da kuruldu, 1231'de Harzemşahlara son verdiler[cite: 1].", "Mısır'da kurulup Halifeliği korudular.", "Karadeniz'in kuzeyinde kurulup Rusların güneye inmesini engellediler.", "Anadolu'da kurulan ilk Türk beyliğidir."],answer:0,note:"1231'de Harzemşahlara son verdiler[cite: 1]."},
-                        {q:"1243 Kösedağ Savaşı ile Anadolu Selçuklu Devleti'ni mağlup eden İlhanlı hükümdarı kimdir?",options:["Gazan Han[cite: 1]", "Batu Han", "Timur", "Alaaddin Keykubat"],answer:0,note:"Gazan Han zamanında İslamiyet'i kabul ettiler. 1258'de hem Batıniliğe hem de Abbasilere son verdiler[cite: 1]."},
-                        {q:"Karadeniz'in kuzeyinde Batu Han tarafından kurulan ve yıllarca Rusların güneye inmesini engelleyen devlet hangisidir?",options:["Altın Orda[cite: 1]", "İlhanlılar", "Memlükler", "Akkoyunlular"],answer:0,note:"Timur saldırıları sonucu parçalanarak hanlıklara ayrıldılar[cite: 1]."},
-                        {q:"1250'de Aybey tarafından Mısır'da kurulan, Halifeliği 1517'ye kadar muhafaza eden devlet hangisidir?",options:["Memlükler[cite: 1]", "Altın Orda", "Safeviler", "Karamanoğulları"],answer:0,note:"Baharat Yolu ile zenginleştiler. 1517 Ridaniye Savaşı ile yıkıldılar[cite: 1]."},
-                        {q:"Türkiye Selçuklu Devleti hangi yılda ve kimin ölümüyle yıkılmıştır?",options:["1075'te kuruldu, 1243 Kösedağ Savaşı'yla ilhanlılara tabi oldular. 1308'de Sultan III. Mesut'un ölümüyle yıkıldılar[cite: 1].", "1299'da Osman Bey'in ölümüyle", "1402 Ankara Savaşı'yla", "1461 Trabzon'un fethiyle"],answer:0,note:"Türkiye Selçuklu Devleti III. Mesut'un ölümüyle yıkılmıştır[cite: 1]."},
-                        {q:"Osmanlı'nın kuruluş yıllarında Bizans İmparatorluğu'nun durumu nasıldı?",options:["Tekfur denilen Bizans valileri merkezi dinlememekte ve halkına zulüm etmekteydi[cite: 1].", "Oldukça merkeziyetçi ve güçlüydü.", "Haçlı ordularının tam denetimindeydi.", "Ekonomik olarak dünyanın en zengin devletiydi."],answer:0,note:"Bizans merkezî otoritesini yitirmişti[cite: 1]."},
-                        {q:"Trabzon Rum İmparatorluğu hangi yıl ve kim tarafından sonlandırılmıştır?",options:["1461'de Fatih Sultan Mehmet tarafından[cite: 1]", "1453'te II. Mehmet tarafından", "1302'de Osman Bey tarafından", "1517'de Yavuz Sultan Selim tarafından"],answer:0,note:"Trabzon Rum İmparatorluğu ortadan kaldırıldı[cite: 1]."},
-                        {q:"Osmanlı Devleti'nin diğer çağdaş devlet ve milletler ile ilişkilerinde anılan 'Beni Ahmer Devleti' nerededir?",options:["İspanya bölgesindedir[cite: 1].", "Anadolu'dadır.", "Kırım'dadır.", "Mısır'dadır."],answer:0,note:"Osmanlı Sırp, Macar, İngiliz, Fransa, Venedik, Ceneviz vb. ile çağdaştır[cite: 1]."},
-                        {q:"Osmanlı Devleti'nin kısa sürede büyümesinin nedenlerinden biri olan 'Bizans'ın içindeki taht kavgaları' yanında hangi unsur etkilidir?",options:["Bizans tekfurlarının merkezi dinlememesi ve Türkmenlerin gaza ruhu ile sefer yapması[cite: 1]", "Moğolların desteğini alması", "Avrupa'dan büyük maddi yardım alması", "Deniz ticaretini tamamen ele geçirmesi"],answer:0,note:"Taht kavgaları ve tekfurların durumu büyümesini hızlandırdı[cite: 1]."},
-                        {q:"Osmanlı'da 'Tımar, İskân ve İstimâlet' politikasının uygulanması devlete ne kazandırmıştır?",options:["Kalıcılığı ve istikrarı artırmıştır[cite: 1].", "Vergi gelirlerini tamamen sıfırlamıştır.", "Askeri gücü azaltmıştır.", "Merkezi otoriteyi zayıflatmıştır."],answer:0,note:"Merkezi otoritenin güçlü olması ve yetenekli padişahlar da etkili oldu[cite: 1]."},
-                        {q:"Osmanlı Devleti'nin kurucusu Osman Bey'in lakabı nedir?",options:["Fahrüddin[cite: 2]", "İhtiyareddin", "Ebu'l-Hayrat", "Sultan-ı İklim-i Rum"],answer:0,note:"1298'de Karacahisar, 1300'de Yundhisar alındı[cite: 2]."},
-                        {q:"1302 yılında yapılan ve Osmanlı-Bizans arasındaki ilk savaş kabul edilen savaş hangisidir?",options:["Koyunhisar (Bapheus) Savaşı[cite: 2]", "Maltepe Savaşı", "Sazlıdere Savaşı", "Niğbolu Savaşı"],answer:0,note:"Bilecik alındı, demir madeni işlendi[cite: 2]."},
-                        {q:"Osmanlı Devleti'nde ilk vergi hangi isimle alınmıştır?",options:["Bac vergisi (Bac-ı Pazar)[cite: 2]", "Cizye", "Öşür", "Avarız"],answer:0,note:"İlk kadı ataması Dursun Fakih'tir[cite: 2]. İlk para akçe ve mangırdır."},
-                        {q:"Osmanlı'da ilk defa toprak (dirik) dağıtımı kimin zamanında ve kime yapılmıştır?",options:["Osman Bey yakın arkadaşlarına ilk defa tımarlar dağıttı[cite: 2].", "Orhan Bey yeniçerilere dağıttı.", "I. Murat sipahilere dağıttı.", "Fatih Sultan Mehmet alimlere dağıttı."],answer:0,note:"Osman Bey yakın arkadaşlarına ilk tımarları verdi[cite: 2]."},
-                        {q:"Orhan Bey'in lakabı nedir?",options:["İhtiyareddin'dir[cite: 2].", "Fahrüddin", "Avni", "Muhibbi"],answer:0,note:"1326'da Bursa fethedilerek başkent yapıldı[cite: 2]."},
-                        {q:"1329 Maltepe (Pelekanon) Savaşı kimin zamanında yapılmıştır?",options:["Orhan Bey[cite: 2]", "Osman Bey", "I. Murat", "Yıldırım Bayezid"],answer:0,note:"İznik alınarak başkent yapıldı (1330)[cite: 2]."},
-                        {q:"Karesioğulları Beyliği hangi yıl Osmanlı topraklarına katılmıştır?",options:["1345'te[cite: 2]", "1363'te", "1402'de", "1453'te"],answer:0,note:"Karesioğulları'nın alınmasıyla Osmanlı ilk donanmaya sahip oldu[cite: 2]."},
-                        {q:"Rumeli'deki ilk Türk toprağı olan Çimpe Kalesi hangi yıl alınmıştır?",options:["1353'te[cite: 2]", "1361'de", "1389'da", "1396'da"],answer:0,note:"Gelibolu Fatihi Süleyman Paşa tarafından alındı[cite: 2]."},
-                        {q:"Orhan Bey zamanında açılan ilk medresenin müderrisi kimdir ve ilk atama nereye yapılmıştır?",options:["Davud-u Kayseri ilk müderris olarak İznik Medresesi'ne atanmıştır[cite: 2].", "Dursun Fakih, Karacahisar'a atanmıştır.", "Molla Rüstem, Edirne'ye atanmıştır.", "Gennadios, İstanbul'a atanmıştır."],answer:0,note:"İlk cami İznik Hacı Özbek Cami'dir[cite: 2]."},
-                        {q:"Savaş esirlerinden ilk defa hangi sistemle faydalanılmıştır?",options:["Pençik Sistemi ile yaya ve müsellim ordusu kurulmuştur[cite: 2].", "Devşirme sistemi", "Tımar sistemi", "Mültezim sistemi"],answer:0,note:"İlk defa iskan politikası uygulandı[cite: 2]."},
-                        {q:"I. Murat'ın lakabı nedir ve nasıl tahta geçirilmiştir?",options:["'Ebu-l Hayrat'tır (Hayır Babası). Zorla tahta geçirilmemiştir[cite: 3].", "Fahrüddin'dir, zorla çıkmıştır.", "İhtiyareddin'dir, seçimle gelmiştir.", "Avni'dir, verasetle gelmiştir."],answer:0,note:"Anadolu Türk siyasi birliğini genişletti[cite: 3]."},
-                        {q:"Sazlıdere Savaşı ile Edirne hangi yıl fethedilmiş ve başkent yapılmıştır?",options:["1363'te Sazlıdere Savaşı ile Edirne fethedildi ve başkent yapıldı[cite: 3].", "1326'da Bursa fethedildi.", "1389'da Kosova alındı.", "1453'te İstanbul alındı."],answer:0,note:"Germiyanoğulları çeyizle, Hamitoğulları parayla alındı[cite: 3]."},
-                        {q:"1364 yılında yapılan ilk Osmanlı-Haçlı savaşı hangisidir?",options:["Sırpsındığı Savaşı[cite: 3]", "I. Kosova Savaşı", "Niğbolu Savaşı", "Varna Savaşı"],answer:0,note:"Sırpsındığı Savaşı kazanıldı[cite: 3]."},
-                        {q:"I. Murat hangi savaş sonucunda Miloş Obiliç adlı bir Sırplı tarafından şehit edilmiştir?",options:["I. Kosova Savaşı[cite: 3]", "II. Kosova Savaşı", "Çaldıran Savaşı", "Ankara Savaşı"],answer:0,note:"Bu savaşta ilk defa büyük bir Haçlı ordusuna karşı top kullanıldı[cite: 3]."},
-                        {q:"I. Murat zamanında kurulan ilk defa maliye teşkilatı, kazaskerlik ve defterdarlık makamlarının yanı sıra hangi ocak kurulmuştur?",options:["Kapıkulu Ocağı (Yeniçeri) ve Acemioğlanlar Ocağı kuruldu, Pençik Sistemi uygulandı[cite: 3].", "Tımar sistemi ve yaya ocağı", "Donanma ocağı ve azaplar", "Sekban ve akıncı ocakları"],answer:0,note:"Manastır merkezli Rumeli Beylerbeyliği kuruldu[cite: 3]."},
-                        {q:"Yıldırım Bayezid unvanını hangi savaşta almıştır?",options:["Frenkyazısı Savaşı'nda Karamanoğulları ile yapılan savaşta elde etmiştir[cite: 3].", "Niğbolu Savaşı'nda", "Çaldıran Savaşı'nda", "Preveze Savaşı'nda"],answer:0,note:"Anadolu Türk siyasi birliğini geniş ölçüde sağlayan ilk padişahtır[cite: 3]."},
-                        {q:"İstanbul'u kuşatan ilk Osmanlı padişahı kimdir ve kuşatmayı yardımcı olması için nereyi inşa ettirmiştir?",options:["Yıldırım Bayezid, Anadoluhisarı'nı (Güzelcehisar) inşa ettirmiştir[cite: 3].", "Orhan Bey, Rumeli hisarını yaptırmıştır.", "Fatih Sultan Mehmet, Yedikule'yi yaptırmıştır.", "I. Murat, Kilitbahir'i yaptırmıştır."],answer:0,note:"1391-1401 arasında İstanbul'u kuşattı[cite: 3]. İlk hastane Bursa'da açıldı."},
-                        {q:"1396 yılında Haçlılar ile yapılan ve Yıldırım Bayezid'e 'Sultan-ı İklim-i Rum' unvanını kazandıran savaş hangisidir?",options:["Niğbolu Savaşı[cite: 3]", "Varna Savaşı", "Ankara Savaşı", "Koyunhisar Savaşı"],answer:0,note:"Halife Yıldırım Bayezid'e bu unvanı verdi[cite: 3]. Bursa Ulu Cami inşa edildi."},
-                        {q:"Ankara Savaşı hangi yıl ve kimler arasında yapılmıştır?",options:["1402 yılında Yıldırım Bayezid ile Timur arasında yapılmıştır[cite: 3].", "1444'te II. Murat ile Haçlılar arasında", "1453'te Fatih ile Bizans arasında", "1514'te Yavuz ile Safeviler arasında"],answer:0,note:"Timur'un Sivas'ı işgal edip ilerlemesi etkili oldu[cite: 3]."},
-                        {q:"Ankara Savaşı'nın en önemli sonucu nedir?",options:["Anadolu Türk siyasi birliği bozuldu, Osmanlı Devleti yıkılmanın eşiğine geldi (Fetret Devri)[cite: 4].", "İstanbul fethedildi.", "Halifelik Osmanlı'ya geçti.", "Rumeli tamamen kaybedildi."],answer:0,note:"Akkoyunlular Doğu'da güçlendi[cite: 4]."},
-                        {q:"Osmanlı Devleti'nin ikinci kurucusu olarak kabul edilen padişah kimdir?",options:["Çelebi Mehmet (I. Mehmet)[cite: 4]", "II. Murat", "Fatih Sultan Mehmet", "Yıldırım Bayezid"],answer:0,note:"Fetret Devri'ni sona erdirdiği için ikinci kurucu sayılır[cite: 4]."},
-                        {q:"Düzmece Mustafa İsyanı kimin zamanında çıkmıştır?",options:["Çelebi Mehmet ve II. Murat dönemlerinde çıkmıştır[cite: 4].", "Sadece Osman Bey döneminde", "Sadece Kanuni döneminde", "Sadece II. Bayezid döneminde"],answer:0,note:"İlk dini nitelikli toplumsal ayaklanma Şeyh Bedrettin İsyanı da bu dönemdedir[cite: 4]."},
-                        {q:"Venedik ile yapılan ilk deniz savaşı hangisidir?",options:["Çalı Bey Savaşı[cite: 4]", "Preveze Deniz Savaşı", "İnebahtı Deniz Savaşı", "Cerbe Deniz Savaşı"],answer:0,note:"Anadolu Türk siyasi birliğini sağlamak için Aydın, Menteşe ve Saruhanoğulları'na son verildi[cite: 4]."},
-                        {q:"II. Murat (Ebu'l-Hayrat - Hayır Babası) tahta kaç yılında geçmiştir?",options:["1421'de[cite: 4]", "1402'de", "1453'te", "1520'de"],answer:0,note:"Anadolu Türk siyasi birliğini en geniş ölçüde tekrar sağladı[cite: 4]."},
-                        {q:"Macaristan ile imzalanan ve Osmanlı'nın ilk köklü antlaşması olan Edirne-Segedin Antlaşması kimin zamanındadır?",options:["II. Murat zamanında, 10 yıl savaş yapılmayacağına dair imzalanmıştır[cite: 4].", "Fatih döneminde imzalanmıştır.", "Kanuni döneminde imzalanmıştır.", "Yıldırım döneminde imzalanmıştır."],answer:0,note:"Antlaşmadan sonra II. Murat tahtı oğlu II. Mehmet'e bıraktı[cite: 4]."},
-                        {q:"1444 Varna Savaşı'nı kim kazanmıştır?",options:["Osmanlı Devleti Haçlılara karşı kazanmıştır[cite: 4].", "Haçlılar kazanmıştır.", "Macarlar tek başına kazanmıştır.", "Savaş berabere bitmiştir."],answer:0,note:"II. Murat tekrar tahta geçerek Haçlıları mağlup etti[cite: 4]."},
-                        {q:"1448 II. Kosova Savaşı'nın en önemli sonucu nedir?",options:["Balkanlar kesin olarak Türk yurdu haline gelmiştir[cite: 4].", "Haçlı ittifakı tamamen dağılmıştır.", "İstanbul fethedilmiştir.", "Anadolu birliği sağlanmıştır."],answer:0,note:"Türkler 1683'e kadar taarruza geçti[cite: 4]."},
-                        {q:"Osmanlı tarihinde ilk defa devşirme adamı yetiştirmek için Edirne Sarayı'nda açılan yer neresidir?",options:["Edirne Sarayı'nda Enderun Mektebi açılmıştır[cite: 4].", "Topkapı Sarayı Enderun mektebi", "Galatasaray Sultanisi", "İznik Medresesi"],answer:0,note:"Kuruluş Dönemi'nde Haçlı savaşları SINAV II olarak kodlanır[cite: 4]."},
-                        {q:"Fetret Devri (Fasıla-i Saltanat) hangi yıllar arasındadır?",options:["1402 - 1413 yılları arasındadır[cite: 4].", "1299 - 1302 yılları arasındadır.", "1453 - 1461 yılları arasındadır.", "1579 - 1699 yılları arasındadır."],answer:0,note:"Yıldırım Bayezid'in oğulları arasında taht kavgalarıyla geçti[cite: 4]."},
-                        {q:"II. Murat tahttan ilk kez ayrılıp tekrar ne zaman dönmüştür?",options:["Edirne-Segedin sonrası tahtı oğluna bırakmış, Varna ve Kosova tehlikesiyle yeniden çıkmıştır[cite: 4].", "Ankara Savaşı'ndan sonra esaretten kurtulunca dönmüştür.", "İstanbul kuşatmasında yaralanınca dönmüştür.", "Çaldıran Seferi öncesinde dönmüştür."],answer:0,note:"Haçlılara karşı büyük zaferler kazanmıştır[cite: 4]."}
+                        {q:"14. yüzyıl başlarında yakın doğuda yer alan İlhanlılar nerede kurulmuştur?",options:["İran'da kuruldu, 1231'de Harzemşahlara son verdiler.", "Mısır'da kurulup Halifeliği korudular.", "Karadeniz'in kuzeyinde kurulup Rusların güneye inmesini engellediler.", "Anadolu'da kurulan ilk Türk beyliğidir."],answer:0,note:"1231'de Harzemşahlara son verdiler."},
+                        {q:"1243 Kösedağ Savaşı ile Anadolu Selçuklu Devleti'ni mağlup eden İlhanlı hükümdarı kimdir?",options:["Gazan Han", "Batu Han", "Timur", "Alaaddin Keykubat"],answer:0,note:"Gazan Han zamanında İslamiyet'i kabul ettiler. 1258'de hem Batıniliğe hem de Abbasilere son verdiler."},
+                        {q:"Karadeniz'in kuzeyinde Batu Han tarafından kurulan ve yıllarca Rusların güneye inmesini engelleyen devlet hangisidir?",options:["Altın Orda", "İlhanlılar", "Memlükler", "Akkoyunlular"],answer:0,note:"Timur saldırıları sonucu parçalanarak hanlıklara ayrıldılar."},
+                        {q:"1250'de Aybey tarafından Mısır'da kurulan, Halifeliği 1517'ye kadar muhafaza eden devlet hangisidir?",options:["Memlükler", "Altın Orda", "Safeviler", "Karamanoğulları"],answer:0,note:"Baharat Yolu ile zenginleştiler. 1517 Ridaniye Savaşı ile yıkıldılar."},
+                        {q:"Türkiye Selçuklu Devleti hangi yılda ve kimin ölümüyle yıkılmıştır?",options:["1075'te kuruldu, 1243 Kösedağ Savaşı'yla ilhanlılara tabi oldular. 1308'de Sultan III. Mesut'un ölümüyle yıkıldılar.", "1299'da Osman Bey'in ölümüyle", "1402 Ankara Savaşı'yla", "1461 Trabzon'un fethiyle"],answer:0,note:"Türkiye Selçuklu Devleti III. Mesut'un ölümüyle yıkılmıştır."},
+                        {q:"Osmanlı'nın kuruluş yıllarında Bizans İmparatorluğu'nun durumu nasıldı?",options:["Tekfur denilen Bizans valileri merkezi dinlememekte ve halkına zulüm etmekteydi.", "Oldukça merkeziyetçi ve güçlüydü.", "Haçlı ordularının tam denetimindeydi.", "Ekonomik olarak dünyanın en zengin devletiydi."],answer:0,note:"Bizans merkezî otoritesini yitirmişti."},
+                        {q:"Trabzon Rum İmparatorluğu hangi yıl ve kim tarafından sonlandırılmıştır?",options:["1461'de Fatih Sultan Mehmet tarafından", "1453'te II. Mehmet tarafından", "1302'de Osman Bey tarafından", "1517'de Yavuz Sultan Selim tarafından"],answer:0,note:"Trabzon Rum İmparatorluğu ortadan kaldırıldı."},
+                        {q:"Osmanlı Devleti'nin diğer çağdaş devlet ve milletler ile ilişkilerinde anılan 'Beni Ahmer Devleti' nerededir?",options:["İspanya bölgesindedir.", "Anadolu'dadır.", "Kırım'dadır.", "Mısır'dadır."],answer:0,note:"Osmanlı Sırp, Macar, İngiliz, Fransa, Venedik, Ceneviz vb. ile çağdaştır."},
+                        {q:"Osmanlı Devleti'nin kısa sürede büyümesinin nedenlerinden biri olan 'Bizans'ın içindeki taht kavgaları' yanında hangi unsur etkilidir?",options:["Bizans tekfurlarının merkezi dinlememesi ve Türkmenlerin gaza ruhu ile sefer yapması", "Moğolların desteğini alması", "Avrupa'dan büyük maddi yardım alması", "Deniz ticaretini tamamen ele geçirmesi"],answer:0,note:"Taht kavgaları ve tekfurların durumu büyümesini hızlandırdı."},
+                        {q:"Osmanlı'da 'Tımar, İskân ve İstimâlet' politikasının uygulanması devlete ne kazandırmıştır?",options:["Kalıcılığı ve istikrarı artırmıştır.", "Vergi gelirlerini tamamen sıfırlamıştır.", "Askeri gücü azaltmıştır.", "Merkezi otoriteyi zayıflatmıştır."],answer:0,note:"Merkezi otoritenin güçlü olması ve yetenekli padişahlar da etkili oldu."},
+                        {q:"Osmanlı Devleti'nin kurucusu Osman Bey'in lakabı nedir?",options:["Fahrüddin", "İhtiyareddin", "Ebu'l-Hayrat", "Sultan-ı İklim-i Rum"],answer:0,note:"1298'de Karacahisar, 1300'de Yundhisar alındı."},
+                        {q:"1302 yılında yapılan ve Osmanlı-Bizans arasındaki ilk savaş kabul edilen savaş hangisidir?",options:["Koyunhisar (Bapheus) Savaşı", "Maltepe Savaşı", "Sazlıdere Savaşı", "Niğbolu Savaşı"],answer:0,note:"Bilecik alındı, demir madeni işlendi."},
+                        {q:"Osmanlı Devleti'nde ilk vergi hangi isimle alınmıştır?",options:["Bac vergisi (Bac-ı Pazar)", "Cizye", "Öşür", "Avarız"],answer:0,note:"İlk kadı ataması Dursun Fakih'tir. İlk para akçe ve mangırdır."},
+                        {q:"Osmanlı'da ilk defa toprak (dirik) dağıtımı kimin zamanında ve kime yapılmıştır?",options:["Osman Bey yakın arkadaşlarına ilk defa tımarlar dağıttı.", "Orhan Bey yeniçerilere dağıttı.", "I. Murat sipahilere dağıttı.", "Fatih Sultan Mehmet alimlere dağıttı."],answer:0,note:"Osman Bey yakın arkadaşlarına ilk tımarları verdi."},
+                        {q:"Orhan Bey'in lakabı nedir?",options:["İhtiyareddin'dir.", "Fahrüddin", "Avni", "Muhibbi"],answer:0,note:"1326'da Bursa fethedilerek başkent yapıldı."},
+                        {q:"1329 Maltepe (Pelekanon) Savaşı kimin zamanında yapılmıştır?",options:["Orhan Bey", "Osman Bey", "I. Murat", "Yıldırım Bayezid"],answer:0,note:"İznik alınarak başkent yapıldı (1330)."},
+                        {q:"Karesioğulları Beyliği hangi yıl Osmanlı topraklarına katılmıştır?",options:["1345'te", "1363'te", "1402'de", "1453'te"],answer:0,note:"Karesioğulları'nın alınmasıyla Osmanlı ilk donanmaya sahip oldu."},
+                        {q:"Rumeli'deki ilk Türk toprağı olan Çimpe Kalesi hangi yıl alınmıştır?",options:["1353'te", "1361'de", "1389'da", "1396'da"],answer:0,note:"Gelibolu Fatihi Süleyman Paşa tarafından alındı."},
+                        {q:"Orhan Bey zamanında açılan ilk medresenin müderrisi kimdir ve ilk atama nereye yapılmıştır?",options:["Davud-u Kayseri ilk müderris olarak İznik Medresesi'ne atanmıştır.", "Dursun Fakih, Karacahisar'a atanmıştır.", "Molla Rüstem, Edirne'ye atanmıştır.", "Gennadios, İstanbul'a atanmıştır."],answer:0,note:"İlk cami İznik Hacı Özbek Cami'dir."},
+                        {q:"Savaş esirlerinden ilk defa hangi sistemle faydalanılmıştır?",options:["Pençik Sistemi ile yaya ve müsellim ordusu kurulmuştur.", "Devşirme sistemi", "Tımar sistemi", "Mültezim sistemi"],answer:0,note:"İlk defa iskan politikası uygulandı."},
+                        {q:"I. Murat'ın lakabı nedir ve nasıl tahta geçirilmiştir?",options:["'Ebu-l Hayrat'tır (Hayır Babası). Zorla tahta geçirilmemiştir.", "Fahrüddin'dir, zorla çıkmıştır.", "İhtiyareddin'dir, seçimle gelmiştir.", "Avni'dir, verasetle gelmiştir."],answer:0,note:"Anadolu Türk siyasi birliğini genişletti."},
+                        {q:"Sazlıdere Savaşı ile Edirne hangi yıl fethedilmiş ve başkent yapılmıştır?",options:["1363'te Sazlıdere Savaşı ile Edirne fethedildi ve başkent yapıldı.", "1326'da Bursa fethedildi.", "1389'da Kosova alındı.", "1453'te İstanbul alındı."],answer:0,note:"Germiyanoğulları çeyizle, Hamitoğulları parayla alındı."},
+                        {q:"1364 yılında yapılan ilk Osmanlı-Haçlı savaşı hangisidir?",options:["Sırpsındığı Savaşı", "I. Kosova Savaşı", "Niğbolu Savaşı", "Varna Savaşı"],answer:0,note:"Sırpsındığı Savaşı kazanıldı."},
+                        {q:"I. Murat hangi savaş sonucunda Miloş Obiliç adlı bir Sırplı tarafından şehit edilmiştir?",options:["I. Kosova Savaşı", "II. Kosova Savaşı", "Çaldıran Savaşı", "Ankara Savaşı"],answer:0,note:"Bu savaşta ilk defa büyük bir Haçlı ordusuna karşı top kullanıldı."},
+                        {q:"I. Murat zamanında kurulan ilk defa maliye teşkilatı, kazaskerlik ve defterdarlık makamlarının yanı sıra hangi ocak kurulmuştur?",options:["Kapıkulu Ocağı (Yeniçeri) ve Acemioğlanlar Ocağı kuruldu, Pençik Sistemi uygulandı.", "Tımar sistemi ve yaya ocağı", "Donanma ocağı ve azaplar", "Sekban ve akıncı ocakları"],answer:0,note:"Manastır merkezli Rumeli Beylerbeyliği kuruldu."},
+                        {q:"Yıldırım Bayezid unvanını hangi savaşta almıştır?",options:["Frenkyazısı Savaşı'nda Karamanoğulları ile yapılan savaşta elde etmiştir.", "Niğbolu Savaşı'nda", "Çaldıran Savaşı'nda", "Preveze Savaşı'nda"],answer:0,note:"Anadolu Türk siyasi birliğini geniş ölçüde sağlayan ilk padişahtır."},
+                        {q:"İstanbul'u kuşatan ilk Osmanlı padişahı kimdir ve kuşatmayı yardımcı olması için nereyi inşa ettirmiştir?",options:["Yıldırım Bayezid, Anadoluhisarı'nı (Güzelcehisar) inşa ettirmiştir.", "Orhan Bey, Rumeli hisarını yaptırmıştır.", "Fatih Sultan Mehmet, Yedikule'yi yaptırmıştır.", "I. Murat, Kilitbahir'i yaptırmıştır."],answer:0,note:"1391-1401 arasında İstanbul'u kuşattı. İlk hastane Bursa'da açıldı."},
+                        {q:"1396 yılında Haçlılar ile yapılan ve Yıldırım Bayezid'e 'Sultan-ı İklim-i Rum' unvanını kazandıran savaş hangisidir?",options:["Niğbolu Savaşı", "Varna Savaşı", "Ankara Savaşı", "Koyunhisar Savaşı"],answer:0,note:"Halife Yıldırım Bayezid'e bu unvanı verdi. Bursa Ulu Cami inşa edildi."},
+                        {q:"Ankara Savaşı hangi yıl ve kimler arasında yapılmıştır?",options:["1402 yılında Yıldırım Bayezid ile Timur arasında yapılmıştır.", "1444'te II. Murat ile Haçlılar arasında", "1453'te Fatih ile Bizans arasında", "1514'te Yavuz ile Safeviler arasında"],answer:0,note:"Timur'un Sivas'ı işgal edip ilerlemesi etkili oldu."},
+                        {q:"Ankara Savaşı'nın en önemli sonucu nedir?",options:["Anadolu Türk siyasi birliği bozuldu, Osmanlı Devleti yıkılmanın eşiğine geldi (Fetret Devri).", "İstanbul fethedildi.", "Halifelik Osmanlı'ya geçti.", "Rumeli tamamen kaybedildi."],answer:0,note:"Akkoyunlular Doğu'da güçlendi."},
+                        {q:"Osmanlı Devleti'nin ikinci kurucusu olarak kabul edilen padişah kimdir?",options:["Çelebi Mehmet (I. Mehmet)", "II. Murat", "Fatih Sultan Mehmet", "Yıldırım Bayezid"],answer:0,note:"Fetret Devri'ni sona erdirdiği için ikinci kurucu sayılır."},
+                        {q:"Düzmece Mustafa İsyanı kimin zamanında çıkmıştır?",options:["Çelebi Mehmet ve II. Murat dönemlerinde çıkmıştır.", "Sadece Osman Bey döneminde", "Sadece Kanuni döneminde", "Sadece II. Bayezid döneminde"],answer:0,note:"İlk dini nitelikli toplumsal ayaklanma Şeyh Bedrettin İsyanı da bu dönemdedir."},
+                        {q:"Venedik ile yapılan ilk deniz savaşı hangisidir?",options:["Çalı Bey Savaşı", "Preveze Deniz Savaşı", "İnebahtı Deniz Savaşı", "Cerbe Deniz Savaşı"],answer:0,note:"Anadolu Türk siyasi birliğini sağlamak için Aydın, Menteşe ve Saruhanoğulları'na son verildi."},
+                        {q:"II. Murat (Ebu'l-Hayrat - Hayır Babası) tahta kaç yılında geçmiştir?",options:["1421'de", "1402'de", "1453'te", "1520'de"],answer:0,note:"Anadolu Türk siyasi birliğini en geniş ölçüde tekrar sağladı."},
+                        {q:"Macaristan ile imzalanan ve Osmanlı'nın ilk köklü antlaşması olan Edirne-Segedin Antlaşması kimin zamanındadır?",options:["II. Murat zamanında, 10 yıl savaş yapılmayacağına dair imzalanmıştır.", "Fatih döneminde imzalanmıştır.", "Kanuni döneminde imzalanmıştır.", "Yıldırım döneminde imzalanmıştır."],answer:0,note:"Antlaşmadan sonra II. Murat tahtı oğlu II. Mehmet'e bıraktı."},
+                        {q:"1444 Varna Savaşı'nı kim kazanmıştır?",options:["Osmanlı Devleti Haçlılara karşı kazanmıştır.", "Haçlılar kazanmıştır.", "Macarlar tek başına kazanmıştır.", "Savaş berabere bitmiştir."],answer:0,note:"II. Murat tekrar tahta geçerek Haçlıları mağlup etti."},
+                        {q:"1448 II. Kosova Savaşı'nın en önemli sonucu nedir?",options:["Balkanlar kesin olarak Türk yurdu haline gelmiştir.", "Haçlı ittifakı tamamen dağılmıştır.", "İstanbul fethedilmiştir.", "Anadolu birliği sağlanmıştır."],answer:0,note:"Türkler 1683'e kadar taarruza geçti."},
+                        {q:"Osmanlı tarihinde ilk defa devşirme adamı yetiştirmek için Edirne Sarayı'nda açılan yer neresidir?",options:["Edirne Sarayı'nda Enderun Mektebi açılmıştır.", "Topkapı Sarayı Enderun mektebi", "Galatasaray Sultanisi", "İznik Medresesi"],answer:0,note:"Kuruluş Dönemi'nde Haçlı savaşları SINAV II olarak kodlanır."},
+                        {q:"Fetret Devri (Fasıla-i Saltanat) hangi yıllar arasındadır?",options:["1402 - 1413 yılları arasındadır.", "1299 - 1302 yılları arasındadır.", "1453 - 1461 yılları arasındadır.", "1579 - 1699 yılları arasındadır."],answer:0,note:"Yıldırım Bayezid'in oğulları arasında taht kavgalarıyla geçti."},
+                        {q:"II. Murat tahttan ilk kez ayrılıp tekrar ne zaman dönmüştür?",options:["Edirne-Segedin sonrası tahtı oğluna bırakmış, Varna ve Kosova tehlikesiyle yeniden çıkmıştır.", "Ankara Savaşı'ndan sonra esaretten kurtulunca dönmüştür.", "İstanbul kuşatmasında yaralanınca dönmüştür.", "Çaldıran Seferi öncesinde dönmüştür."],answer:0,note:"Haçlılara karşı büyük zaferler kazanmıştır."}
                     ]
                 },
                 {
@@ -768,7 +767,7 @@
                         {q:"Yeniçerilerin ocağa kaydolurken okudukları duaya ne ad verilir?",options:["Gülbank","Ulufe","Mevlit","İstihlaq"],answer:0},
                         {q:"Osmanlı'da ordu komutanı olan padişah sefere çıkmadığı zaman ona vekâlet eden divan üyesine ne ad verilir?",options:["Serdar-ı Ekrem","Kazasker","Defterdar","Kapan Emini"],answer:0},
                         {q:"Divan-ı Hümayun'da nişancının görevi aşağıdakilerden hangisidir?",options:["Tımar ve zeamet topraklarının dağıtımını yapmak ve tuğra çekmek","Maliye işlerine bakmak","Kadı ve müderris ataması yapmak","Divan kararlarını kaydetmek"],answer:0},
-                        {q:"Osmanlı Devleti'nde kadı ve müderrislerin atama ve tayin işlerine bakan, mülkiyeti ve adaleti denetleyen kazasker hangi sınıfa mensuptur?",options:["İlmiye","Seyfiye","Kalemiye","Reaya"],answer:0},
+                        {q:"Osmanlı'da kadı ve müderrislerin atama ve tayin işlerine bakan, mülkiyeti ve adaleti denetleyen kazasker hangi sınıfa mensuptur?",options:["İlmiye","Seyfiye","Kalemiye","Reaya"],answer:0},
                         {q:"Seyfiye sınıfında yer alan ve deniz kuvvetleri komutanı olarak görev yapan divan üyesi kimdir?",options:["Kaptan-ı Derya","Yeniçeri Ağası","Beylerbeyi","Sadrazam"],answer:0},
                         {q:"Osmanlı'da bütçe hazırlayan, gelir ve gider dengesini tutan maliye işlerinden sorumlu divan üyesi kimdir?",options:["Defterdar","Nişancı","Kazasker","Reisülküttap"],answer:0},
                         {q:"Eyalet askerlerinin en kalabalık kısmını oluşturan, geçimleri tımar topraklarından sağlanan askerlere ne denir?",options:["Tımarlı Sipahi","Yeniçeri","Azap","Akıncı"],answer:0},
@@ -851,6 +850,736 @@
                         {q:"Osmanlı Devleti'nde tek kadın padişah minyatürünü çizen ve adını duyuran ünlü minyatür sanatçısı kimdir?",options:["Nakkaş Osman","Matrakçı Nasuh","Nakkaş Sinan Bey","Seydi Ali Reis"],answer:2},
                         {q:"Osmanlı'da el yazması kitapları süsleme ve yaldızlama sanatına ne denir?",options:["Tezhip","Hat","Ebru","Minyatür"],answer:0},
                         {q:"Osmanlı'da devlet memuru yetiştirmek amacıyla kurulan Enderun Mektebi ilk kez hangi padişah zamanında Edirne Sarayı'nda açılmıştır?",options:["II. Murad","Fatih Sultan Mehmet","Orhan Bey","I. Murat"],answer:0}
+                    ]
+                }
+            ]
+        },
+        {
+            categoryName: "🧠 Gelişim Psikolojisi",
+            topics: [
+                {
+                    name: "Gelişim Psikolojisi Soru Bankası",
+                    questions: [
+                        {
+                            id: 1,
+                            q: "Aşağıdakilerden hangisi \"olgunlaşma\" kavramının tanımına en uygun örnektir?",
+                            options: [
+                                "A) 8 yaşındaki bir çocuğun bisiklet sürmeyi deneme yanılma yoluyla öğrenmesi",
+                                "B) 5 yaşındaki bir çocuğun el kaslarının yazma eylemini gerçekleştirebilecek biyolojik düzeye erişmesi",
+                                "C) Bir çocuğun düzenli antrenmanlarla koşu hızını artırması",
+                                "D) Ergenlik dönemindeki bir gencin sosyal çevresinin etkisiyle giyim tarzını değiştirmesi",
+                                "E) Bir bebeğin anne sütünden ek gıdaya geçiş sürecinde yeni tatlara alışması"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 2,
+                            q: "Gelişimin ilkeleriyle ilgili aşağıdaki örneklerden hangisi \"Yordanabilir (kestirilebilir) bir sıra izler\" ilkesiyle açıklanır?",
+                            options: [
+                                "A) Bir çocuğun yaşıtlarına göre çok daha erken yaşta yürümeye başlaması",
+                                "B) Futbol takımında başarılı olan bir çocuğun öz güveninin artması ve ders başarısının da yükselmesi",
+                                "C) 4 aylıkken başını tutabilen bir bebeğin, ilerleyen aylarda sırasıyla oturabilmesi ve ayağa kalkabilmesi",
+                                "D) Dil gelişim hızının yavaşladığı dönemde motor gelişim alanında hızlı bir ilerleme kaydedilmesi",
+                                "E) Kız çocuklarının erkek çocuklarına göre ergenlik dönemine ortalama iki yıl daha erken girmesi"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 3,
+                            q: "Yeni doğan bir bebeğin avuç içine parmağımızla dokunulduğunda parmağımızı sıkıca kavraması hangi refleks ile açıklanır ve yaklaşık hangi ayda kaybolur?",
+                            options: [
+                                "A) Moro refleksi - 3-6. aylarda kaybolur",
+                                "B) Babinski refleksi - 8-12. aylarda kaybolur",
+                                "C) Arama refleksi - 3. ayda kaybolur",
+                                "D) Palmar (Yakalama) kavrama refleksi - 3-4. aylarda kaybolur",
+                                "E) Adımlama refleksi - 3-4 haftada kaybolur"
+                            ],
+                            answer: 3
+                        },
+                        {
+                            id: 4,
+                            q: "Bronfenbrenner’in Ekolojik Sistemler Kuramı'na göre, çocuğun doğrudan içinde bulunmadığı ancak anne-babanın iş hayatı, okul yönetimi kararları veya Milli Eğitim Müdürlüğü politikaları gibi unsurları içeren katman aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Mikrosistem",
+                                "B) Mezosistem",
+                                "C) Ekzosistem",
+                                "D) Makrosistem",
+                                "E) Kronosistem"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 5,
+                            q: "Bir çocuğun, okulda yaşadığı bir olayı akşam eve geldiğinde zihninde yeniden kurgulayarak sırasıyla ve mantıklı bir biçimde anlatabilmesi aşağıdaki somut dönem özelliklerinden hangisiyle doğrudan ilgilidir?",
+                            options: [
+                                "A) Odaktan uzaklaşma",
+                                "B) Geçişlik (Geçiş çıkarsaması)",
+                                "C) Dönüşümsel düşünme becerisi",
+                                "D) Dolaylı gerçeği kavrayabilme",
+                                "E) Çoklu sınıflama"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 6,
+                            q: "Piaget'nin bilişsel gelişim kuramına göre, yeni gelen bilginin zihindeki mevcut şemalara uymaması durumunda eski şemada değişiklik yapılması veya yeni bilgiye uygun yeni bir şema oluşturulması süreci aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Özümseme (Asimilasyon)",
+                                "B) Uyumsama (Akkodomasyon / Düzenleme)",
+                                "C) Örgütleme (Organizasyon)",
+                                "D) Dengeleme",
+                                "E) Odaklaşma"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 7,
+                            q: "5 yaşındaki bir çocuğa 10 adet 1 TL, diğer bir çocuğa ise tek bir kağıt 10 TL verildiğinde, ilk çocuğun \"bana çok para verdin\" diyerek fazla parası olduğunu zannetmesi Piaget'nin işlem öncesi dönemindeki hangi düşünce sınırlılığıyla açıklanır?",
+                            options: [
+                                "A) Canlandırmacılık (Animizm)",
+                                "B) Özelden özele akıl yürütme",
+                                "C) Odaktan uzaklaşamama (Merkeziyetçilik)",
+                                "D) Yapaycılık",
+                                "E) Tersine çevirememe"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 8,
+                            q: "Aşağıdakilerden hangisi Piaget'nin somut işlemler evresinde kazanılan korunum ilkesinin oluşması için gereken mantık yürütme ögelerinden biri değildir?",
+                            options: [
+                                "A) Özdeşlik (Ayniyet)",
+                                "B) Ödünleme (Telafi)",
+                                "C) Hipotetik (Varsayımsal) düşünme",
+                                "D) Dönüşümsel düşünme",
+                                "E) Çoklu sınıflama"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 9,
+                            q: "Somut işlemler dönemindeki bir çocuğun; \"Ahmet, Mehmet’ten uzundur; Mehmet de Ali’den uzundur, o halde Ahmet Ali’den de uzundur\" şeklinde verilen ilişkilerden yola çıkarak yeni çıkarımlar yapabilmesi yeteneği aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Geçişlik (Geçiş çıkarsaması)",
+                                "B) Korunum",
+                                "C) Tersine çevirme",
+                                "D) Dolaylı gerçeği kavrama",
+                                "E) Sınıf kamsamı"
+                            ],
+                            answer: 0
+                        },
+                        {
+                            id: 10,
+                            q: "Ergenlik dönemindeki bir gencin, sanki herkesin sürekli kendisini izlediğini, tüm gözlerin kendi üzerinde olduğunu düşünmesi ve kendini bir sahnede başrolde hissetmesi Elkind’in ergen benmerkezciliği kuramına göre hangi kavramla ifade edilir?",
+                            options: [
+                                "A) Kişisel efsane (Mit)",
+                                "B) Omnipotent düşünce",
+                                "C) Hayali seyirci",
+                                "D) Varsayımsal düşünme",
+                                "E) Metabiliş"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 11,
+                            q: "Vygotsky’nin sosyo-kültürel kuramında, bir çocuğun tek başına yapamayacağı bir görevi bir yetişkinin veya daha bilgili bir akranın desteğiyle (rehberliğiyle) öğrenebileceği aralık olarak tanımlanan kavram aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Kişilerarası öznellik",
+                                "B) Yakınsal gelişim alanı",
+                                "C) İskele kurma",
+                                "D) Metabiliş",
+                                "E) Özümseme"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 12,
+                            q: "Bruner’in bilişsel gelişim dönemleri kuramına göre, bireyin çevredeki nesnelere dokunarak, hareket ettirerek, yaparak ve yaşayarak öğrendiği, bilginin eylemlerle temsil edildiği ilk dönem aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) İmgesel dönem",
+                                "B) Sembolik dönem",
+                                "C) Eylemsel dönem",
+                                "D) İşlem öncesi dönem",
+                                "E) Soyut işlemler dönemi"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 13,
+                            q: "Simit satan kişiye \"simitçi\" demeyi öğrendikten sonra, manava da \"manavcı\" diyen bir çocuğun düştüğü dil hatası aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Aşırı kurallaştırma",
+                                "B) Eksik kurallaştırma",
+                                "C) Hızlı haritalama",
+                                "D) Yansıtıcı konuşma",
+                                "E) Telgrafik konuşma"
+                            ],
+                            answer: 0
+                        },
+                        {
+                            id: 14,
+                            q: "Chomsky’nin psikolinguistik (doğuştancı) kuramına göre, çocukların doğuştan getirdikleri ve evrensel dil bilgisi kuralları ile ses havuzunu barındıran yapı aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Broca alanı",
+                                "B) Wernicke alanı",
+                                "C) Dil kazanım aygıtı (DKA)",
+                                "D) Semantik sistem",
+                                "E) Fonolojik farkındalık"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 15,
+                            q: "Bebeklerin konuşma öncesi dönemde çıkardıkları evresel nitelikteki seslerden biri olan, 6-12 aylık dönemde \"babababa\", \"mamama\" şeklinde heceleri ardı ardına tekrarladıkları evre aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Ağlama evresi",
+                                "B) Agulama (Cıvıldama) evresi",
+                                "C) Heceleme (Babıldama) evresi",
+                                "D) Tek sözcük evresi",
+                                "E) Telgrafik konuşma evresi"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 16,
+                            q: "Kohlberg’in Ahlaki Gelişim Kuramı'na göre, bir davranışın cezalandırılıp cezalandırılmadığına bakılarak iyi ya da kötü olduğuna karar verilen, otoriteye körü körüne bağlılığın ve cezadan kaçınmanın temel motifi oluşturduğu ilk basamak aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) İtaat ve ceza yönelimi",
+                                "B) Saf çıkarcı eğilim (Pazaryeri ahlakı)",
+                                "C) İyi çocuk eğilimi",
+                                "D) Kanun ve düzen eğilimi",
+                                "E) Evrensel ahlak ilkeleri"
+                            ],
+                            answer: 0
+                        },
+                        {
+                            id: 17,
+                            q: "Kohlberg’in ahlaki gelişim basamaklarından \"Sosyal Sözleşme\" evresinde yer alan bir bireyin Heinz Öyküsü'ne ilişkin vereceği en olası tepki aşağıdakilerden hangisi olur?",
+                            options: [
+                                "A) İlacı kesinlikle çalmamalıdır çünkü yasalar suçtur ve hapse girer.",
+                                "B) İlacı çalmalıdır çünkü insan hayatı yazılı yasalardan ve mülkiyet haklarından daha üstündür.",
+                                "C) İlacı çalmalıdır ki karısı onu çok sevsin ve övünç duyduğunu bilsin.",
+                                "D) Eczacı haklıdır çünkü ilacı kendi parasıyla ve emeğiyle üretmiştir.",
+                                "E) Yakalanma riski olduğu için Heinz bu işe hiç kalkışmamalıdır."
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 18,
+                            q: "Piaget’nin ahlaki gelişim kuramına göre, kuralların mutlak ve değiştirilemez olduğunu, dışa bağımlı kalındığını, suçun büyüklüğüne karar verilirken niyetin değil sadece zararın miktarının baz alındığı evre aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Ahlak öncesi dönem",
+                                "B) Dışa bağımlı evre (Ahlaki gerçekçilik)",
+                                "C) Özerk ahlak evresi (Ahlaki görecelilik)",
+                                "D) Geleneksel düzey",
+                                "E) İlkeli özerk düzey"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 19,
+                            q: "Carol Gilligan’ın kadınların ahlaki gelişim süreçlerini incelediği kuramında, geleneksel Kohlberg kuramına getirdiği eleştiriler doğrultusunda odaklandığı temel unsur aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Sadece saf çıkarcı ve bireysel çıkarlar",
+                                "B) Evrensel adalet ve yasal düzen ilkeleri",
+                                "C) Sorumluluk, şefkat, başkalarını koruma ve ilişki/bağ odaklılık",
+                                "D) Biyolojik olgunlaşma ve zihinsel kapasite artışı",
+                                "E) Tamamen cezadan kaçınma ve otorite korkusu"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 20,
+                            q: "Bir dilde anlamı etkileyen en küçük ses birimi (ses veya harf bilgisi) aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Morfem",
+                                "B) Fonem",
+                                "C) Sentaks",
+                                "D) Semantik",
+                                "E) Pragmatik"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 21,
+                            q: "John Bowlby’nin bağlanma kuramına göre, annesi odadan çıktığında aşırı tepki gösteren, annesi geri döndüğünde ise hem sımsıkı sarılan hem de öfkeyle itip vuran, huzursuzluk çıkaran bebeklerin sergilediği bağlanma türü aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Güvenli bağlanma",
+                                "B) Güvensiz kaçınan bağlanma",
+                                "C) Güvensiz kuşkulu / ikircikli (kararsız) bağlanma",
+                                "D) Kayıtsız bağlanma",
+                                "E) Korkulu bağlanma"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 22,
+                            q: "James Marcia’nın kimlik statüleri kuramına göre; kimlikle ilgili herhangi bir araştırma süreci yaşamadan, tamamen ailesinin veya yetişkinlerin kendisi için belirlediği meslek veya inanç seçimlerini kabullenen ergenin bulunduğu statü aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Başarılı kimlik",
+                                "B) Moratoryum kimlik",
+                                "C) İpotekli (Erken bağlanmış) kimlik",
+                                "D) Dağınık (Kargaşalı) kimlik",
+                                "E) Zıt (Ters) kimlik"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 23,
+                            q: "Bem’in Cinsiyet Rolleri Envanteri'ne göre, hem erkeksi hem de kadınsı özelliklerin ve rollerin bir arada ve yüksek düzeyde bulunduğu toplumsal cinsiyet kimliği biçimi aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Erkeksi rol",
+                                "B) Kadınsı rol",
+                                "C) Androjen kimlik",
+                                "D) Belirsiz kimlik",
+                                "E) İpotekli kimlik"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 24,
+                            q: "Çocukların gelişim sürecinde cinsiyet sabitliğini (zaman içinde cinsiyetin değişmeyeceği bilincini) tam anlamıyla kazandıkları yaş aralığı aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) 0-1 yaş",
+                                "B) 2-3 yaş",
+                                "C) 3-4 yaş",
+                                "D) 4-5 yaş",
+                                "E) 5 yaşından sonra"
+                            ],
+                            answer: 4
+                        },
+                        {
+                            id: 25,
+                            q: "Erikson’un psikososyal gelişim kuramında ailenin istediği kimliğin tam tersini seçmeyi \"hiç kimse olmaktansa kötü biri olmayı tercih ederim\" mantığıyla açıklayan kimlik edinme biçimi aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Gölgelenmiş kimlik",
+                                "B) Ters / Zıt kimlik",
+                                "C) İpotekli kimlik",
+                                "D) Moratoryum kimlik",
+                                "E) Dağınık kimlik"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 26,
+                            q: "Havinghurst’ün Gelişim Görevleri Modeli'ne göre, \"Bedensel özelliklerini kabul edip etkili biçimde kullanma, bir mesleğe yönelme, akran gruplarına girme ve duygusal bağımsızlık kazanma\" gibi görevler hangi gelişim dönemine aittir?",
+                            options: [
+                                "A) İlk çocukluk dönemi",
+                                "B) Son çocukluk dönemi",
+                                "C) Ergenlik dönemi",
+                                "D) Genç yetişkinlik dönemi",
+                                "E) Orta yetişkinlik dönemi"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 27,
+                            q: "Bireyin kendisini olumsuz, çevresini ise aşırı değersiz gördüğü, yakın ilişkiler kurmaktan kaçındığı ancak yalnız da kalamadığı yetişkinlikte bağlanma stresi taşıyan tür aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Güvenli bağlanma",
+                                "B) Saplantılı / Kaygılı bağlanma",
+                                "C) Kaçınan kayıtsız bağlanma",
+                                "D) Kaçınan korkulu bağlanma",
+                                "E) İkircikli bağlanma"
+                            ],
+                            answer: 3
+                        },
+                        {
+                            id: 28,
+                            q: "James Marcia’nın kimlik statülerine göre, seçenekleri aktif olarak araştıran ancak henüz net bir içsel yatırımda bulunamamış, dönemsel bir erteleme ve kararsızlık yaşayan ergenin durumu hangi kavramla ifade edilir?",
+                            options: [
+                                "A) Başarılı kimlik",
+                                "B) Moratoryum kimlik",
+                                "C) İpotekli kimlik",
+                                "D) Dağınık kimlik",
+                                "E) Gölgelenmiş kimlik"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 29,
+                            q: "Aşağıdakilerden hangisi doğum öncesi dönemde bebeğin fiziksel ve zihinsel gelişimini olumsuz yönde etkileyen çevresel faktörler arasında yer almaz?",
+                            options: [
+                                "A) Annenin beslenme yetersizlikleri ve zararlı alışkanlıkları",
+                                "B) Annenin gebelik sürecinde geçirdiği ağır hastalıklar ve radyasyona maruz kalması",
+                                "C) Bebeğin genetik olarak taşıdığı kalıtsal özellikler",
+                                "D) Gebelikte kullanılan bazı sakıncalı ilaçlar ve travmalar",
+                                "E) Annenin yaşadığı şiddetli psikolojik stresler ve kaygılar"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 30,
+                            q: "Sosyal rollerdeki belirsizlikler veya netleşmemiş kimlikler nedeniyle bireyin hangi rolü benimsemesi gerektiğine karar vermekte yaşadığı bunalım ve kargaşa durumu aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Rol çatışması",
+                                "B) Rol karmaşası",
+                                "C) Ergen benmerkezciliği",
+                                "D) Yatay dekalaj",
+                                "E) Düşey dekalaj"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 31,
+                            q: "Piaget’nin bilişsel gelişim kuramına göre, aynı gelişim dönemindeki bir çocuğun korunum ilkesini sayı ve uzunlukta kazanmasına rağmen ağırlık veya hacimde daha geç kazanması durumu aşağıdakilerden hangisiyle açıklanır?",
+                            options: [
+                                "A) Yatay dekalaj (yatay dengesizlik)",
+                                "B) Düşey dekalaj",
+                                "C) Örgütleme",
+                                "D) Özelden özele akıl yürütme",
+                                "E) Özümseme"
+                            ],
+                            answer: 0
+                        },
+                        {
+                            id: 32,
+                            q: "Vygotsky’nin kuramında, çocuğun kendi kendine yüksek sesle konuşarak problem çözme sürecini yönlendirmesi, davranışlarını düzenlemesi ve bir süre sonra bu sesin içsel düşünceye dönüşmesi süreci nasıl adlandırılır?",
+                            options: [
+                                "A) Sosyal konuşma",
+                                "B) Özel (benmerkezci) konuşma",
+                                "C) İçsel konuşma",
+                                "D) Hızlı haritalama",
+                                "E) Fonolojik farkındalık"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 33,
+                            q: "Piaget’nin gelişim dönemleri arasında bir evreden diğerine geçişte yaşanan bilişsel sıçramaları ve hiyerarşik gelişimi ifade eden kavram aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Yatay dekalaj",
+                                "B) Düşey dekalaj",
+                                "C) Dengeleme",
+                                "D) Odaklaşma",
+                                "E) Özümseme"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 34,
+                            q: "Bir çocuğun gördüğü yeni bir nesneye veya kavrama, zihnindeki mevcut kategoriye dayanarak hızla ve tek bir denemede anlam yüklemesi dil gelişimindeki hangi süreçle açıklanır?",
+                            options: [
+                                "A) Aşırı kurallaştırma",
+                                "B) Hızlı haritalama (Fast mapping)",
+                                "C) Telgrafik konuşma",
+                                "D) Babıldama",
+                                "E) Eksik kurallaştırma"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 35,
+                            q: "Aşağıdakilerden hangisi Piaget’nin işlem öncesi döneminde görülen \"özelden özele akıl yürütme\" eğilimine en uygun örnektir?",
+                            options: [
+                                "A) \"Her sabah kahvaltıda yumurta yiyorum, demek ki kahvaltı yaptığım için sabah oluyor.\"",
+                                "B) \"Aydede sokakta yürürken sürekli beni takip ediyor.\"",
+                                "C) \"Annem eve elma getirdi, elma meyvedir, o halde muz da meyvedir.\"",
+                                "D) \"Güneş akşamları üşümesin diye dağların arkasında uyumaya gidiyor.\"",
+                                "E) \"Büyük toplar suya batar, demek ki tüm ağır metal nesneler de batar.\""
+                            ],
+                            answer: 0
+                        },
+                        {
+                            id: 36,
+                            q: "Kohlberg’in ahlaki gelişim kuramının geleneksel düzeyinde yer alan \"İyi çocuk eğilimi\" basamağındaki bir birey için davranışın ahlaki doğruluğunu belirleyen temel ölçüt aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Kanunlara ve kurallara harfiyen uymak",
+                                "B) Cezadan kaçınmak ve otoriteyi tatmin etmek",
+                                "C) Çevresindeki insanların onayını almak, takdir edilmek ve \"iyi\" olarak bilinmek",
+                                "D) Bireysel haklara ve toplumsal sözleşmelere saygı duymak",
+                                "E) Kendi vicdanının sesini dinleyerek evrensel ilkeleri uygulamak"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 37,
+                            q: "Dil gelişiminde seslerin ve kelimelerin doğru bir şekilde telaffuz edilmesi, vurgu ve tonlamaların yapılması dilin hangi alt bileşeniyle doğrudan ilgilidir?",
+                            options: [
+                                "A) Fonoloji (Ses bilgisi)",
+                                "B) Semantik (Anlam bilgisi)",
+                                "C) Sentaks (Sözdizimi)",
+                                "D) Edimbilim (Pragmatik)",
+                                "E) Morfoloji (Biçim bilgisi)"
+                            ],
+                            answer: 0
+                        },
+                        {
+                            id: 38,
+                            q: "Bireyin kendi bilişsel süreçlerinin farkında olması, öğrenme yöntemlerini planlayabilmesi, denetleyebilmesi ve hangi stratejinin işe yarayıp yaramayacağını kestirebilmesi becerisi aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Varsayımsal düşünme",
+                                "B) Metabiliş (Üstbiliş)",
+                                "C) İskele kurma",
+                                "D) Sembolik düşünme",
+                                "E) Odaktan uzaklaşma"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 39,
+                            q: "Dilin sosyal bağlama uygun olarak kullanılması, karşıdaki kişinin yaşına, statüsüne ve ortama göre hitap şekillerinin ayarlanması dilin hangi boyutuyla ilgilidir?",
+                            options: [
+                                "A) Morfoloji",
+                                "B) Sentaks",
+                                "C) Semantik",
+                                "D) Edimbilim (Pragmatik)",
+                                "E) Fonoloji"
+                            ],
+                            answer: 3
+                        },
+                        {
+                            id: 40,
+                            q: "Piaget’ye göre çocukların oyunlarında cansız nesnelere sanki canlıymış gibi roller biçmesi, örneğin bir sopayı at gibi koşturması veya oyuncak bebeğine yemek yedirip uyutması hangi kavramla açıklanır?",
+                            options: [
+                                "A) Yapaycılık",
+                                "B) Canlandırmacılık (Animizm)",
+                                "C) Odaklaşma",
+                                "D) Özelden özele akıl yürütme",
+                                "E) Tersine çevirememe"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 41,
+                            q: "Erikson’un psikososyal gelişim kuramına göre, bebeklik döneminde (0-1 yaş) temel güven duygusunun kazanılmasında en kritik etken aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Bebeğin tuvalet eğitimini başarıyla tamamlaması",
+                                "B) Annenin veya bakım veren kişinin bebeğin ihtiyaçlarını tutarlı, duyarlı ve şefkatli bir şekilde karşılaması",
+                                "C) Bebeğin kendi başına yürüme ve hareket etme özgürlüğü kazanması",
+                                "D) Çevresindeki akranlarıyla oyun grupları oluşturması",
+                                "E) Okul başarısının öğretmenler tarafından takdir edilmesi"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 42,
+                            q: "Erikson’un kuramına göre, \"Ben kimim?\", \"Gelecekte ne olmalıyım?\", \"Hayattaki amacım ne?\" gibi soruların yoğun olarak sorulduğu ve bocalamaların yaşandığı dönemin psikososyal krizi aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Kimlik kazanmaya karşı rol karmaşası",
+                                "B) Yakınlığa karşı yalıtılmışlık",
+                                "C) Girişkenliğe karşı suçluluk",
+                                "D) Üretkenliğe karşı durgunluk",
+                                "E) Kimlikli olmaya karşı güvensizlik"
+                            ],
+                            answer: 0
+                        },
+                        {
+                            id: 43,
+                            q: "Ainsworth’ün yabancı durum deneyi sonuçlarına göre; annesi odadan ayrıldığında aşırı kaygılanmayan, anne döndüğünde onunla yakınlık kurmaktan kaçınan, hatta annesini görmezden gelen bebeğin sergilediği bağlanma türü hangisidir?",
+                            options: [
+                                "A) Güvenli bağlanma",
+                                "B) Güvensiz kaçınan bağlanma",
+                                "C) Güvensiz ikircikli bağlanma",
+                                "D) Saplantılı bağlanma",
+                                "E) Korkulu bağlanma"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 44,
+                            q: "Freud’un psikoseksüel gelişim kuramına göre, çocukların karşı cins ebeveynine karşı bilinçdışı bir ilgi duyduğu, hemcins ebeveyni ise rakip olarak görüp korktuğu (Oedipus / Elektra komplekslerinin yaşandığı) evre aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Oral evre",
+                                "B) Anal evre",
+                                "C) Fallik evre",
+                                "D) Gizil (Latent) evre",
+                                "E) Genital evre"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 45,
+                            q: "Erikson’a göre, orta yaş dönemindeki bireylerin gelecek nesillere rehberlik etmesi, topluma ve üretime katkı sağlaması durumunu simgeleyen krizin olumlu ve olumsuz kutupları hangi seçenekte doğru verilmiştir?",
+                            options: [
+                                "A) Kimlik kazanma - Rol karmaşası",
+                                "B) Girişkenlik - Suçluluk duygusu",
+                                "C) Üretkenlik - Durgunluk (Kısırlık)",
+                                "D) Özdeğer - Aşağılık duygusu",
+                                "E) Bütünlük - Umutsuzluk"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 46,
+                            q: "Aşağıdakilerden hangisi Erikson’un psikososyal gelişim kuramındaki \"Özerkliğe karşı kuşku ve utanç\" döneminin (2-3 yaş) temel kazanımı veya odak noktasıdır?",
+                            options: [
+                                "A) Tuvalet eğitimiyle birlikte kas kontrolünü sağlamak, kendi başına yemek yeme ve irade geliştirmek",
+                                "B) Çevreyi keşfetmek için projeler üretmek ve suçluluk duymadan liderlik yapmak",
+                                "C) Okulda akademik başarı elde ederek çalışkanlık duygusu geliştirmek",
+                                "D) Meslek seçimi yaparak kimlik kazanmak",
+                                "E) Arkadaş gruplarıyla ortak projelerde yer almak"
+                            ],
+                            answer: 0
+                        },
+                        {
+                            id: 47,
+                            q: "Yaşlılık döneminde (65 yaş ve üzeri) bireyin geçmiş yaşamını gözden geçirdiği, yaptıklarını ve yapamadıklarını değerlendirdiği, hayatının anlamlı ve doyumlu olduğunu düşünürse ulaştığı Eriksoncu duygu aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Üretkenlik",
+                                "B) Benlik bütünlüğü",
+                                "C) Kimlik kazanımı",
+                                "D) Yakınlık",
+                                "E) Özerklik"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 48,
+                            q: "Anne-baba tutumları açısından incelendiğinde; çocuklarına karşı aşırı baskıcı, kuralların sorgulanmaksızın uygulanmasını isteyen, sıcaklık ve sevgi gösterisinde cimri olan ebeveyn tutumu aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Demokratik (Güvenli) tutum",
+                                "B) İhmalkar tutum",
+                                "C) Otoriter (Baskıcı) tutum",
+                                "D) İzin verici (Aşırı hoşgörülü) tutum",
+                                "E) Tutarsız tutum"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 49,
+                            q: "Freud’un psikoseksüel gelişim kuramında, cinsel dürtülerin uykuya yattığı, çocuğun enerjisini akademik çalışmalara, spora ve hem cins arkadaşlarla kurduğu dostluklara yönlendirdiği evre hangisidir?",
+                            options: [
+                                "A) Oral evre",
+                                "B) Anal evre",
+                                "C) Fallik evre",
+                                "D) Gizil (Latent) evre",
+                                "E) Genital evre"
+                            ],
+                            answer: 3
+                        },
+                        {
+                            id: 50,
+                            q: "Bireyin yakın ilişkiler kurabilme, başkalarıyla derin bağlar ve ortaklıklar oluşturabilme cesaretini gösterememesi durumunda düşeceği Eriksoncu risk aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Rol karmaşası",
+                                "B) Yalıtılmışlık (Yalnızlık)",
+                                "C) Durgunluk",
+                                "D) Umutsuzluk",
+                                "E) Suçluluk"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 51,
+                            q: "\"Gelişim baştan ayağa ve içten dışa doğru gerçekleşir\" ilkesine göre, anne karnındaki cenin gelişiminde ilk olarak hangi bölgeler gelişim gösterir?",
+                            options: [
+                                "A) El ve ayak parmakları",
+                                "B) Beyin, omurilik ve üst organlar (baş bölgesi)",
+                                "C) Bacaklar ve ayaklar",
+                                "D) Kalça ve bacak kasları",
+                                "E) Karın ve gövde bölgesi"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 52,
+                            q: "Gelişim sürecinde kritik dönem kavramı göz önüne alındığında, aşağıdaki ifadelerden hangisi yanlıştır?",
+                            options: [
+                                "A) Çevresel uyarıcıların ve zararlı etkenlerin etkisine en açık olunan zaman dilimidir.",
+                                "B) Belli becerilerin kazanılması için biyolojik olarak en uygun zamanı ifade eder.",
+                                "C) Kritik dönemde kazanılamayan bazı becerilerin daha sonra telafisi imkansız olabilir veya çok zor gerçekleşir.",
+                                "D) Gelişim hızı her yaş döneminde aynı oranda doğrusal olarak arttığı için kritik dönemler tüm yaşlarda aynı etkiye sahiptir.",
+                                "E) Özellikle dil gelişimi ve duyusal organların gelişimi açısından kritik dönemler büyük önem taşır."
+                            ],
+                            answer: 3
+                        },
+                        {
+                            id: 53,
+                            q: "Bir çocuğun koşarken aniden durabilmesi, merdivenleri tek başına ayak değiştirerek inip çıkabilmesi, kalem tutma ve makasla kağıt kesme gibi ince motor becerilerde ustalaşmaya başladığı dönem genellikle hangi yaş aralığıdır?",
+                            options: [
+                                "A) Bebeklik dönemi (0-2 yaş)",
+                                "B) İlk çocukluk (Okul öncesi) dönemi (2-6 yaş)",
+                                "C) Son çocukluk (İlkokul) dönemi (6-12 yaş)",
+                                "D) Ergenlik dönemi (12-18 yaş)",
+                                "E) Genç yetişkinlik dönemi"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 54,
+                            q: "Gelişimin \"tarihsel dönemden\" etkilenmesi ilkesine (Kronosistem unsuru) göre, aşağıdaki durumlardan hangisi bu ilkeyi örnekler?",
+                            options: [
+                                "A) Aynı anne-babadan doğan iki kardeşin farklı kişilik özelliklerine sahip olması",
+                                "B) Dijital çağda doğan çocukların teknolojiye ve yapay zekaya adaptasyon hızının, geçmiş yüzyıllarda doğanlara göre çok daha hızlı olması",
+                                "C) Kız çocuklarının ergenliğe erkek çocuklarından daha erken girmesi",
+                                "D) Boy uzama hızının ergenlik döneminde ani bir ivme kazanması",
+                                "E) Her bireyin kendine özgü bir parmak izine sahip olması"
+                            ],
+                            answer: 1
+                        },
+                        {
+                            id: 55,
+                            q: "Piaget’nin ahlaki gelişim kuramındaki \"Özerk ahlak (Ahlaki görecelilik)\" evresine ulaşmış bir çocuğun olayları değerlendirirken temel aldığı ölçüt aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Ortamdaki kuralların asla değiştirilemez oluşu",
+                                "B) Davranışın yol açtığı maddi zararın büyüklüğü",
+                                "C) Davranışı gerçekleştiren kişinin niyeti ve kuralların insanlar tarafından uzlaşıyla yapılabileceği bilinci",
+                                "D) Otoritenin vereceği cezanın şiddeti",
+                                "E) Toplumda kuralların mutlak ve dışsal kurallarla sınırlı olması"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 56,
+                            q: "James Marcia’nın kimlik statüleri kuramına göre, hem kimlik araştırması (kriz) yaşamış hem de kendine uygun meslek ve değerler konusunda net bir taahhütte bulunarak karar vermiş olan ergen hangi statüdedir?",
+                            options: [
+                                "A) Başarılı kimlik",
+                                "B) İpotekli kimlik",
+                                "C) Moratoryum",
+                                "D) Dağınık kimlik",
+                                "E) Zıt kimlik"
+                            ],
+                            answer: 0
+                        },
+                        {
+                            id: 57,
+                            q: "Gelişim psikolojisinde \"Bireysel farklar ilkesi\" aşağıdakilerden hangisini vurgular?",
+                            options: [
+                                "A) Her bireyin gelişim basamaklarını aynı hızda ve aynı yaşta tamamladığını",
+                                "B) Gelişimin kalıtımdan tamamen bağımsız, sadece çevreye bağlı olduğunu",
+                                "C) Her çocuğun kendine özgü bir gelişim hızı ve potansiyeli bulunduğunu, bu nedenle kıyaslama yapılırken bireysel özelliklerin göz önünde bulundurulması gerektiğini",
+                                "D) Fiziksel gelişimin zihinsel gelişimden her zaman önce tamamlandığını",
+                                "E) Bütün çocukların aynı anda yürümeye ve konuşmaya başladığını"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 58,
+                            q: "Aşağıdakilerden hangisi Piaget’nin bilişsel gelişim kuramındaki Soyut İşlemler Dönemi'nin (12 yaş ve sonrası) temel özelliklerinden biri değildir?",
+                            options: [
+                                "A) Varsayımsal (hipotetik) düşünme becerisinin gelişmesi",
+                                "B) Tümevarım ve tümdengelim akıl yürütme yollarının etkili biçimde kullanılabilmesi",
+                                "C) Soyut kavramlar, adalet, olasılık ve felsefi konular üzerine düşünebilme",
+                                "D) Sadece somut, göz önünde bulunan nesnelerle işlem yapabilme sınırlılığı",
+                                "E) Ergen benmerkezciliği ve meta-bilişsel farkındalığın artması"
+                            ],
+                            answer: 3
+                        },
+                        {
+                            id: 59,
+                            q: "Erikson’un kuramına göre, ilkokul yıllarını kapsayan (6-12 yaş) dönemde çocuğun okula gitmesi, projeler üretmesi, ödevlerini tamamlaması ve başarma duygusunu tatmasıyla çözümlenmesi beklenen kriz aşağıdakilerden hangisidir?",
+                            options: [
+                                "A) Temel güvensizliğe karşı güven",
+                                "B) Girişkenliğe karşı suçluluk",
+                                "C) Çalışkanlığa (Başarıya) karşı aşağılık duygusu",
+                                "D) Kimlik kazanmaya karşı rol karmaşası",
+                                "E) Özerkliğe karşı kuşku ve utanç"
+                            ],
+                            answer: 2
+                        },
+                        {
+                            id: 60,
+                            q: "Bir bireyin yaşam boyu gelişim süreci içinde, çocuklukta kazandığı temel becerilerin ilerleyen yaşlardaki öğrenmelerin temelini oluşturması gelişimin hangi temel ilkesiyle doğrudan ilişkilidir?",
+                            options: [
+                                "A) Gelişim bir bütündür",
+                                "B) Gelişim nöbetleşe (çarpık) devam eder",
+                                "C) Gelişim baştan ayağa doğrudur",
+                                "D) Gelişim bir süreçtir ve önceki aşamalar sonrakilerin temelini oluşturur (Kümülatiftir)",
+                                "E) Gelişimde bireysel farklar esastır"
+                            ],
+                            answer: 3
+                        }
                     ]
                 }
             ]
@@ -1525,12 +2254,16 @@
         nextBtn.textContent = "Sonraki Soru";
 
         const q = currentQuestions[currentQuestion];
-        questionText.textContent = `${currentQuestion + 1}. ${q.q}`;
+        // Desteklenen özellikler: hem 'q' hem 'question'
+        const qText = q.q || q.question;
+        const qOptions = q.options;
+
+        questionText.textContent = `${currentQuestion + 1}. ${qText}`;
         questionCounter.textContent = `Soru ${currentQuestion + 1} / ${currentQuestions.length}`;
         progressBar.style.width = `${(currentQuestion / currentQuestions.length) * 100}%`;
 
         optionsList.innerHTML = "";
-        q.options.forEach((opt, index) => {
+        qOptions.forEach((opt, index) => {
             const li = document.createElement("li");
             li.className = "option-item";
             li.textContent = opt;
@@ -1553,7 +2286,14 @@
             const q = currentQuestions[currentQuestion];
             const optionItems = document.querySelectorAll(".option-item");
 
-            if (selectedOption === q.answer) {
+            // Doğru şık index dönüşümü (Harf veya sayı formatı uyumu)
+            let correctIndex = q.answer;
+            if (typeof correctIndex === 'string') {
+                const map = { "A": 0, "B": 1, "C": 2, "D": 3, "E": 4 };
+                correctIndex = map[correctIndex.toUpperCase()] ?? 0;
+            }
+
+            if (selectedOption === correctIndex) {
                 isAnswered = true;
                 optionItems[selectedOption].classList.add("correct");
                 feedbackBox.style.display = "block";
@@ -1574,7 +2314,7 @@
 
                 let existingMistakes = getSafeStorage(`${currentUser}_mistakes`, []);
                 if (isMistakeMode) {
-                    existingMistakes = existingMistakes.filter(m => m.q !== q.q);
+                    existingMistakes = existingMistakes.filter(m => (m.q || m.question) !== (q.q || q.question));
                     setSafeStorage(`${currentUser}_mistakes`, existingMistakes);
                 }
             } else {
@@ -1589,7 +2329,7 @@
 
                 isAnswered = true;
                 optionItems[selectedOption].classList.add("incorrect");
-                optionItems[q.answer].classList.add("correct");
+                optionItems[correctIndex].classList.add("correct");
                 feedbackBox.style.display = "block";
                 let explanationText = q.note ? `<br><em>Not: ${q.note}</em>` : "";
                 feedbackBox.className = "feedback-box incorrect-fb";
@@ -1598,7 +2338,7 @@
 
                 let existingMistakes = getSafeStorage(`${currentUser}_mistakes`, []);
                 if (!isMistakeMode) {
-                    if (!existingMistakes.some(m => m.q === q.q)) {
+                    if (!existingMistakes.some(m => (m.q || m.question) === (q.q || q.question))) {
                         existingMistakes.push(q);
                         setSafeStorage(`${currentUser}_mistakes`, existingMistakes);
                     }
